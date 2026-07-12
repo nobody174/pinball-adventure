@@ -1,0 +1,99 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://core/physics/ball.gd" id="1_ball"]
+[ext_resource type="Script" path="res://core/physics/flipper.gd" id="2_flipper"]
+[ext_resource type="Script" path="res://core/physics/touch_zones.gd" id="3_touch"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ball"]
+radius = 14.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_flipper"]
+size = Vector2(90, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
+size = Vector2(20, 700)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_top"]
+size = Vector2(420, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bumper"]
+radius = 30.0
+
+[node name="PhysicsPrototype" type="Node2D"]
+
+[node name="Boundary" type="StaticBody2D" parent="."]
+
+[node name="LeftWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(0, 350)
+shape = SubResource("RectangleShape2D_wall_side")
+
+[node name="RightWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(420, 350)
+shape = SubResource("RectangleShape2D_wall_side")
+
+[node name="TopWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(210, 0)
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="Bumper" type="StaticBody2D" parent="."]
+position = Vector2(210, 250)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bumper"]
+shape = SubResource("CircleShape2D_bumper")
+
+[node name="Ball" type="RigidBody2D" parent="." node_paths=PackedStringArray()]
+position = Vector2(210, 100)
+script = ExtResource("1_ball")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("CircleShape2D_ball")
+
+[node name="Sprite" type="Polygon2D" parent="Ball"]
+color = Color(0.9, 0.9, 0.9, 1)
+polygon = PackedVector2Array(-14, 0, -10, -10, 0, -14, 10, -10, 14, 0, 10, 10, 0, 14, -10, 10)
+
+[node name="LeftFlipper" type="RigidBody2D" parent="."]
+position = Vector2(150, 620)
+script = ExtResource("2_flipper")
+is_left = true
+input_action = "flip_left"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftFlipper"]
+position = Vector2(45, 0)
+shape = SubResource("RectangleShape2D_flipper")
+
+[node name="Sprite" type="Polygon2D" parent="LeftFlipper"]
+color = Color(0.2, 0.8, 1, 1)
+polygon = PackedVector2Array(0, -10, 90, -10, 90, 10, 0, 10)
+
+[node name="RightFlipper" type="RigidBody2D" parent="."]
+position = Vector2(270, 620)
+script = ExtResource("2_flipper")
+is_left = false
+input_action = "flip_right"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightFlipper"]
+position = Vector2(-45, 0)
+shape = SubResource("RectangleShape2D_flipper")
+
+[node name="Sprite" type="Polygon2D" parent="RightFlipper"]
+color = Color(0.2, 0.8, 1, 1)
+polygon = PackedVector2Array(0, -10, -90, -10, -90, 10, 0, 10)
+
+[node name="TouchZones" type="CanvasLayer" parent="."]
+script = ExtResource("3_touch")
+
+[node name="LeftZone" type="TouchScreenButton" parent="TouchZones"]
+shape = SubResource("RectangleShape2D_wall_top")
+shape_centered = false
+visible = true
+
+[node name="RightZone" type="TouchScreenButton" parent="TouchZones"]
+position = Vector2(210, 0)
+shape = SubResource("RectangleShape2D_wall_top")
+shape_centered = false
+visible = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(210, 350)
+zoom = Vector2(1, 1)
