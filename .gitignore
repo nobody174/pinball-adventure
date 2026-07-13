@@ -2,7 +2,8 @@
 .godot/
 .import/
 export.cfg
-export_presets.cfg
+# export_presets.cfg is intentionally committed (no secrets) so CI can
+# reproduce the same Web export.
 *.translation
 .mono/
 data_*/

@@ -1,10 +1,6 @@
 ; Engine configuration file.
 ; It's best edited using the editor UI and not directly,
 ; since the parameters that go here are not all obvious.
-;
-; Format:
-;   [section] ; section goes between []
-;   param=value ; assign values to parameters
 
 config_version=5
 
@@ -15,9 +11,14 @@ config/description="A modern digital pinball game — physics-feel prototype (GD
 run/main_scene="res://core/physics/physics_prototype.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
-[dotnet]
+[editor_plugins]
 
-project/assembly_name="Pinball Adventure"
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[physics]
+
+common/physics_ticks_per_second=60
+2d/default_gravity=980.0
 
 [input]
 
