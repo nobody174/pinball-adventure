@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b4tuilt5r6hua" path="res://core/physics/ball.gd" id="1_ball"]
 [ext_resource type="Script" uid="uid://dtypcr3tcdvpl" path="res://core/physics/flipper.gd" id="2_flipper"]
 [ext_resource type="Script" uid="uid://bq4kgyaeumx04" path="res://core/physics/touch_zones.gd" id="3_touch"]
+[ext_resource type="Script" path="res://core/physics/bumper.gd" id="4_bumper"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
 size = Vector2(20, 700)
@@ -62,6 +63,12 @@ shape = SubResource("CircleShape2D_bumper")
 [node name="Sprite" type="Polygon2D" parent="Bumper" unique_id=815066198]
 color = Color(1, 0.3, 0.5, 1)
 polygon = PackedVector2Array(30, 0, 21.2, 21.2, 0, 30, -21.2, 21.2, -30, 0, -21.2, -21.2, 0, -30, 21.2, -21.2)
+
+[node name="KickArea" type="Area2D" parent="Bumper"]
+script = ExtResource("4_bumper")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bumper/KickArea"]
+shape = SubResource("CircleShape2D_bumper")
 
 [node name="Ramp" type="StaticBody2D" parent="." unique_id=317573666]
 
@@ -154,3 +161,5 @@ shape_centered = false
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2134439033]
 position = Vector2(210, 350)
+
+[connection signal="body_entered" from="Bumper/KickArea" to="Bumper/KickArea" method="_on_body_entered"]
