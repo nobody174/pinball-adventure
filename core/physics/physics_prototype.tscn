@@ -1,14 +1,8 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene format=3 uid="uid://japavu80p2lu"]
 
-[ext_resource type="Script" path="res://core/physics/ball.gd" id="1_ball"]
-[ext_resource type="Script" path="res://core/physics/flipper.gd" id="2_flipper"]
-[ext_resource type="Script" path="res://core/physics/touch_zones.gd" id="3_touch"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ball"]
-radius = 14.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_flipper"]
-size = Vector2(90, 20)
+[ext_resource type="Script" uid="uid://b4tuilt5r6hua" path="res://core/physics/ball.gd" id="1_ball"]
+[ext_resource type="Script" uid="uid://dtypcr3tcdvpl" path="res://core/physics/flipper.gd" id="2_flipper"]
+[ext_resource type="Script" uid="uid://bq4kgyaeumx04" path="res://core/physics/touch_zones.gd" id="3_touch"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
 size = Vector2(20, 700)
@@ -19,116 +13,144 @@ size = Vector2(420, 20)
 [sub_resource type="CircleShape2D" id="CircleShape2D_bumper"]
 radius = 30.0
 
-[node name="PhysicsPrototype" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_guide"]
+size = Vector2(169.7, 14)
 
-[node name="Boundary" type="StaticBody2D" parent="."]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ball"]
+radius = 14.0
 
-[node name="LeftWall" type="CollisionShape2D" parent="Boundary"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_flipper"]
+size = Vector2(90, 20)
+
+[node name="PhysicsPrototype" type="Node2D" unique_id=1652750491]
+
+[node name="Boundary" type="StaticBody2D" parent="." unique_id=11964670]
+
+[node name="LeftWall" type="CollisionShape2D" parent="Boundary" unique_id=182639212]
 position = Vector2(0, 350)
 shape = SubResource("RectangleShape2D_wall_side")
 
-[node name="LeftWallSprite" type="Polygon2D" parent="Boundary"]
+[node name="LeftWallSprite" type="Polygon2D" parent="Boundary" unique_id=2044888972]
 position = Vector2(0, 350)
 color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-10, -350, 10, -350, 10, 350, -10, 350)
 
-[node name="RightWall" type="CollisionShape2D" parent="Boundary"]
+[node name="RightWall" type="CollisionShape2D" parent="Boundary" unique_id=828326114]
 position = Vector2(420, 350)
 shape = SubResource("RectangleShape2D_wall_side")
 
-[node name="RightWallSprite" type="Polygon2D" parent="Boundary"]
+[node name="RightWallSprite" type="Polygon2D" parent="Boundary" unique_id=1959204579]
 position = Vector2(420, 350)
 color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-10, -350, 10, -350, 10, 350, -10, 350)
 
-[node name="TopWall" type="CollisionShape2D" parent="Boundary"]
+[node name="TopWall" type="CollisionShape2D" parent="Boundary" unique_id=989107409]
 position = Vector2(210, 0)
 shape = SubResource("RectangleShape2D_wall_top")
 
-[node name="TopWallSprite" type="Polygon2D" parent="Boundary"]
+[node name="TopWallSprite" type="Polygon2D" parent="Boundary" unique_id=1739139589]
 position = Vector2(210, 0)
 color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-210, -10, 210, -10, 210, 10, -210, 10)
 
-[node name="Bumper" type="StaticBody2D" parent="."]
+[node name="Bumper" type="StaticBody2D" parent="." unique_id=1891454527]
 position = Vector2(210, 250)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bumper"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bumper" unique_id=822539652]
 shape = SubResource("CircleShape2D_bumper")
 
-[node name="Sprite" type="Polygon2D" parent="Bumper"]
+[node name="Sprite" type="Polygon2D" parent="Bumper" unique_id=815066198]
 color = Color(1, 0.3, 0.5, 1)
 polygon = PackedVector2Array(30, 0, 21.2, 21.2, 0, 30, -21.2, 21.2, -30, 0, -21.2, -21.2, 0, -30, 21.2, -21.2)
 
-[node name="Ball" type="RigidBody2D" parent="." node_paths=PackedStringArray()]
+[node name="Ramp" type="StaticBody2D" parent="." unique_id=317573666]
+
+[node name="Guides" type="StaticBody2D" parent="." unique_id=1736905529]
+
+[node name="LeftGuide" type="CollisionShape2D" parent="Guides" unique_id=1000318765]
+position = Vector2(70, 540)
+rotation = 0.785398
+shape = SubResource("RectangleShape2D_guide")
+
+[node name="LeftGuideSprite" type="Polygon2D" parent="Guides" unique_id=695235626]
+position = Vector2(70, 540)
+rotation = 0.785398
+color = Color(0.5, 0.5, 0.55, 1)
+polygon = PackedVector2Array(-84.85, -7, 84.85, -7, 84.85, 7, -84.85, 7)
+
+[node name="RightGuide" type="CollisionShape2D" parent="Guides" unique_id=2038979651]
+position = Vector2(350, 540)
+rotation = 2.356194
+shape = SubResource("RectangleShape2D_guide")
+
+[node name="RightGuideSprite" type="Polygon2D" parent="Guides" unique_id=72289689]
+position = Vector2(350, 540)
+rotation = 2.356194
+color = Color(0.5, 0.5, 0.55, 1)
+polygon = PackedVector2Array(-84.85, -7, 84.85, -7, 84.85, 7, -84.85, 7)
+
+[node name="Ball" type="RigidBody2D" parent="." unique_id=1994410899]
 position = Vector2(190, 100)
 script = ExtResource("1_ball")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball" unique_id=840662744]
 shape = SubResource("CircleShape2D_ball")
 
-[node name="Sprite" type="Polygon2D" parent="Ball"]
+[node name="Sprite" type="Polygon2D" parent="Ball" unique_id=1859874000]
 color = Color(0.9, 0.9, 0.9, 1)
 polygon = PackedVector2Array(-14, 0, -10, -10, 0, -14, 10, -10, 14, 0, 10, 10, 0, 14, -10, 10)
 
-[node name="LeftFlipperAnchor" type="StaticBody2D" parent="."]
+[node name="LeftFlipperAnchor" type="StaticBody2D" parent="." unique_id=1254061006]
 position = Vector2(110, 620)
 
-[node name="LeftFlipper" type="RigidBody2D" parent="."]
+[node name="BoltSprite" type="Polygon2D" parent="LeftFlipperAnchor" unique_id=1750630973]
+color = Color(0.15, 0.15, 0.17, 1)
+polygon = PackedVector2Array(8, 0, 5.657, 5.657, 0, 8, -5.657, 5.657, -8, 0, -5.657, -5.657, 0, -8, 5.657, -5.657)
+
+[node name="LeftFlipper" type="RigidBody2D" parent="." unique_id=629410196]
 position = Vector2(110, 620)
 script = ExtResource("2_flipper")
-is_left = true
-input_action = "flip_left"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftFlipper"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftFlipper" unique_id=1466192955]
 position = Vector2(45, 0)
 shape = SubResource("RectangleShape2D_flipper")
 
-[node name="Sprite" type="Polygon2D" parent="LeftFlipper"]
-color = Color(0.2, 0.8, 1, 1)
+[node name="Sprite" type="Polygon2D" parent="LeftFlipper" unique_id=1138073603]
+color = Color(0.827451, 0.11372549, 0.45882353, 1)
 polygon = PackedVector2Array(0, -10, 90, -10, 90, 10, 0, 10)
 
-[node name="LeftFlipperPin" type="PinJoint2D" parent="."]
-position = Vector2(110, 620)
-node_a = NodePath("../LeftFlipperAnchor")
-node_b = NodePath("../LeftFlipper")
-
-[node name="RightFlipperAnchor" type="StaticBody2D" parent="."]
+[node name="RightFlipperAnchor" type="StaticBody2D" parent="." unique_id=570834916]
 position = Vector2(310, 620)
 
-[node name="RightFlipper" type="RigidBody2D" parent="."]
+[node name="BoltSprite" type="Polygon2D" parent="RightFlipperAnchor" unique_id=1848647735]
+color = Color(0.15, 0.15, 0.17, 1)
+polygon = PackedVector2Array(8, 0, 5.657, 5.657, 0, 8, -5.657, 5.657, -8, 0, -5.657, -5.657, 0, -8, 5.657, -5.657)
+
+[node name="RightFlipper" type="RigidBody2D" parent="." unique_id=1762138841]
 position = Vector2(310, 620)
 script = ExtResource("2_flipper")
 is_left = false
 input_action = "flip_right"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightFlipper"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightFlipper" unique_id=805676479]
 position = Vector2(-45, 0)
 shape = SubResource("RectangleShape2D_flipper")
 
-[node name="Sprite" type="Polygon2D" parent="RightFlipper"]
-color = Color(0.2, 0.8, 1, 1)
+[node name="Sprite" type="Polygon2D" parent="RightFlipper" unique_id=1869551587]
+color = Color(0.827451, 0.11372549, 0.45882353, 1)
 polygon = PackedVector2Array(0, -10, -90, -10, -90, 10, 0, 10)
 
-[node name="RightFlipperPin" type="PinJoint2D" parent="."]
-position = Vector2(310, 620)
-node_a = NodePath("../RightFlipperAnchor")
-node_b = NodePath("../RightFlipper")
-
-[node name="TouchZones" type="CanvasLayer" parent="."]
+[node name="TouchZones" type="CanvasLayer" parent="." unique_id=1387303047]
 script = ExtResource("3_touch")
 
-[node name="LeftZone" type="TouchScreenButton" parent="TouchZones"]
+[node name="LeftZone" type="TouchScreenButton" parent="TouchZones" unique_id=1103866490]
 shape = SubResource("RectangleShape2D_wall_top")
 shape_centered = false
-visible = true
 
-[node name="RightZone" type="TouchScreenButton" parent="TouchZones"]
+[node name="RightZone" type="TouchScreenButton" parent="TouchZones" unique_id=839068721]
 position = Vector2(210, 0)
 shape = SubResource("RectangleShape2D_wall_top")
 shape_centered = false
-visible = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2134439033]
 position = Vector2(210, 350)
-zoom = Vector2(1, 1)

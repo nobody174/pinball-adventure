@@ -20,6 +20,7 @@ func _ready() -> void:
 	physics_material_override = mat
 	contact_monitor = true
 	max_contacts_reported = 4
+	continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
 	_spawn_position = position
 
 func _physics_process(delta: float) -> void:
