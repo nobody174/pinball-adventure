@@ -1,0 +1,178 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://core/physics/physics_prototype.tscn" id="1_physics"]
+[ext_resource type="Shader" path="res://spike_10b/glitch_screen.gdshader" id="2_glitch_shader"]
+[ext_resource type="Shader" path="res://spike_10b/scrolling_bg.gdshader" id="3_bg_shader"]
+[ext_resource type="Script" path="res://spike_10b/fps_overlay.gd" id="4_fps"]
+[ext_resource type="Script" path="res://spike_10b/orbiting_decor.gd" id="5_orbit"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
+shader = ExtResource("3_bg_shader")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glitch"]
+shader = ExtResource("2_glitch_shader")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_glow"]
+blend_mode = 1
+
+[node name="PerformanceSpike10b" type="Node2D"]
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_bg")
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 470.0
+offset_bottom = 750.0
+
+[node name="PhysicsPrototype" parent="." instance=ExtResource("1_physics")]
+
+[node name="GlowBumper" type="Polygon2D" parent="."]
+position = Vector2(210, 250)
+material = SubResource("CanvasItemMaterial_glow")
+color = Color(1, 0.3, 0.5, 0.5)
+polygon = PackedVector2Array(50, 0, 35.4, 35.4, 0, 50, -35.4, 35.4, -50, 0, -35.4, -35.4, 0, -50, 35.4, -35.4)
+
+[node name="GlowLeftPivot" type="Polygon2D" parent="."]
+position = Vector2(110, 620)
+material = SubResource("CanvasItemMaterial_glow")
+color = Color(0.2, 0.8, 1, 0.5)
+polygon = PackedVector2Array(40, 0, 28.3, 28.3, 0, 40, -28.3, 28.3, -40, 0, -28.3, -28.3, 0, -40, 28.3, -28.3)
+
+[node name="GlowRightPivot" type="Polygon2D" parent="."]
+position = Vector2(310, 620)
+material = SubResource("CanvasItemMaterial_glow")
+color = Color(0.2, 0.8, 1, 0.5)
+polygon = PackedVector2Array(40, 0, 28.3, 28.3, 0, 40, -28.3, 28.3, -40, 0, -28.3, -28.3, 0, -40, 28.3, -28.3)
+
+[node name="Light1" type="PointLight2D" parent="."]
+position = Vector2(210, 250)
+color = Color(1, 0.3, 0.6, 1)
+energy = 1.5
+texture_scale = 4.0
+
+[node name="Light2" type="PointLight2D" parent="."]
+position = Vector2(110, 620)
+color = Color(0.2, 0.8, 1, 1)
+energy = 1.2
+texture_scale = 3.0
+
+[node name="Light3" type="PointLight2D" parent="."]
+position = Vector2(310, 620)
+color = Color(0.2, 0.8, 1, 1)
+energy = 1.2
+texture_scale = 3.0
+
+[node name="Light4" type="PointLight2D" parent="."]
+position = Vector2(210, 400)
+color = Color(0.6, 0.2, 1, 1)
+energy = 1.0
+texture_scale = 5.0
+
+[node name="Particles1" type="CPUParticles2D" parent="."]
+position = Vector2(210, 250)
+amount = 50
+lifetime = 1.0
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 40)
+initial_velocity_min = 30.0
+initial_velocity_max = 90.0
+scale_amount_min = 1.5
+scale_amount_max = 3.0
+color = Color(1, 0.3, 0.6, 0.8)
+
+[node name="Particles2" type="CPUParticles2D" parent="."]
+position = Vector2(110, 620)
+amount = 40
+lifetime = 1.2
+direction = Vector2(0, -1)
+spread = 60.0
+gravity = Vector2(0, 20)
+initial_velocity_min = 20.0
+initial_velocity_max = 60.0
+scale_amount_min = 1.0
+scale_amount_max = 2.5
+color = Color(0.2, 0.8, 1, 0.8)
+
+[node name="Particles3" type="CPUParticles2D" parent="."]
+position = Vector2(310, 620)
+amount = 40
+lifetime = 1.2
+direction = Vector2(0, -1)
+spread = 60.0
+gravity = Vector2(0, 20)
+initial_velocity_min = 20.0
+initial_velocity_max = 60.0
+scale_amount_min = 1.0
+scale_amount_max = 2.5
+color = Color(0.2, 0.8, 1, 0.8)
+
+[node name="OrbitDecor1" type="Node2D" parent="."]
+script = ExtResource("5_orbit")
+orbit_radius = 190.0
+orbit_speed = 0.8
+phase_offset = 0.0
+
+[node name="Shape" type="Polygon2D" parent="OrbitDecor1"]
+color = Color(1, 0.85, 0.2, 0.9)
+polygon = PackedVector2Array(0, -10, 10, 0, 0, 10, -10, 0)
+
+[node name="OrbitDecor2" type="Node2D" parent="."]
+script = ExtResource("5_orbit")
+orbit_radius = 190.0
+orbit_speed = 0.8
+phase_offset = 1.2566371
+
+[node name="Shape" type="Polygon2D" parent="OrbitDecor2"]
+color = Color(1, 0.85, 0.2, 0.9)
+polygon = PackedVector2Array(0, -10, 10, 0, 0, 10, -10, 0)
+
+[node name="OrbitDecor3" type="Node2D" parent="."]
+script = ExtResource("5_orbit")
+orbit_radius = 190.0
+orbit_speed = 0.8
+phase_offset = 2.5132741
+
+[node name="Shape" type="Polygon2D" parent="OrbitDecor3"]
+color = Color(1, 0.85, 0.2, 0.9)
+polygon = PackedVector2Array(0, -10, 10, 0, 0, 10, -10, 0)
+
+[node name="OrbitDecor4" type="Node2D" parent="."]
+script = ExtResource("5_orbit")
+orbit_radius = 190.0
+orbit_speed = 0.8
+phase_offset = 3.7699112
+
+[node name="Shape" type="Polygon2D" parent="OrbitDecor4"]
+color = Color(1, 0.85, 0.2, 0.9)
+polygon = PackedVector2Array(0, -10, 10, 0, 0, 10, -10, 0)
+
+[node name="OrbitDecor5" type="Node2D" parent="."]
+script = ExtResource("5_orbit")
+orbit_radius = 190.0
+orbit_speed = 0.8
+phase_offset = 5.0265482
+
+[node name="Shape" type="Polygon2D" parent="OrbitDecor5"]
+color = Color(1, 0.85, 0.2, 0.9)
+polygon = PackedVector2Array(0, -10, 10, 0, 0, 10, -10, 0)
+
+[node name="GlitchOverlay" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_glitch")
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 470.0
+offset_bottom = 750.0
+
+[node name="FpsOverlay" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("4_fps")
+
+[node name="Label" type="Label" parent="FpsOverlay"]
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 160.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "FPS: --"
