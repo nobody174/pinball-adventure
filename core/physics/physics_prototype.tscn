@@ -27,13 +27,28 @@ radius = 30.0
 position = Vector2(0, 350)
 shape = SubResource("RectangleShape2D_wall_side")
 
+[node name="LeftWallSprite" type="Polygon2D" parent="Boundary"]
+position = Vector2(0, 350)
+color = Color(0.5, 0.5, 0.55, 1)
+polygon = PackedVector2Array(-10, -350, 10, -350, 10, 350, -10, 350)
+
 [node name="RightWall" type="CollisionShape2D" parent="Boundary"]
 position = Vector2(420, 350)
 shape = SubResource("RectangleShape2D_wall_side")
 
+[node name="RightWallSprite" type="Polygon2D" parent="Boundary"]
+position = Vector2(420, 350)
+color = Color(0.5, 0.5, 0.55, 1)
+polygon = PackedVector2Array(-10, -350, 10, -350, 10, 350, -10, 350)
+
 [node name="TopWall" type="CollisionShape2D" parent="Boundary"]
 position = Vector2(210, 0)
 shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="TopWallSprite" type="Polygon2D" parent="Boundary"]
+position = Vector2(210, 0)
+color = Color(0.5, 0.5, 0.55, 1)
+polygon = PackedVector2Array(-210, -10, 210, -10, 210, 10, -210, 10)
 
 [node name="Bumper" type="StaticBody2D" parent="."]
 position = Vector2(210, 250)
@@ -41,8 +56,12 @@ position = Vector2(210, 250)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bumper"]
 shape = SubResource("CircleShape2D_bumper")
 
+[node name="Sprite" type="Polygon2D" parent="Bumper"]
+color = Color(1, 0.3, 0.5, 1)
+polygon = PackedVector2Array(30, 0, 21.2, 21.2, 0, 30, -21.2, 21.2, -30, 0, -21.2, -21.2, 0, -30, 21.2, -21.2)
+
 [node name="Ball" type="RigidBody2D" parent="." node_paths=PackedStringArray()]
-position = Vector2(210, 100)
+position = Vector2(190, 100)
 script = ExtResource("1_ball")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
@@ -52,8 +71,11 @@ shape = SubResource("CircleShape2D_ball")
 color = Color(0.9, 0.9, 0.9, 1)
 polygon = PackedVector2Array(-14, 0, -10, -10, 0, -14, 10, -10, 14, 0, 10, 10, 0, 14, -10, 10)
 
+[node name="LeftFlipperAnchor" type="StaticBody2D" parent="."]
+position = Vector2(110, 620)
+
 [node name="LeftFlipper" type="RigidBody2D" parent="."]
-position = Vector2(150, 620)
+position = Vector2(110, 620)
 script = ExtResource("2_flipper")
 is_left = true
 input_action = "flip_left"
@@ -66,8 +88,16 @@ shape = SubResource("RectangleShape2D_flipper")
 color = Color(0.2, 0.8, 1, 1)
 polygon = PackedVector2Array(0, -10, 90, -10, 90, 10, 0, 10)
 
+[node name="LeftFlipperPin" type="PinJoint2D" parent="."]
+position = Vector2(110, 620)
+node_a = NodePath("../LeftFlipperAnchor")
+node_b = NodePath("../LeftFlipper")
+
+[node name="RightFlipperAnchor" type="StaticBody2D" parent="."]
+position = Vector2(310, 620)
+
 [node name="RightFlipper" type="RigidBody2D" parent="."]
-position = Vector2(270, 620)
+position = Vector2(310, 620)
 script = ExtResource("2_flipper")
 is_left = false
 input_action = "flip_right"
@@ -79,6 +109,11 @@ shape = SubResource("RectangleShape2D_flipper")
 [node name="Sprite" type="Polygon2D" parent="RightFlipper"]
 color = Color(0.2, 0.8, 1, 1)
 polygon = PackedVector2Array(0, -10, -90, -10, -90, 10, 0, 10)
+
+[node name="RightFlipperPin" type="PinJoint2D" parent="."]
+position = Vector2(310, 620)
+node_a = NodePath("../RightFlipperAnchor")
+node_b = NodePath("../RightFlipper")
 
 [node name="TouchZones" type="CanvasLayer" parent="."]
 script = ExtResource("3_touch")

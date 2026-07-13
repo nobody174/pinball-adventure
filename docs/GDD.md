@@ -2,6 +2,8 @@
 
 Status: living discussion draft. Scope is deliberately narrow for v1; everything else is parked for later phases.
 
+Design inspiration notes (principle-level, not sourced from any original code/assets): [`inspiration/pinball_fantasies_analysis.md`](inspiration/pinball_fantasies_analysis.md), [`inspiration/physics_notes.md`](inspiration/physics_notes.md), [`inspiration/mission_ideas.md`](inspiration/mission_ideas.md).
+
 ---
 
 ## 1. Vision
