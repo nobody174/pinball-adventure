@@ -56,7 +56,7 @@ func _ready() -> void:
 			"id": "firewall_breach",
 			"type": "hit_targets",
 			"target_ids": [FW_A, FW_B, FW_C, FW_D],
-			"require_order": true,
+			"require_order": false, ## Drop targets stay down once hit — order-sensitivity doesn't make sense here (see docs/PROGRESS.md).
 		},
 	])
 	objective_completed.connect(_on_objective_completed)
@@ -125,19 +125,13 @@ func _on_clock_lane_hit(_target_id: String) -> void:
 	_show_feedback("CLOCK SYNC", Color(0.3, 0.9, 1, 1))
 
 func _on_objective_sequence_reset(objective_id: String) -> void:
+	if objective_id != "shader_rebuild":
+		return
 	## Wrong-order hit — make the reset visible instead of silently doing
 	## nothing, which read as "broken" rather than "wrong shot."
-	if objective_id == "shader_rebuild":
-		for target in $ShaderNodeTargets.get_children():
-			target.flash(Color(1, 0.2, 0.2, 1), 0.25)
-		_show_feedback("SEQUENCE RESET — START OVER", Color(1, 0.3, 0.3, 1))
-	elif objective_id == "firewall_breach":
-		## Drop targets don't pop back up on their own — a whiffed sequence
-		## should visibly reset the wall, not leave already-downed targets
-		## stuck down with no way to retry the sequence.
-		for drop_target in $FirewallBreach.get_children():
-			drop_target.reset_target()
-		_show_feedback("FIREWALL RESET — START OVER", Color(1, 0.3, 0.3, 1))
+	for target in $ShaderNodeTargets.get_children():
+		target.flash(Color(1, 0.2, 0.2, 1), 0.25)
+	_show_feedback("SEQUENCE RESET — START OVER", Color(1, 0.3, 0.3, 1))
 
 func _show_feedback(text: String, color: Color) -> void:
 	_feedback_label.text = text
