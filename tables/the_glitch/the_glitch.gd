@@ -139,6 +139,11 @@ func _ready() -> void:
 	$HighSpeedLoop.hit.connect(func(_id: String) -> void:
 		GameState.add_score(HIGH_SPEED_LOOP_POINTS)
 		_show_feedback("HIGH-SPEED LOOP", Color(1, 0.85, 0.2, 1)))
+	$Saucer2.captured.connect(func(_id: String) -> void:
+		GameState.add_score(SAUCER_CAPTURE_POINTS)
+		_debug_terminal.log_event("> saucer captured ball"))
+	$Saucer2.ejected.connect(func(_id: String) -> void: _debug_terminal.log_event("> saucer ejected ball"))
+	$Spinner2.spun.connect(func(_id: String) -> void: GameState.add_score(SPINNER_POINTS))
 	$Spinner.spun.connect(func(_id: String) -> void: GameState.add_score(SPINNER_POINTS))
 
 	wire_hit_group($StandupBank.get_children(), STANDUP_BANK_TARGET_POINTS,

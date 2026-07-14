@@ -508,7 +508,34 @@ shape = SubResource("RectangleShape2D_loop_sensor")
 color = Color(1, 0.85, 0.2, 0.6)
 polygon = PackedVector2Array(-25, -7, 25, -7, 25, 7, -25, 7)
 
-[node name="Feedback" type="CanvasLayer" parent="." index="20" unique_id=1738526509]
+[node name="Saucer2" type="Area2D" parent="." index="20"]
+position = Vector2(270, -560)
+script = ExtResource("11_saucer")
+target_id = "saucer_secondary"
+hold_duration_seconds = 0.6
+eject_direction = Vector2(0.3, 1)
+eject_strength = 420.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Saucer2" index="0"]
+shape = SubResource("CircleShape2D_saucer")
+
+[node name="Sprite" type="Polygon2D" parent="Saucer2" index="1"]
+color = Color(0.9, 0.3, 1, 1)
+polygon = PackedVector2Array(26, 0, 18.385, 18.385, 0, 26, -18.385, 18.385, -26, 0, -18.385, -18.385, 0, -26, 18.385, -18.385)
+
+[node name="Spinner2" type="Area2D" parent="." index="21"]
+position = Vector2(40, 50)
+script = ExtResource("10_spinner")
+target_id = "spin_b"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spinner2" index="0"]
+shape = SubResource("RectangleShape2D_spinner")
+
+[node name="Sprite" type="Polygon2D" parent="Spinner2" index="1"]
+color = Color(1, 0.85, 0.2, 1)
+polygon = PackedVector2Array(-22, -3, 22, -3, 22, 3, -22, 3)
+
+[node name="Feedback" type="CanvasLayer" parent="." index="22" unique_id=1738526509]
 layer = 10
 
 [node name="Label" type="Label" parent="Feedback" index="0" unique_id=1340523282]
