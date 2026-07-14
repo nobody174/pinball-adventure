@@ -34,6 +34,9 @@ const BANK_3 := "bank_3"
 const BANK_4 := "bank_4"
 const BANK_5 := "bank_5"
 
+const SAUCER_MAIN := "saucer_main"
+const SAUCER_SECONDARY := "saucer_secondary"
+
 const SHADER_TARGET_POINTS := 100
 const CORE_CHARGED_HIT_POINTS := 1000
 const CORE_UNCHARGED_HIT_POINTS := 50
@@ -54,6 +57,7 @@ const STANDUP_BANK_BONUS_POINTS := 500
 const ROLLOVER_GATE_POINTS := 40
 const SAUCER_CAPTURE_POINTS := 150
 const HIGH_SPEED_LOOP_POINTS := 120
+const SAUCER_DOUBLE_BONUS_POINTS := 900
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -100,6 +104,12 @@ func _ready() -> void:
 			"target_ids": [BANK_1, BANK_2, BANK_3, BANK_4, BANK_5],
 			"require_order": false,
 		},
+		{
+			"id": "saucer_double",
+			"type": "hit_targets",
+			"target_ids": [SAUCER_MAIN, SAUCER_SECONDARY],
+			"require_order": false,
+		},
 	])
 	objective_completed.connect(_on_objective_completed)
 	objective_sequence_reset.connect(_on_objective_sequence_reset)
@@ -132,17 +142,15 @@ func _ready() -> void:
 	$PhysicsPrototype/Bumper/KickArea.kicked.connect(func() -> void: GameState.add_score(BUMPER_POINTS))
 	$ClockLane.hit.connect(_on_clock_lane_hit)
 	$RolloverGate.hit.connect(func(_id: String) -> void: GameState.add_score(ROLLOVER_GATE_POINTS))
-	$Saucer.captured.connect(func(_id: String) -> void:
-		GameState.add_score(SAUCER_CAPTURE_POINTS)
-		_debug_terminal.log_event("> saucer captured ball"))
-	$Saucer.ejected.connect(func(_id: String) -> void: _debug_terminal.log_event("> saucer ejected ball"))
+	for saucer in [$Saucer, $Saucer2]:
+		saucer.captured.connect(func(id: String) -> void:
+			GameState.add_score(SAUCER_CAPTURE_POINTS)
+			register_target_hit(id)
+			_debug_terminal.log_event("> saucer captured ball: %s" % id))
+		saucer.ejected.connect(func(id: String) -> void: _debug_terminal.log_event("> saucer ejected ball: %s" % id))
 	$HighSpeedLoop.hit.connect(func(_id: String) -> void:
 		GameState.add_score(HIGH_SPEED_LOOP_POINTS)
 		_show_feedback("HIGH-SPEED LOOP", Color(1, 0.85, 0.2, 1)))
-	$Saucer2.captured.connect(func(_id: String) -> void:
-		GameState.add_score(SAUCER_CAPTURE_POINTS)
-		_debug_terminal.log_event("> saucer captured ball"))
-	$Saucer2.ejected.connect(func(_id: String) -> void: _debug_terminal.log_event("> saucer ejected ball"))
 	$Spinner2.spun.connect(func(_id: String) -> void: GameState.add_score(SPINNER_POINTS))
 	$Spinner.spun.connect(func(_id: String) -> void: GameState.add_score(SPINNER_POINTS))
 
@@ -187,6 +195,10 @@ func _on_objective_completed(objective_id: String) -> void:
 		GameState.add_score(STANDUP_BANK_BONUS_POINTS)
 		_show_feedback("BANK CLEARED", Color(1, 0.5, 0.9, 1))
 		objectives.get_objective("standup_bank").reset() ## Flash-recover targets, unlike Firewall's drop bank — safe to repeat immediately.
+	elif objective_id == "saucer_double":
+		GameState.add_score(SAUCER_DOUBLE_BONUS_POINTS)
+		_show_feedback("DUAL CAPTURE", Color(0.9, 0.3, 1, 1))
+		objectives.get_objective("saucer_double").reset() ## Each saucer can be hit again any time — safe to repeat immediately.
 
 func _on_core_hit_while_charged() -> void:
 	## Closes the repair loop: rebuild the shaders, then cash it in at the
