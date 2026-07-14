@@ -5,9 +5,16 @@
 [ext_resource type="Script" path="res://core/physics/standup_target.gd" id="3_target"]
 [ext_resource type="Script" path="res://tables/the_glitch/the_glitch.gd" id="4_glitch"]
 [ext_resource type="Script" path="res://core/physics/rotating_toy.gd" id="5_toy"]
+[ext_resource type="Script" path="res://core/physics/slingshot.gd" id="6_slingshot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_target"]
 size = Vector2(24, 24)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_sling_left"]
+points = PackedVector2Array(0, -18, 22, 14, -14, 14)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_sling_right"]
+points = PackedVector2Array(0, -18, 14, 14, -22, 14)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_core_bounce"]
 radius = 35.0
@@ -19,6 +26,12 @@ radius = 38.0
 script = ExtResource("4_glitch")
 
 [node name="PhysicsPrototype" parent="." instance=ExtResource("2_physics")]
+
+[node name="Sprite" parent="PhysicsPrototype/LeftFlipper" index="1"]
+color = Color(0.2, 0.9, 1, 1)
+
+[node name="Sprite" parent="PhysicsPrototype/RightFlipper" index="1"]
+color = Color(1, 0.2, 0.7, 1)
 
 [node name="ShaderNodeTargets" type="Node2D" parent="."]
 
@@ -77,6 +90,34 @@ shape = SubResource("CircleShape2D_core_hit")
 [node name="Sprite" type="Polygon2D" parent="GlitchCore"]
 color = Color(1, 0.2, 0.3, 1)
 polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
+
+[node name="LeftSlingshot" type="Area2D" parent="."]
+position = Vector2(135, 575)
+script = ExtResource("6_slingshot")
+kick_direction = Vector2(-0.4, -1)
+kick_strength = 450.0
+flash_color = Color(1, 0.85, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftSlingshot"]
+shape = SubResource("ConvexPolygonShape2D_sling_left")
+
+[node name="Sprite" type="Polygon2D" parent="LeftSlingshot"]
+color = Color(0.2, 0.9, 1, 1)
+polygon = PackedVector2Array(0, -18, 22, 14, -14, 14)
+
+[node name="RightSlingshot" type="Area2D" parent="."]
+position = Vector2(285, 575)
+script = ExtResource("6_slingshot")
+kick_direction = Vector2(0.4, -1)
+kick_strength = 450.0
+flash_color = Color(1, 0.85, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightSlingshot"]
+shape = SubResource("ConvexPolygonShape2D_sling_right")
+
+[node name="Sprite" type="Polygon2D" parent="RightSlingshot"]
+color = Color(1, 0.2, 0.7, 1)
+polygon = PackedVector2Array(0, -18, 14, 14, -22, 14)
 
 [node name="Feedback" type="CanvasLayer" parent="."]
 layer = 10
