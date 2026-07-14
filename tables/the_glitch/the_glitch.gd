@@ -42,6 +42,7 @@ const VRAM_PIPELINE_PASS_POINTS := 75
 const VRAM_THROUGHPUT_BONUS_POINTS := 600
 const COMPILE_BUMPER_POINTS := 60
 const COMPILE_OVERCLOCK_BONUS_POINTS := 800
+const SPINNER_POINTS := 30
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -113,6 +114,7 @@ func _ready() -> void:
 	$RightSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
 	$PhysicsPrototype/Bumper/KickArea.kicked.connect(func() -> void: GameState.add_score(BUMPER_POINTS))
 	$ClockLane.hit.connect(_on_clock_lane_hit)
+	$Spinner.spun.connect(func(_id: String) -> void: GameState.add_score(SPINNER_POINTS))
 
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.reset_score()
