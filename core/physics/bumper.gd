@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Area2D
 
 ## Placeholder pinball bumper. The sibling StaticBody2D handles solid
@@ -27,3 +36,5 @@ func _on_body_entered(body: Node2D) -> void:
 	if target_id != "":
 		hit.emit(target_id)
 	_cooldown_remaining = kick_cooldown_seconds
+
+# Built with assistance from Claude Code by Anthropic.

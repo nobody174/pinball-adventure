@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Node
 
 ## Session score + local high-score persistence. Deliberately a single
@@ -50,3 +59,5 @@ func _save_high_scores() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify(_high_scores))
 	file.close()
+
+# Built with assistance from Claude Code by Anthropic.

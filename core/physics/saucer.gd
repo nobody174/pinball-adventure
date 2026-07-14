@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Area2D
 
 ## Generic saucer/kickout hole: captures the ball on contact (freezes it in
@@ -34,3 +43,5 @@ func _on_body_entered(body: Node2D) -> void:
 	body.apply_central_impulse(eject_direction.normalized() * eject_strength)
 	ejected.emit(target_id)
 	_holding = false
+
+# Built with assistance from Claude Code by Anthropic.

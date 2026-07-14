@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends RigidBody2D
 
 ## Placeholder flipper. One instance per flipper; `is_left` mirrors input/rotation direction.
@@ -38,3 +47,5 @@ func _physics_process(delta: float) -> void:
 	## Ease-out (fast start) reads snappier than a linear ramp.
 	var eased := 1.0 - pow(1.0 - _swing_t, 2.0)
 	rotation = lerp_angle(_rest_angle, _active_angle, eased)
+
+# Built with assistance from Claude Code by Anthropic.

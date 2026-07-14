@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Area2D
 
 ## Standup-style target that visually "drops" on hit — fades and stops
@@ -34,3 +43,5 @@ func reset_target() -> void:
 
 func is_down() -> bool:
 	return _down
+
+# Built with assistance from Claude Code by Anthropic.

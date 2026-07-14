@@ -1,3 +1,12 @@
+//
+// Pinball Adventure
+// Author:  nobody174 (nobodylearn174@gmail.com)
+// Repo:    https://github.com/nobody174/pinball-adventure
+// Patreon: https://www.patreon.com/c/Nobody174
+// License: All rights reserved (c) 2026 nobody174
+// "It's never too late to give up!"
+//
+
 shader_type canvas_item;
 
 // Animated scrolling grid background — cheap (no texture sampling, just
@@ -18,3 +27,5 @@ void fragment() {
 	float line = 1.0 - min(line_x, line_y);
 	COLOR = mix(bg_color, grid_color, line);
 }
+
+// Built with assistance from Claude Code by Anthropic.

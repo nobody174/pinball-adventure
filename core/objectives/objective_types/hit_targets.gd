@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Node
 class_name HitTargetsObjective
 
@@ -42,3 +51,5 @@ func is_complete() -> bool:
 ## call this when the table wants the sequence runnable again.
 func reset() -> void:
 	_hit.clear()
+
+# Built with assistance from Claude Code by Anthropic.

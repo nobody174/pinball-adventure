@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends PinballTable
 
 ## The Glitch — vertical slice. Table-specific wiring only: what "shader_a/
@@ -255,3 +264,5 @@ func _input(event: InputEvent) -> void:
 			## a static teleport wouldn't test the cap-rattle behavior at all.
 			ball.request_teleport(Vector2(362, 440), Vector2(0, -600))
 			_debug_terminal.log_event("> debug teleport: loop shot (into channel, moving up)")
+
+# Built with assistance from Claude Code by Anthropic.

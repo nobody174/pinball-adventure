@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Node
 
 ## Reads a table's objective config (array of dicts) and instantiates the
@@ -50,3 +59,5 @@ func notify_target_hit(target_id: String) -> void:
 ## charge-style objective after it completes.
 func get_objective(objective_id: String) -> Node:
 	return _objectives.get(objective_id)
+
+# Built with assistance from Claude Code by Anthropic.

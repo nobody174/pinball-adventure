@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Area2D
 
 ## Reusable rotating table toy: spins continuously, can be toggled "charged"
@@ -37,3 +46,5 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _update_color() -> void:
 	_sprite.color = charged_color if charged else uncharged_color
+
+# Built with assistance from Claude Code by Anthropic.

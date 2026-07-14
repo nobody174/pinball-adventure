@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Node2D
 class_name PinballTable
 
@@ -36,3 +45,5 @@ func wire_hit_group(nodes: Array, points: int, on_hit: Callable = Callable()) ->
 			if on_hit.is_valid():
 				on_hit.call(id)
 		)
+
+# Built with assistance from Claude Code by Anthropic.

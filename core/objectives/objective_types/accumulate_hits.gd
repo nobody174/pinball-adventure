@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Node
 class_name AccumulateHitsObjective
 
@@ -30,3 +39,5 @@ func is_complete() -> bool:
 ## sequence) — the table decides when to call this, not this script.
 func reset() -> void:
 	_hit_count = 0
+
+# Built with assistance from Claude Code by Anthropic.

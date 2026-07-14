@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends Area2D
 
 ## Generic spinner: a free-swinging vane the ball pushes through. Emits its
@@ -38,3 +47,5 @@ func _play_spin() -> void:
 	tween.tween_property(_sprite, "rotation", _sprite.rotation + TAU, spin_duration_seconds)
 	await tween.finished
 	_spinning = false
+
+# Built with assistance from Claude Code by Anthropic.

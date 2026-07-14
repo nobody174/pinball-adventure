@@ -1,3 +1,12 @@
+#
+# Pinball Adventure
+# Author:  nobody174 (nobodylearn174@gmail.com)
+# Repo:    https://github.com/nobody174/pinball-adventure
+# Patreon: https://www.patreon.com/c/Nobody174
+# License: All rights reserved (c) 2026 nobody174
+# "It's never too late to give up!"
+#
+
 extends RigidBody2D
 
 ## Placeholder pinball. Tunable in the inspector for §10a feel-testing.
@@ -90,3 +99,5 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		_pending_teleport = false
 		continuous_cd = RigidBody2D.CCD_MODE_DISABLED
 		_ccd_reenable_countdown = 2
+
+# Built with assistance from Claude Code by Anthropic.
