@@ -20,6 +20,9 @@ const FW_B := "fw_b"
 const FW_C := "fw_c"
 const FW_D := "fw_d"
 
+const VRAM_PIPELINE := "vram_pipeline"
+const VRAM_THROUGHPUT_THRESHOLD := 4
+
 const SHADER_TARGET_POINTS := 100
 const CORE_CHARGED_HIT_POINTS := 1000
 const CORE_UNCHARGED_HIT_POINTS := 50
@@ -30,6 +33,8 @@ const SPRITE_DEFRAG_BONUS_POINTS := 750
 const CLOCK_LANE_POINTS := 150
 const FIREWALL_TARGET_POINTS := 100
 const FIREWALL_BREACH_BONUS_POINTS := 1000
+const VRAM_PIPELINE_PASS_POINTS := 75
+const VRAM_THROUGHPUT_BONUS_POINTS := 600
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -58,6 +63,12 @@ func _ready() -> void:
 			"target_ids": [FW_A, FW_B, FW_C, FW_D],
 			"require_order": false, ## Drop targets stay down once hit — order-sensitivity doesn't make sense here (see docs/PROGRESS.md).
 		},
+		{
+			"id": "vram_throughput",
+			"type": "accumulate_hits",
+			"target_ids": [VRAM_PIPELINE],
+			"threshold": VRAM_THROUGHPUT_THRESHOLD,
+		},
 	])
 	objective_completed.connect(_on_objective_completed)
 	objective_sequence_reset.connect(_on_objective_sequence_reset)
@@ -80,6 +91,9 @@ func _ready() -> void:
 		drop_target.hit.connect(func(_id: String) -> void: GameState.add_score(FIREWALL_TARGET_POINTS))
 		drop_target.hit.connect(register_target_hit)
 		drop_target.hit.connect(func(id: String) -> void: _debug_terminal.log_event("> firewall target down: %s" % id))
+	$VramPipeline.hit.connect(func(_id: String) -> void: GameState.add_score(VRAM_PIPELINE_PASS_POINTS))
+	$VramPipeline.hit.connect(register_target_hit)
+	$VramPipeline.hit.connect(func(id: String) -> void: _debug_terminal.log_event("> vram pipeline pass: %s" % id))
 
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.reset_score()
@@ -107,6 +121,10 @@ func _on_objective_completed(objective_id: String) -> void:
 		for drop_target in $FirewallBreach.get_children():
 			drop_target.reset_target()
 		objectives.get_objective("firewall_breach").reset()
+	elif objective_id == "vram_throughput":
+		GameState.add_score(VRAM_THROUGHPUT_BONUS_POINTS)
+		_show_feedback("VRAM THROUGHPUT MAXED", Color(0.2, 1, 0.9, 1))
+		objectives.get_objective("vram_throughput").reset() ## Charge-style — repeats, same pattern as Sprite Defrag.
 
 func _on_core_hit_while_charged() -> void:
 	## Closes the repair loop: rebuild the shaders, then cash it in at the

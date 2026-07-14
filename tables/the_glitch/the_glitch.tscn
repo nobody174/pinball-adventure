@@ -34,6 +34,9 @@ radius = 38.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_clock_lane"]
 size = Vector2(18, 260)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vram_sensor"]
+size = Vector2(36, 24)
+
 [node name="TheGlitch" instance=ExtResource("1_base")]
 script = ExtResource("4_glitch")
 
@@ -249,6 +252,19 @@ shape = SubResource("RectangleShape2D_drop_target")
 [node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallD"]
 color = Color(1, 0.3, 0.3, 1)
 polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
+
+[node name="VramPipeline" type="Area2D" parent="."]
+position = Vector2(375, -230)
+script = ExtResource("3_target")
+target_id = "vram_pipeline"
+flash_color = Color(0.2, 1, 0.9, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VramPipeline"]
+shape = SubResource("RectangleShape2D_vram_sensor")
+
+[node name="Sprite" type="Polygon2D" parent="VramPipeline"]
+color = Color(0.2, 1, 0.9, 0.6)
+polygon = PackedVector2Array(-18, -12, 18, -12, 18, 12, -18, 12)
 
 [node name="Feedback" type="CanvasLayer" parent="."]
 layer = 10
