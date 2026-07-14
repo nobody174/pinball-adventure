@@ -11,16 +11,22 @@ signal spun(target_id: String)
 
 @export var target_id: String = ""
 @export var spin_duration_seconds: float = 0.2
+@export var spin_cooldown_seconds: float = 0.15
 
 var _spinning: bool = false
+var _cooldown_remaining: float = 0.0
 @onready var _sprite: Polygon2D = $Sprite
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
+func _physics_process(delta: float) -> void:
+	_cooldown_remaining = maxf(0.0, _cooldown_remaining - delta)
+
 func _on_body_entered(body: Node2D) -> void:
-	if not body is RigidBody2D:
+	if not body is RigidBody2D or _cooldown_remaining > 0.0:
 		return
+	_cooldown_remaining = spin_cooldown_seconds
 	spun.emit(target_id)
 	_play_spin()
 
