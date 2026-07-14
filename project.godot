@@ -15,6 +15,10 @@ config/description="A modern digital pinball game — physics-feel prototype (GD
 run/main_scene="res://core/physics/physics_prototype.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
+[autoload]
+
+GameState="*res://autoload/GameState.gd"
+
 [display]
 
 window/size/viewport_width=420
