@@ -27,10 +27,10 @@ size = Vector2(90, 20)
 size = Vector2(130, 130)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ramp_outer"]
-size = Vector2(10, 860)
+size = Vector2(10, 760)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ramp_inner"]
-size = Vector2(10, 760)
+size = Vector2(10, 660)
 
 [node name="PhysicsPrototype" type="Node2D" unique_id=1652750491]
 
@@ -82,22 +82,22 @@ shape = SubResource("CircleShape2D_bumper")
 [node name="Ramp" type="StaticBody2D" parent="." unique_id=317573666]
 
 [node name="OuterWall" type="CollisionShape2D" parent="Ramp"]
-position = Vector2(400, 130)
+position = Vector2(400, 80)
 shape = SubResource("RectangleShape2D_ramp_outer")
 
 [node name="OuterWallSprite" type="Polygon2D" parent="Ramp"]
-position = Vector2(400, 130)
+position = Vector2(400, 80)
 color = Color(1, 0.85, 0.2, 1)
-polygon = PackedVector2Array(-5, -430, 5, -430, 5, 430, -5, 430)
+polygon = PackedVector2Array(-5, -380, 5, -380, 5, 380, -5, 380)
 
 [node name="InnerWall" type="CollisionShape2D" parent="Ramp"]
-position = Vector2(350, 180)
+position = Vector2(350, 130)
 shape = SubResource("RectangleShape2D_ramp_inner")
 
 [node name="InnerWallSprite" type="Polygon2D" parent="Ramp"]
-position = Vector2(350, 180)
+position = Vector2(350, 130)
 color = Color(1, 0.85, 0.2, 1)
-polygon = PackedVector2Array(-5, -380, 5, -380, 5, 380, -5, 380)
+polygon = PackedVector2Array(-5, -330, 5, -330, 5, 330, -5, 330)
 
 [node name="Guides" type="StaticBody2D" parent="." unique_id=1736905529]
 
