@@ -82,6 +82,21 @@ uv = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
 
 [node name="PhysicsPrototype" parent="." index="3" unique_id=1217632911 instance=ExtResource("2_physics")]
 
+[node name="LeftWallSprite" parent="PhysicsPrototype/Boundary" index="1"]
+color = Color(0.13, 0.15, 0.22, 1)
+
+[node name="RightWallSprite" parent="PhysicsPrototype/Boundary" index="3"]
+color = Color(0.13, 0.15, 0.22, 1)
+
+[node name="TopWallSprite" parent="PhysicsPrototype/Boundary" index="5"]
+color = Color(0.13, 0.15, 0.22, 1)
+
+[node name="LeftGuideSprite" parent="PhysicsPrototype/Guides" index="1"]
+color = Color(0.13, 0.15, 0.22, 1)
+
+[node name="RightGuideSprite" parent="PhysicsPrototype/Guides" index="1"]
+color = Color(0.13, 0.15, 0.22, 1)
+
 [node name="ShaderNodeTargets" type="Node2D" parent="." index="4" unique_id=1436813506]
 
 [node name="ShaderNodeA" type="Area2D" parent="ShaderNodeTargets" index="0" unique_id=1550424965]
