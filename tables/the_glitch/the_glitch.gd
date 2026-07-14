@@ -232,3 +232,26 @@ func _show_feedback(text: String, color: Color) -> void:
 	_debug_terminal.log_event(text)
 	await get_tree().create_timer(2.0).timeout
 	_feedback_label.visible = false
+
+## Debug-only shot teleport, for deterministic testing of specific targets
+## (e.g. the saucers, the loop mouth) without relying on lucky flipper-
+## cascade RNG to reach them. Disabled entirely in release exports.
+func _input(event: InputEvent) -> void:
+	if not OS.is_debug_build():
+		return
+	if not (event is InputEventKey and event.pressed and not event.echo):
+		return
+	var ball: RigidBody2D = $PhysicsPrototype/Ball
+	match event.keycode:
+		KEY_1:
+			ball.request_teleport($Saucer.global_position)
+			_debug_terminal.log_event("> debug teleport: saucer")
+		KEY_2:
+			ball.request_teleport($Saucer2.global_position)
+			_debug_terminal.log_event("> debug teleport: saucer2")
+		KEY_3:
+			## Placed just below the mouth with upward velocity so it actually
+			## climbs into the cap, rather than just sitting in the channel --
+			## a static teleport wouldn't test the cap-rattle behavior at all.
+			ball.request_teleport(Vector2(362, 440), Vector2(0, -600))
+			_debug_terminal.log_event("> debug teleport: loop shot (into channel, moving up)")

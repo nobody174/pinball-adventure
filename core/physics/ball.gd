@@ -12,6 +12,9 @@ var _spawn_position: Vector2
 var _nudge_cooldown_remaining: float = 0.0
 var _launched: bool = false
 var _pending_respawn: bool = false
+var _pending_teleport: bool = false
+var _pending_teleport_position: Vector2
+var _pending_teleport_velocity: Vector2
 
 func _ready() -> void:
 	var mat := PhysicsMaterial.new()
@@ -45,6 +48,15 @@ func _physics_process(delta: float) -> void:
 		_pending_respawn = true
 		_launched = false
 
+## Debug-only: instantly place the ball at an arbitrary position, e.g. to
+## deterministically test a specific shot (saucer, loop mouth) without
+## relying on lucky flipper-cascade RNG. Not exposed to normal play — see
+## the OS.is_debug_build() gate on the caller in the_glitch.gd.
+func request_teleport(target_position: Vector2, target_velocity: Vector2 = Vector2.ZERO) -> void:
+	_pending_teleport_position = target_position
+	_pending_teleport_velocity = target_velocity
+	_pending_teleport = true
+
 ## Writing position/linear_velocity directly on a RigidBody2D outside this
 ## callback fights the physics server's own transform sync and can leave the
 ## body stuck with gravity no longer applying — teleports must go through here.
@@ -55,3 +67,9 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		state.angular_velocity = 0.0
 		state.sleeping = false
 		_pending_respawn = false
+	if _pending_teleport:
+		state.transform = Transform2D(0.0, _pending_teleport_position)
+		state.linear_velocity = _pending_teleport_velocity
+		state.angular_velocity = 0.0
+		state.sleeping = false
+		_pending_teleport = false

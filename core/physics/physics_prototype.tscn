@@ -26,6 +26,9 @@ size = Vector2(85, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_guide"]
 size = Vector2(169.7, 14)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_guide_right"]
+size = Vector2(28.28, 14)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_ball"]
 radius = 14.0
 
@@ -125,15 +128,15 @@ color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-84.85, -7, 84.85, -7, 84.85, 7, -84.85, 7)
 
 [node name="RightGuide" type="CollisionShape2D" parent="Guides" unique_id=2038979651]
-position = Vector2(350, 540)
+position = Vector2(300, 590)
 rotation = 2.356194
-shape = SubResource("RectangleShape2D_guide")
+shape = SubResource("RectangleShape2D_guide_right")
 
 [node name="RightGuideSprite" type="Polygon2D" parent="Guides" unique_id=72289689]
-position = Vector2(350, 540)
+position = Vector2(300, 590)
 rotation = 2.356194
 color = Color(0.5, 0.5, 0.55, 1)
-polygon = PackedVector2Array(-84.85, -7, 84.85, -7, 84.85, 7, -84.85, 7)
+polygon = PackedVector2Array(-14.14, -7, 14.14, -7, 14.14, 7, -14.14, 7)
 
 [node name="Ball" type="RigidBody2D" parent="." unique_id=1994410899]
 position = Vector2(190, -300)
