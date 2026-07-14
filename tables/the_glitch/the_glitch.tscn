@@ -1,0 +1,68 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://core/table_base/pinball_table.tscn" id="1_base"]
+[ext_resource type="PackedScene" path="res://core/physics/physics_prototype.tscn" id="2_physics"]
+[ext_resource type="Script" path="res://core/physics/standup_target.gd" id="3_target"]
+[ext_resource type="Script" path="res://tables/the_glitch/the_glitch.gd" id="4_glitch"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_target"]
+size = Vector2(24, 24)
+
+[node name="TheGlitch" instance=ExtResource("1_base")]
+script = ExtResource("4_glitch")
+
+[node name="PhysicsPrototype" parent="." instance=ExtResource("2_physics")]
+
+[node name="ShaderNodeTargets" type="Node2D" parent="."]
+
+[node name="ShaderNodeA" type="Area2D" parent="ShaderNodeTargets"]
+position = Vector2(80, 140)
+script = ExtResource("3_target")
+target_id = "shader_a"
+flash_color = Color(1, 0.85, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShaderNodeTargets/ShaderNodeA"]
+shape = SubResource("RectangleShape2D_target")
+
+[node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeA"]
+color = Color(0.2, 0.8, 1, 1)
+polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+
+[node name="ShaderNodeB" type="Area2D" parent="ShaderNodeTargets"]
+position = Vector2(55, 210)
+script = ExtResource("3_target")
+target_id = "shader_b"
+flash_color = Color(1, 0.85, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShaderNodeTargets/ShaderNodeB"]
+shape = SubResource("RectangleShape2D_target")
+
+[node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeB"]
+color = Color(0.2, 0.8, 1, 1)
+polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+
+[node name="ShaderNodeC" type="Area2D" parent="ShaderNodeTargets"]
+position = Vector2(105, 210)
+script = ExtResource("3_target")
+target_id = "shader_c"
+flash_color = Color(1, 0.85, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShaderNodeTargets/ShaderNodeC"]
+shape = SubResource("RectangleShape2D_target")
+
+[node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeC"]
+color = Color(0.2, 0.8, 1, 1)
+polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+
+[node name="Feedback" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Label" type="Label" parent="Feedback"]
+offset_left = 20.0
+offset_top = 300.0
+offset_right = 400.0
+offset_bottom = 340.0
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 28
+text = "SHADER REBUILD COMPLETE"
+visible = false
