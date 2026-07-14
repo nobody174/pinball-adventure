@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://core/table_base/pinball_table.gd" id="1_table"]
 [ext_resource type="Script" path="res://core/objectives/objective_manager.gd" id="2_objectives"]
+[ext_resource type="Script" path="res://core/replay/input_log.gd" id="3_replay"]
 
 [node name="PinballTable" type="Node2D"]
 script = ExtResource("1_table")
 
 [node name="ObjectiveManager" type="Node" parent="."]
 script = ExtResource("2_objectives")
+
+[node name="InputLog" type="Node" parent="."]
+script = ExtResource("3_replay")

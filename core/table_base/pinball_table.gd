@@ -11,10 +11,12 @@ signal objective_completed(objective_id: String)
 signal objective_sequence_reset(objective_id: String)
 
 @onready var objectives: Node = $ObjectiveManager
+@onready var input_log: InputLog = $InputLog
 
 func _ready() -> void:
 	objectives.objective_completed.connect(func(id: String) -> void: objective_completed.emit(id))
 	objectives.objective_sequence_reset.connect(func(id: String) -> void: objective_sequence_reset.emit(id))
+	input_log.start_recording()
 
 ## Called by any target/sensor node when the ball hits it, tagged with the
 ## id that objectives.json config refers to it by.
