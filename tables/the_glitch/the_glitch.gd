@@ -27,6 +27,7 @@ const CLOCK_LANE_POINTS := 150
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
 @onready var _high_score_label: Label = $Feedback/HighScoreLabel
+@onready var _debug_terminal: DebugTerminal = $Feedback/DebugTerminal
 @onready var _glitch_core: Area2D = $GlitchCore
 
 func _ready() -> void:
@@ -50,10 +51,12 @@ func _ready() -> void:
 	for target in $ShaderNodeTargets.get_children():
 		target.hit.connect(func(_id: String) -> void: GameState.add_score(SHADER_TARGET_POINTS))
 		target.hit.connect(register_target_hit)
+		target.hit.connect(func(id: String) -> void: _debug_terminal.log_event("> shader node hit: %s" % id))
 	for bumper in $SpriteCacheBumpers.get_children():
 		var kick_area: Area2D = bumper.get_node("KickArea")
 		kick_area.hit.connect(func(_id: String) -> void: GameState.add_score(CACHE_BUMPER_POINTS))
 		kick_area.hit.connect(register_target_hit)
+		kick_area.hit.connect(func(id: String) -> void: _debug_terminal.log_event("> cache hit: %s" % id))
 	_glitch_core.hit_while_charged.connect(_on_core_hit_while_charged)
 	_glitch_core.hit_while_uncharged.connect(func() -> void: GameState.add_score(CORE_UNCHARGED_HIT_POINTS))
 	$LeftSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
@@ -108,5 +111,6 @@ func _show_feedback(text: String, color: Color) -> void:
 	_feedback_label.text = text
 	_feedback_label.add_theme_color_override("font_color", color)
 	_feedback_label.visible = true
+	_debug_terminal.log_event(text)
 	await get_tree().create_timer(2.0).timeout
 	_feedback_label.visible = false

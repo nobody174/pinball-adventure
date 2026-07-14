@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://core/physics/rotating_toy.gd" id="5_toy"]
 [ext_resource type="Script" path="res://core/physics/slingshot.gd" id="6_slingshot"]
 [ext_resource type="Script" path="res://core/physics/bumper.gd" id="7_bumper"]
+[ext_resource type="PackedScene" path="res://core/ui/debug_terminal.tscn" id="8_terminal"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_target"]
 size = Vector2(24, 24)
@@ -225,3 +226,6 @@ offset_bottom = 60.0
 theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 1)
 theme_override_font_sizes/font_size = 16
 text = "HIGH SCORE: 0"
+
+[node name="DebugTerminal" parent="Feedback" instance=ExtResource("8_terminal")]
+position = Vector2(12, 910)
