@@ -115,7 +115,7 @@ color = Color(0.2, 0.9, 1, 1)
 polygon = PackedVector2Array(0, -18, 22, 14, -14, 14)
 
 [node name="RightSlingshot" type="Area2D" parent="." index="7" unique_id=946211689]
-position = Vector2(285, 575)
+position = Vector2(240, 595)
 script = ExtResource("6_slingshot")
 kick_direction = Vector2(0.4, -1)
 kick_strength = 450.0
@@ -265,13 +265,17 @@ layer = 10
 
 [node name="Label" type="Label" parent="Feedback" index="0" unique_id=1340523282]
 visible = false
-offset_left = 20.0
-offset_top = 650.0
-offset_right = 400.0
-offset_bottom = 690.0
+anchor_left = 0.05
+anchor_top = 0.5
+anchor_right = 0.95
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_font_sizes/font_size = 28
 text = "SHADER REBUILD COMPLETE"
+horizontal_alignment = 1
 
 [node name="ScoreLabel" type="Label" parent="Feedback" index="1" unique_id=35624570]
 offset_left = 12.0
@@ -293,8 +297,10 @@ text = "HIGH SCORE: 0"
 
 [node name="DebugTerminal" parent="Feedback" index="3" unique_id=326661100 instance=ExtResource("8_terminal")]
 layout_mode = 3
-anchors_preset = 0
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 12.0
-offset_top = 910.0
-offset_right = 12.0
-offset_bottom = 910.0
+offset_top = -130.0
+offset_right = 272.0
+offset_bottom = -10.0
+grow_vertical = 0

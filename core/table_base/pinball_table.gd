@@ -19,6 +19,20 @@ func _ready() -> void:
 	input_log.start_recording()
 
 ## Called by any target/sensor node when the ball hits it, tagged with the
-## id that objectives.json config refers to it by.
+## id that the table's objective config (see objective_manager.gd) refers
+## to it by.
 func register_target_hit(target_id: String) -> void:
 	objectives.notify_target_hit(target_id)
+
+## Wires a group of hit-reporting nodes (targets/bumpers/lanes/etc.) to the
+## common scoring + objective-system pattern in one call, instead of
+## hand-duplicating "add_score + register_target_hit [+ log]" per node
+## across every table that has this shape of content.
+func wire_hit_group(nodes: Array, points: int, on_hit: Callable = Callable()) -> void:
+	for node in nodes:
+		node.hit.connect(func(id: String) -> void:
+			GameState.add_score(points)
+			register_target_hit(id)
+			if on_hit.is_valid():
+				on_hit.call(id)
+		)

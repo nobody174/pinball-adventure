@@ -13,6 +13,9 @@ builds/
 *.pck
 *.zip
 
+# Godot MCP addon runtime cache (screenshots etc.)
+addons/godot_mcp/cache/
+
 # OS
 .DS_Store
 Thumbs.db

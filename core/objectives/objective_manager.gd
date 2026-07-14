@@ -1,9 +1,15 @@
 extends Node
 
-## Reads a table's objective config (array of dicts — normally loaded from
-## that table's objectives.json, GDD §6) and instantiates the matching
-## objective_type for each entry. Theme-independent: has no idea what any
-## objective_id/target_id string actually means to a table.
+## Reads a table's objective config (array of dicts) and instantiates the
+## matching objective_type for each entry. Theme-independent: has no idea
+## what any objective_id/target_id string actually means to a table.
+##
+## GDD §6 describes this as loading from a per-table objectives.json; that
+## file format doesn't exist yet — the_glitch.gd currently passes a
+## hardcoded GDScript array literal, which still satisfies "objectives are
+## data, not code" in spirit (no behavior lives in the table script), but
+## isn't the JSON-file version GDD describes. Build the JSON loader when a
+## second table actually needs it, not before.
 
 signal objective_completed(objective_id: String)
 signal objective_sequence_reset(objective_id: String)

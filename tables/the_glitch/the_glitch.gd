@@ -72,28 +72,28 @@ func _ready() -> void:
 	])
 	objective_completed.connect(_on_objective_completed)
 	objective_sequence_reset.connect(_on_objective_sequence_reset)
-	for target in $ShaderNodeTargets.get_children():
-		target.hit.connect(func(_id: String) -> void: GameState.add_score(SHADER_TARGET_POINTS))
-		target.hit.connect(register_target_hit)
-		target.hit.connect(func(id: String) -> void: _debug_terminal.log_event("> shader node hit: %s" % id))
+
+	wire_hit_group($ShaderNodeTargets.get_children(), SHADER_TARGET_POINTS,
+		func(id: String) -> void: _debug_terminal.log_event("> shader node hit: %s" % id))
+
+	var cache_kick_areas: Array = []
 	for bumper in $SpriteCacheBumpers.get_children():
-		var kick_area: Area2D = bumper.get_node("KickArea")
-		kick_area.hit.connect(func(_id: String) -> void: GameState.add_score(CACHE_BUMPER_POINTS))
-		kick_area.hit.connect(register_target_hit)
-		kick_area.hit.connect(func(id: String) -> void: _debug_terminal.log_event("> cache hit: %s" % id))
+		cache_kick_areas.append(bumper.get_node("KickArea"))
+	wire_hit_group(cache_kick_areas, CACHE_BUMPER_POINTS,
+		func(id: String) -> void: _debug_terminal.log_event("> cache hit: %s" % id))
+
+	wire_hit_group($FirewallBreach.get_children(), FIREWALL_TARGET_POINTS,
+		func(id: String) -> void: _debug_terminal.log_event("> firewall target down: %s" % id))
+
+	wire_hit_group([$VramPipeline], VRAM_PIPELINE_PASS_POINTS,
+		func(id: String) -> void: _debug_terminal.log_event("> vram pipeline pass: %s" % id))
+
 	_glitch_core.hit_while_charged.connect(_on_core_hit_while_charged)
 	_glitch_core.hit_while_uncharged.connect(func() -> void: GameState.add_score(CORE_UNCHARGED_HIT_POINTS))
 	$LeftSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
 	$RightSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
 	$PhysicsPrototype/Bumper/KickArea.kicked.connect(func() -> void: GameState.add_score(BUMPER_POINTS))
 	$ClockLane.hit.connect(_on_clock_lane_hit)
-	for drop_target in $FirewallBreach.get_children():
-		drop_target.hit.connect(func(_id: String) -> void: GameState.add_score(FIREWALL_TARGET_POINTS))
-		drop_target.hit.connect(register_target_hit)
-		drop_target.hit.connect(func(id: String) -> void: _debug_terminal.log_event("> firewall target down: %s" % id))
-	$VramPipeline.hit.connect(func(_id: String) -> void: GameState.add_score(VRAM_PIPELINE_PASS_POINTS))
-	$VramPipeline.hit.connect(register_target_hit)
-	$VramPipeline.hit.connect(func(id: String) -> void: _debug_terminal.log_event("> vram pipeline pass: %s" % id))
 
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.reset_score()
