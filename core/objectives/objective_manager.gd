@@ -9,6 +9,7 @@ signal objective_completed(objective_id: String)
 signal objective_sequence_reset(objective_id: String)
 
 const HitTargets := preload("res://core/objectives/objective_types/hit_targets.gd")
+const AccumulateHits := preload("res://core/objectives/objective_types/accumulate_hits.gd")
 
 var _objectives: Dictionary = {}
 
@@ -24,9 +25,22 @@ func load_from_config(config: Array) -> void:
 				objective.sequence_reset.connect(func() -> void: objective_sequence_reset.emit(objective_id))
 				_objectives[objective_id] = objective
 				add_child(objective)
+			"accumulate_hits":
+				var objective := AccumulateHits.new()
+				objective.target_ids = entry.get("target_ids", [])
+				objective.threshold = entry.get("threshold", 1)
+				objective.completed.connect(func() -> void: objective_completed.emit(objective_id))
+				_objectives[objective_id] = objective
+				add_child(objective)
 			_:
 				push_warning("ObjectiveManager: unknown objective type '%s'" % entry.get("type", ""))
 
 func notify_target_hit(target_id: String) -> void:
 	for objective in _objectives.values():
 		objective.notify_target_hit(target_id)
+
+## Lets a table reach into a specific objective — used for things the
+## generic manager interface doesn't cover, like resetting a repeatable
+## charge-style objective after it completes.
+func get_objective(objective_id: String) -> Node:
+	return _objectives.get(objective_id)

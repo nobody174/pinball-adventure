@@ -10,11 +10,18 @@ const SHADER_A := "shader_a"
 const SHADER_B := "shader_b"
 const SHADER_C := "shader_c"
 
+const CACHE_A := "cache_a"
+const CACHE_B := "cache_b"
+const CACHE_C := "cache_c"
+const SPRITE_DEFRAG_THRESHOLD := 6
+
 const SHADER_TARGET_POINTS := 100
 const CORE_CHARGED_HIT_POINTS := 1000
 const CORE_UNCHARGED_HIT_POINTS := 50
 const SLINGSHOT_POINTS := 25
 const BUMPER_POINTS := 50
+const CACHE_BUMPER_POINTS := 50
+const SPRITE_DEFRAG_BONUS_POINTS := 750
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -30,12 +37,22 @@ func _ready() -> void:
 			"target_ids": [SHADER_A, SHADER_B, SHADER_C],
 			"require_order": true,
 		},
+		{
+			"id": "sprite_defrag",
+			"type": "accumulate_hits",
+			"target_ids": [CACHE_A, CACHE_B, CACHE_C],
+			"threshold": SPRITE_DEFRAG_THRESHOLD,
+		},
 	])
 	objective_completed.connect(_on_objective_completed)
 	objective_sequence_reset.connect(_on_objective_sequence_reset)
 	for target in $ShaderNodeTargets.get_children():
 		target.hit.connect(func(_id: String) -> void: GameState.add_score(SHADER_TARGET_POINTS))
 		target.hit.connect(register_target_hit)
+	for bumper in $SpriteCacheBumpers.get_children():
+		var kick_area: Area2D = bumper.get_node("KickArea")
+		kick_area.hit.connect(func(_id: String) -> void: GameState.add_score(CACHE_BUMPER_POINTS))
+		kick_area.hit.connect(register_target_hit)
 	_glitch_core.hit_while_charged.connect(_on_core_hit_while_charged)
 	_glitch_core.hit_while_uncharged.connect(func() -> void: GameState.add_score(CORE_UNCHARGED_HIT_POINTS))
 	$LeftSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
@@ -58,6 +75,10 @@ func _on_objective_completed(objective_id: String) -> void:
 	if objective_id == "shader_rebuild":
 		_show_feedback("SHADER REBUILD COMPLETE — CORE CHARGED", Color(1, 0.85, 0.2, 1))
 		_glitch_core.charged = true
+	elif objective_id == "sprite_defrag":
+		GameState.add_score(SPRITE_DEFRAG_BONUS_POINTS)
+		_show_feedback("SPRITE DEFRAG COMPLETE", Color(0.6, 0.2, 1, 1))
+		objectives.get_objective("sprite_defrag").reset() ## Charge-style — repeats, unlike the one-shot shader sequence.
 
 func _on_core_hit_while_charged() -> void:
 	## Closes the repair loop: rebuild the shaders, then cash it in at the

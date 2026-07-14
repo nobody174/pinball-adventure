@@ -6,9 +6,13 @@
 [ext_resource type="Script" path="res://tables/the_glitch/the_glitch.gd" id="4_glitch"]
 [ext_resource type="Script" path="res://core/physics/rotating_toy.gd" id="5_toy"]
 [ext_resource type="Script" path="res://core/physics/slingshot.gd" id="6_slingshot"]
+[ext_resource type="Script" path="res://core/physics/bumper.gd" id="7_bumper"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_target"]
 size = Vector2(24, 24)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cache_bumper"]
+radius = 18.0
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_sling_left"]
 points = PackedVector2Array(0, -18, 22, 14, -14, 14)
@@ -118,6 +122,62 @@ shape = SubResource("ConvexPolygonShape2D_sling_right")
 [node name="Sprite" type="Polygon2D" parent="RightSlingshot"]
 color = Color(1, 0.2, 0.7, 1)
 polygon = PackedVector2Array(0, -18, 14, 14, -22, 14)
+
+[node name="SpriteCacheBumpers" type="Node2D" parent="."]
+
+[node name="CacheBumperA" type="StaticBody2D" parent="SpriteCacheBumpers"]
+position = Vector2(270, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperA"]
+shape = SubResource("CircleShape2D_cache_bumper")
+
+[node name="Sprite" type="Polygon2D" parent="SpriteCacheBumpers/CacheBumperA"]
+color = Color(0.6, 0.2, 1, 1)
+polygon = PackedVector2Array(18, 0, 12.73, 12.73, 0, 18, -12.73, 12.73, -18, 0, -12.73, -12.73, 0, -18, 12.73, -12.73)
+
+[node name="KickArea" type="Area2D" parent="SpriteCacheBumpers/CacheBumperA"]
+script = ExtResource("7_bumper")
+kick_strength = 400.0
+target_id = "cache_a"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperA/KickArea"]
+shape = SubResource("CircleShape2D_cache_bumper")
+
+[node name="CacheBumperB" type="StaticBody2D" parent="SpriteCacheBumpers"]
+position = Vector2(310, 340)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperB"]
+shape = SubResource("CircleShape2D_cache_bumper")
+
+[node name="Sprite" type="Polygon2D" parent="SpriteCacheBumpers/CacheBumperB"]
+color = Color(0.6, 0.2, 1, 1)
+polygon = PackedVector2Array(18, 0, 12.73, 12.73, 0, 18, -12.73, 12.73, -18, 0, -12.73, -12.73, 0, -18, 12.73, -12.73)
+
+[node name="KickArea" type="Area2D" parent="SpriteCacheBumpers/CacheBumperB"]
+script = ExtResource("7_bumper")
+kick_strength = 400.0
+target_id = "cache_b"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperB/KickArea"]
+shape = SubResource("CircleShape2D_cache_bumper")
+
+[node name="CacheBumperC" type="StaticBody2D" parent="SpriteCacheBumpers"]
+position = Vector2(260, 380)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperC"]
+shape = SubResource("CircleShape2D_cache_bumper")
+
+[node name="Sprite" type="Polygon2D" parent="SpriteCacheBumpers/CacheBumperC"]
+color = Color(0.6, 0.2, 1, 1)
+polygon = PackedVector2Array(18, 0, 12.73, 12.73, 0, 18, -12.73, 12.73, -18, 0, -12.73, -12.73, 0, -18, 12.73, -12.73)
+
+[node name="KickArea" type="Area2D" parent="SpriteCacheBumpers/CacheBumperC"]
+script = ExtResource("7_bumper")
+kick_strength = 400.0
+target_id = "cache_c"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperC/KickArea"]
+shape = SubResource("CircleShape2D_cache_bumper")
 
 [node name="Feedback" type="CanvasLayer" parent="."]
 layer = 10

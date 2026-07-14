@@ -6,8 +6,15 @@ extends GutTest
 
 const TEST_TABLE_ID := "__test_table__"
 
+func before_each() -> void:
+	## High scores persist to a real file, so a stale entry from a previous
+	## run would otherwise leak into these tests -- clear it every time.
+	GameState._high_scores.erase(TEST_TABLE_ID)
+
 func after_each() -> void:
 	GameState.reset_score()
+	GameState._high_scores.erase(TEST_TABLE_ID)
+	GameState._save_high_scores()
 
 func test_add_score_accumulates() -> void:
 	GameState.reset_score()
