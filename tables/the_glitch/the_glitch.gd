@@ -22,6 +22,7 @@ const SLINGSHOT_POINTS := 25
 const BUMPER_POINTS := 50
 const CACHE_BUMPER_POINTS := 50
 const SPRITE_DEFRAG_BONUS_POINTS := 750
+const CLOCK_LANE_POINTS := 150
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -58,6 +59,7 @@ func _ready() -> void:
 	$LeftSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
 	$RightSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
 	$PhysicsPrototype/Bumper/KickArea.kicked.connect(func() -> void: GameState.add_score(BUMPER_POINTS))
+	$ClockLane.hit.connect(_on_clock_lane_hit)
 
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.reset_score()
@@ -86,6 +88,12 @@ func _on_core_hit_while_charged() -> void:
 	_glitch_core.charged = false
 	GameState.add_score(CORE_CHARGED_HIT_POINTS)
 	_show_feedback("CORE STABILIZED", Color(0.2, 1, 0.5, 1))
+
+func _on_clock_lane_hit(_target_id: String) -> void:
+	## Direct trigger, not a multi-step objective -- a real pinball lane like
+	## this just scores/lights on its own, no sequence to track.
+	GameState.add_score(CLOCK_LANE_POINTS)
+	_show_feedback("CLOCK SYNC", Color(0.3, 0.9, 1, 1))
 
 func _on_objective_sequence_reset(objective_id: String) -> void:
 	if objective_id != "shader_rebuild":
