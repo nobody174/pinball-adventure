@@ -23,6 +23,9 @@ radius = 14.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_flipper"]
 size = Vector2(90, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_touch_zone"]
+size = Vector2(130, 130)
+
 [node name="PhysicsPrototype" type="Node2D" unique_id=1652750491]
 
 [node name="Boundary" type="StaticBody2D" parent="." unique_id=11964670]
@@ -151,13 +154,32 @@ polygon = PackedVector2Array(0, -10, -90, -10, -90, 10, 0, 10)
 script = ExtResource("3_touch")
 
 [node name="LeftZone" type="TouchScreenButton" parent="TouchZones" unique_id=1103866490]
-shape = SubResource("RectangleShape2D_wall_top")
-shape_centered = false
+position = Vector2(65, 635)
+shape = SubResource("RectangleShape2D_touch_zone")
+shape_centered = true
+visible = true
+
+[node name="LeftZoneVisual" type="Polygon2D" parent="TouchZones/LeftZone"]
+color = Color(0.2, 0.8, 1, 0.2)
+polygon = PackedVector2Array(-65, -65, 65, -65, 65, 65, -65, 65)
+
+[node name="LeftZoneCircle" type="Polygon2D" parent="TouchZones/LeftZone"]
+color = Color(0.2, 0.8, 1, 0.6)
+polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
 [node name="RightZone" type="TouchScreenButton" parent="TouchZones" unique_id=839068721]
-position = Vector2(210, 0)
-shape = SubResource("RectangleShape2D_wall_top")
-shape_centered = false
+position = Vector2(355, 635)
+shape = SubResource("RectangleShape2D_touch_zone")
+shape_centered = true
+visible = true
+
+[node name="RightZoneVisual" type="Polygon2D" parent="TouchZones/RightZone"]
+color = Color(0.2, 0.8, 1, 0.2)
+polygon = PackedVector2Array(-65, -65, 65, -65, 65, 65, -65, 65)
+
+[node name="RightZoneCircle" type="Polygon2D" parent="TouchZones/RightZone"]
+color = Color(0.2, 0.8, 1, 0.6)
+polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2134439033]
 position = Vector2(210, 350)
