@@ -1,29 +1,17 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://ckx5ncjqoehx7"]
 
 [ext_resource type="PackedScene" path="res://core/table_base/pinball_table.tscn" id="1_base"]
-[ext_resource type="PackedScene" path="res://core/physics/physics_prototype.tscn" id="2_physics"]
-[ext_resource type="Script" path="res://core/physics/standup_target.gd" id="3_target"]
-[ext_resource type="Script" path="res://tables/the_glitch/the_glitch.gd" id="4_glitch"]
-[ext_resource type="Script" path="res://core/physics/rotating_toy.gd" id="5_toy"]
-[ext_resource type="Script" path="res://core/physics/slingshot.gd" id="6_slingshot"]
-[ext_resource type="Script" path="res://core/physics/bumper.gd" id="7_bumper"]
+[ext_resource type="PackedScene" uid="uid://japavu80p2lu" path="res://core/physics/physics_prototype.tscn" id="2_physics"]
+[ext_resource type="Script" uid="uid://kvv8r737x2cm" path="res://core/physics/standup_target.gd" id="3_target"]
+[ext_resource type="Script" uid="uid://bua2xctqjeqsg" path="res://tables/the_glitch/the_glitch.gd" id="4_glitch"]
+[ext_resource type="Script" uid="uid://bn7rltjc63ldn" path="res://core/physics/rotating_toy.gd" id="5_toy"]
+[ext_resource type="Script" uid="uid://bgrft03macgqv" path="res://core/physics/slingshot.gd" id="6_slingshot"]
+[ext_resource type="Script" uid="uid://y1wdnb0w8kmr" path="res://core/physics/bumper.gd" id="7_bumper"]
 [ext_resource type="PackedScene" path="res://core/ui/debug_terminal.tscn" id="8_terminal"]
-[ext_resource type="Script" path="res://core/physics/drop_target.gd" id="9_drop"]
+[ext_resource type="Script" uid="uid://iqcbnxw86gea" path="res://core/physics/drop_target.gd" id="9_drop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_target"]
 size = Vector2(24, 24)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_drop_target"]
-size = Vector2(20, 40)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_cache_bumper"]
-radius = 18.0
-
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_sling_left"]
-points = PackedVector2Array(0, -18, 22, 14, -14, 14)
-
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_sling_right"]
-points = PackedVector2Array(0, -18, 14, 14, -22, 14)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_core_bounce"]
 radius = 35.0
@@ -31,245 +19,252 @@ radius = 35.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_core_hit"]
 radius = 38.0
 
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_sling_left"]
+points = PackedVector2Array(0, -18, 22, 14, -14, 14)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_sling_right"]
+points = PackedVector2Array(0, -18, 14, 14, -22, 14)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cache_bumper"]
+radius = 18.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_clock_lane"]
 size = Vector2(18, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_drop_target"]
+size = Vector2(20, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vram_sensor"]
 size = Vector2(36, 24)
 
-[node name="TheGlitch" instance=ExtResource("1_base")]
+[node name="TheGlitch" unique_id=1364637713 instance=ExtResource("1_base")]
 script = ExtResource("4_glitch")
 
-[node name="PhysicsPrototype" parent="." instance=ExtResource("2_physics")]
+[node name="PhysicsPrototype" parent="." index="2" unique_id=1217632911 instance=ExtResource("2_physics")]
 
-[node name="Sprite" parent="PhysicsPrototype/LeftFlipper" index="1"]
-color = Color(0.2, 0.9, 1, 1)
+[node name="ShaderNodeTargets" type="Node2D" parent="." index="3" unique_id=1436813506]
 
-[node name="Sprite" parent="PhysicsPrototype/RightFlipper" index="1"]
-color = Color(1, 0.2, 0.7, 1)
-
-[node name="ShaderNodeTargets" type="Node2D" parent="."]
-
-[node name="ShaderNodeA" type="Area2D" parent="ShaderNodeTargets"]
+[node name="ShaderNodeA" type="Area2D" parent="ShaderNodeTargets" index="0" unique_id=1550424965]
 position = Vector2(80, -260)
 script = ExtResource("3_target")
 target_id = "shader_a"
 flash_color = Color(1, 0.85, 0.2, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ShaderNodeTargets/ShaderNodeA"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShaderNodeTargets/ShaderNodeA" index="0" unique_id=1624890696]
 shape = SubResource("RectangleShape2D_target")
 
-[node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeA"]
+[node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeA" index="1" unique_id=316237969]
 color = Color(0.2, 0.8, 1, 1)
 polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
 
-[node name="ShaderNodeB" type="Area2D" parent="ShaderNodeTargets"]
+[node name="ShaderNodeB" type="Area2D" parent="ShaderNodeTargets" index="1" unique_id=930651973]
 position = Vector2(50, -170)
 script = ExtResource("3_target")
 target_id = "shader_b"
 flash_color = Color(1, 0.85, 0.2, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ShaderNodeTargets/ShaderNodeB"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShaderNodeTargets/ShaderNodeB" index="0" unique_id=1417577755]
 shape = SubResource("RectangleShape2D_target")
 
-[node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeB"]
+[node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeB" index="1" unique_id=1641911836]
 color = Color(0.2, 0.8, 1, 1)
 polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
 
-[node name="ShaderNodeC" type="Area2D" parent="ShaderNodeTargets"]
+[node name="ShaderNodeC" type="Area2D" parent="ShaderNodeTargets" index="2" unique_id=1007673325]
 position = Vector2(110, -170)
 script = ExtResource("3_target")
 target_id = "shader_c"
 flash_color = Color(1, 0.85, 0.2, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ShaderNodeTargets/ShaderNodeC"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShaderNodeTargets/ShaderNodeC" index="0" unique_id=2111318814]
 shape = SubResource("RectangleShape2D_target")
 
-[node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeC"]
+[node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeC" index="1" unique_id=224419304]
 color = Color(0.2, 0.8, 1, 1)
 polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
 
-[node name="GlitchCoreBounce" type="StaticBody2D" parent="."]
+[node name="GlitchCoreBounce" type="StaticBody2D" parent="." index="4" unique_id=1159394699]
 position = Vector2(210, 430)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GlitchCoreBounce"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GlitchCoreBounce" index="0" unique_id=759893931]
 shape = SubResource("CircleShape2D_core_bounce")
 
-[node name="GlitchCore" type="Area2D" parent="."]
+[node name="GlitchCore" type="Area2D" parent="." index="5" unique_id=668917325]
 position = Vector2(210, 430)
 script = ExtResource("5_toy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GlitchCore"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GlitchCore" index="0" unique_id=1221809299]
 shape = SubResource("CircleShape2D_core_hit")
 
-[node name="Sprite" type="Polygon2D" parent="GlitchCore"]
+[node name="Sprite" type="Polygon2D" parent="GlitchCore" index="1" unique_id=499084948]
 color = Color(1, 0.2, 0.3, 1)
 polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
-[node name="LeftSlingshot" type="Area2D" parent="."]
+[node name="LeftSlingshot" type="Area2D" parent="." index="6" unique_id=1190830539]
 position = Vector2(135, 575)
 script = ExtResource("6_slingshot")
 kick_direction = Vector2(-0.4, -1)
 kick_strength = 450.0
 flash_color = Color(1, 0.85, 0.2, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftSlingshot"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftSlingshot" index="0" unique_id=2038252409]
 shape = SubResource("ConvexPolygonShape2D_sling_left")
 
-[node name="Sprite" type="Polygon2D" parent="LeftSlingshot"]
+[node name="Sprite" type="Polygon2D" parent="LeftSlingshot" index="1" unique_id=401909266]
 color = Color(0.2, 0.9, 1, 1)
 polygon = PackedVector2Array(0, -18, 22, 14, -14, 14)
 
-[node name="RightSlingshot" type="Area2D" parent="."]
+[node name="RightSlingshot" type="Area2D" parent="." index="7" unique_id=946211689]
 position = Vector2(285, 575)
 script = ExtResource("6_slingshot")
 kick_direction = Vector2(0.4, -1)
 kick_strength = 450.0
 flash_color = Color(1, 0.85, 0.2, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightSlingshot"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightSlingshot" index="0" unique_id=1955428830]
 shape = SubResource("ConvexPolygonShape2D_sling_right")
 
-[node name="Sprite" type="Polygon2D" parent="RightSlingshot"]
+[node name="Sprite" type="Polygon2D" parent="RightSlingshot" index="1" unique_id=308332373]
 color = Color(1, 0.2, 0.7, 1)
 polygon = PackedVector2Array(0, -18, 14, 14, -22, 14)
 
-[node name="SpriteCacheBumpers" type="Node2D" parent="."]
+[node name="SpriteCacheBumpers" type="Node2D" parent="." index="8" unique_id=556817153]
 
-[node name="CacheBumperA" type="StaticBody2D" parent="SpriteCacheBumpers"]
+[node name="CacheBumperA" type="StaticBody2D" parent="SpriteCacheBumpers" index="0" unique_id=1368140525]
 position = Vector2(280, -240)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperA"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperA" index="0" unique_id=197168037]
 shape = SubResource("CircleShape2D_cache_bumper")
 
-[node name="Sprite" type="Polygon2D" parent="SpriteCacheBumpers/CacheBumperA"]
+[node name="Sprite" type="Polygon2D" parent="SpriteCacheBumpers/CacheBumperA" index="1" unique_id=1873410656]
 color = Color(0.6, 0.2, 1, 1)
 polygon = PackedVector2Array(18, 0, 12.73, 12.73, 0, 18, -12.73, 12.73, -18, 0, -12.73, -12.73, 0, -18, 12.73, -12.73)
 
-[node name="KickArea" type="Area2D" parent="SpriteCacheBumpers/CacheBumperA"]
+[node name="KickArea" type="Area2D" parent="SpriteCacheBumpers/CacheBumperA" index="2" unique_id=1060607733]
 script = ExtResource("7_bumper")
 kick_strength = 400.0
 target_id = "cache_a"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperA/KickArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperA/KickArea" index="0" unique_id=1157521735]
 shape = SubResource("CircleShape2D_cache_bumper")
 
-[node name="CacheBumperB" type="StaticBody2D" parent="SpriteCacheBumpers"]
+[node name="CacheBumperB" type="StaticBody2D" parent="SpriteCacheBumpers" index="1" unique_id=1746423442]
 position = Vector2(320, -160)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperB"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperB" index="0" unique_id=2048401409]
 shape = SubResource("CircleShape2D_cache_bumper")
 
-[node name="Sprite" type="Polygon2D" parent="SpriteCacheBumpers/CacheBumperB"]
+[node name="Sprite" type="Polygon2D" parent="SpriteCacheBumpers/CacheBumperB" index="1" unique_id=1117151289]
 color = Color(0.6, 0.2, 1, 1)
 polygon = PackedVector2Array(18, 0, 12.73, 12.73, 0, 18, -12.73, 12.73, -18, 0, -12.73, -12.73, 0, -18, 12.73, -12.73)
 
-[node name="KickArea" type="Area2D" parent="SpriteCacheBumpers/CacheBumperB"]
+[node name="KickArea" type="Area2D" parent="SpriteCacheBumpers/CacheBumperB" index="2" unique_id=1164908534]
 script = ExtResource("7_bumper")
 kick_strength = 400.0
 target_id = "cache_b"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperB/KickArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperB/KickArea" index="0" unique_id=821030961]
 shape = SubResource("CircleShape2D_cache_bumper")
 
-[node name="CacheBumperC" type="StaticBody2D" parent="SpriteCacheBumpers"]
+[node name="CacheBumperC" type="StaticBody2D" parent="SpriteCacheBumpers" index="2" unique_id=1562069628]
 position = Vector2(270, -80)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperC"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperC" index="0" unique_id=1026237616]
 shape = SubResource("CircleShape2D_cache_bumper")
 
-[node name="Sprite" type="Polygon2D" parent="SpriteCacheBumpers/CacheBumperC"]
+[node name="Sprite" type="Polygon2D" parent="SpriteCacheBumpers/CacheBumperC" index="1" unique_id=677786994]
 color = Color(0.6, 0.2, 1, 1)
 polygon = PackedVector2Array(18, 0, 12.73, 12.73, 0, 18, -12.73, 12.73, -18, 0, -12.73, -12.73, 0, -18, 12.73, -12.73)
 
-[node name="KickArea" type="Area2D" parent="SpriteCacheBumpers/CacheBumperC"]
+[node name="KickArea" type="Area2D" parent="SpriteCacheBumpers/CacheBumperC" index="2" unique_id=1819037186]
 script = ExtResource("7_bumper")
 kick_strength = 400.0
 target_id = "cache_c"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperC/KickArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperC/KickArea" index="0" unique_id=2104524530]
 shape = SubResource("CircleShape2D_cache_bumper")
 
-[node name="ClockLane" type="Area2D" parent="."]
+[node name="ClockLane" type="Area2D" parent="." index="9" unique_id=2044595204]
 position = Vector2(30, -200)
 script = ExtResource("3_target")
 target_id = "clock_lane"
 flash_color = Color(0.3, 0.9, 1, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ClockLane"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClockLane" index="0" unique_id=1522702492]
 shape = SubResource("RectangleShape2D_clock_lane")
 
-[node name="Sprite" type="Polygon2D" parent="ClockLane"]
+[node name="Sprite" type="Polygon2D" parent="ClockLane" index="1" unique_id=896820916]
 color = Color(0.3, 0.9, 1, 0.6)
 polygon = PackedVector2Array(-9, -130, 9, -130, 9, 130, -9, 130)
 
-[node name="FirewallBreach" type="Node2D" parent="."]
+[node name="FirewallBreach" type="Node2D" parent="." index="10" unique_id=756633679]
 
-[node name="FirewallA" type="Area2D" parent="FirewallBreach"]
+[node name="FirewallA" type="Area2D" parent="FirewallBreach" index="0" unique_id=2074171290]
 position = Vector2(130, 0)
 script = ExtResource("9_drop")
 target_id = "fw_a"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallA"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallA" index="0" unique_id=62011592]
 shape = SubResource("RectangleShape2D_drop_target")
 
-[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallA"]
+[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallA" index="1" unique_id=517232446]
 color = Color(1, 0.3, 0.3, 1)
 polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
 
-[node name="FirewallB" type="Area2D" parent="FirewallBreach"]
+[node name="FirewallB" type="Area2D" parent="FirewallBreach" index="1" unique_id=2025965705]
 position = Vector2(180, 0)
 script = ExtResource("9_drop")
 target_id = "fw_b"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallB"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallB" index="0" unique_id=133631449]
 shape = SubResource("RectangleShape2D_drop_target")
 
-[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallB"]
+[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallB" index="1" unique_id=431852820]
 color = Color(1, 0.3, 0.3, 1)
 polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
 
-[node name="FirewallC" type="Area2D" parent="FirewallBreach"]
+[node name="FirewallC" type="Area2D" parent="FirewallBreach" index="2" unique_id=1794840510]
 position = Vector2(230, 0)
 script = ExtResource("9_drop")
 target_id = "fw_c"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallC"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallC" index="0" unique_id=709917075]
 shape = SubResource("RectangleShape2D_drop_target")
 
-[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallC"]
+[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallC" index="1" unique_id=1837544502]
 color = Color(1, 0.3, 0.3, 1)
 polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
 
-[node name="FirewallD" type="Area2D" parent="FirewallBreach"]
+[node name="FirewallD" type="Area2D" parent="FirewallBreach" index="3" unique_id=1409592385]
 position = Vector2(280, 0)
 script = ExtResource("9_drop")
 target_id = "fw_d"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallD"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallD" index="0" unique_id=541512065]
 shape = SubResource("RectangleShape2D_drop_target")
 
-[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallD"]
+[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallD" index="1" unique_id=904809167]
 color = Color(1, 0.3, 0.3, 1)
 polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
 
-[node name="VramPipeline" type="Area2D" parent="."]
+[node name="VramPipeline" type="Area2D" parent="." index="11" unique_id=1516095850]
 position = Vector2(375, -230)
 script = ExtResource("3_target")
 target_id = "vram_pipeline"
 flash_color = Color(0.2, 1, 0.9, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="VramPipeline"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VramPipeline" index="0" unique_id=1299315345]
 shape = SubResource("RectangleShape2D_vram_sensor")
 
-[node name="Sprite" type="Polygon2D" parent="VramPipeline"]
+[node name="Sprite" type="Polygon2D" parent="VramPipeline" index="1" unique_id=528763808]
 color = Color(0.2, 1, 0.9, 0.6)
 polygon = PackedVector2Array(-18, -12, 18, -12, 18, 12, -18, 12)
 
-[node name="Feedback" type="CanvasLayer" parent="."]
+[node name="Feedback" type="CanvasLayer" parent="." index="12" unique_id=1738526509]
 layer = 10
 
-[node name="Label" type="Label" parent="Feedback"]
+[node name="Label" type="Label" parent="Feedback" index="0" unique_id=1340523282]
+visible = false
 offset_left = 20.0
 offset_top = 650.0
 offset_right = 400.0
@@ -277,9 +272,8 @@ offset_bottom = 690.0
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_font_sizes/font_size = 28
 text = "SHADER REBUILD COMPLETE"
-visible = false
 
-[node name="ScoreLabel" type="Label" parent="Feedback"]
+[node name="ScoreLabel" type="Label" parent="Feedback" index="1" unique_id=35624570]
 offset_left = 12.0
 offset_top = 8.0
 offset_right = 220.0
@@ -288,7 +282,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 20
 text = "SCORE: 0"
 
-[node name="HighScoreLabel" type="Label" parent="Feedback"]
+[node name="HighScoreLabel" type="Label" parent="Feedback" index="2" unique_id=1649107202]
 offset_left = 12.0
 offset_top = 34.0
 offset_right = 260.0
@@ -297,5 +291,10 @@ theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 1)
 theme_override_font_sizes/font_size = 16
 text = "HIGH SCORE: 0"
 
-[node name="DebugTerminal" parent="Feedback" instance=ExtResource("8_terminal")]
-position = Vector2(12, 910)
+[node name="DebugTerminal" parent="Feedback" index="3" unique_id=326661100 instance=ExtResource("8_terminal")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 910.0
+offset_right = 12.0
+offset_bottom = 910.0
