@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://y1wdnb0w8kmr" path="res://core/physics/bumper.gd" id="4_bumper"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
-size = Vector2(20, 1050)
+size = Vector2(20, 1350)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_top"]
 size = Vector2(420, 20)
@@ -37,29 +37,29 @@ size = Vector2(130, 130)
 [node name="Boundary" type="StaticBody2D" parent="." unique_id=11964670]
 
 [node name="LeftWall" type="CollisionShape2D" parent="Boundary" unique_id=182639212]
-position = Vector2(0, 175)
+position = Vector2(0, 25)
 shape = SubResource("RectangleShape2D_wall_side")
 
 [node name="LeftWallSprite" type="Polygon2D" parent="Boundary" unique_id=2044888972]
-position = Vector2(0, 175)
+position = Vector2(0, 25)
 color = Color(0.5, 0.5, 0.55, 1)
-polygon = PackedVector2Array(-10, -525, 10, -525, 10, 525, -10, 525)
+polygon = PackedVector2Array(-10, -675, 10, -675, 10, 675, -10, 675)
 
 [node name="RightWall" type="CollisionShape2D" parent="Boundary" unique_id=828326114]
-position = Vector2(420, 175)
+position = Vector2(420, 25)
 shape = SubResource("RectangleShape2D_wall_side")
 
 [node name="RightWallSprite" type="Polygon2D" parent="Boundary" unique_id=1959204579]
-position = Vector2(420, 175)
+position = Vector2(420, 25)
 color = Color(0.5, 0.5, 0.55, 1)
-polygon = PackedVector2Array(-10, -525, 10, -525, 10, 525, -10, 525)
+polygon = PackedVector2Array(-10, -675, 10, -675, 10, 675, -10, 675)
 
 [node name="TopWall" type="CollisionShape2D" parent="Boundary" unique_id=989107409]
-position = Vector2(210, -350)
+position = Vector2(210, -650)
 shape = SubResource("RectangleShape2D_wall_top")
 
 [node name="TopWallSprite" type="Polygon2D" parent="Boundary" unique_id=1739139589]
-position = Vector2(210, -350)
+position = Vector2(210, -650)
 color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-210, -10, 210, -10, 210, 10, -210, 10)
 
@@ -178,7 +178,7 @@ polygon = PackedVector2Array(0, -10, -90, -10, -90, 10, 0, 10)
 script = ExtResource("3_touch")
 
 [node name="LeftZone" type="TouchScreenButton" parent="TouchZones" unique_id=1103866490]
-position = Vector2(65, 985)
+position = Vector2(65, 1285)
 shape = SubResource("RectangleShape2D_touch_zone")
 
 [node name="LeftZoneVisual" type="Polygon2D" parent="TouchZones/LeftZone" unique_id=1249598117]
@@ -190,7 +190,7 @@ color = Color(0.2, 0.8, 1, 0.6)
 polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
 [node name="RightZone" type="TouchScreenButton" parent="TouchZones" unique_id=839068721]
-position = Vector2(355, 985)
+position = Vector2(355, 1285)
 shape = SubResource("RectangleShape2D_touch_zone")
 
 [node name="RightZoneVisual" type="Polygon2D" parent="TouchZones/RightZone" unique_id=1327102787]
@@ -202,6 +202,6 @@ color = Color(0.2, 0.8, 1, 0.6)
 polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2134439033]
-position = Vector2(210, 175)
+position = Vector2(210, 25)
 
 [connection signal="body_entered" from="Bumper/KickArea" to="Bumper/KickArea" method="_on_body_entered"]
