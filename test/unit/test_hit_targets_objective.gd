@@ -64,3 +64,26 @@ func test_unknown_target_id_is_ignored() -> void:
 	objective.notify_target_hit("not_a_real_target")
 
 	assert_signal_not_emitted(objective, "completed")
+
+func test_wrong_order_hit_emits_sequence_reset_when_progress_existed() -> void:
+	var objective := HitTargets.new()
+	objective.target_ids = ["a", "b", "c"]
+	objective.require_order = true
+	add_child_autofree(objective)
+
+	watch_signals(objective)
+	objective.notify_target_hit("a")
+	objective.notify_target_hit("c") ## Wrong order after real progress — should be reported.
+
+	assert_signal_emitted(objective, "sequence_reset")
+
+func test_wrong_first_hit_does_not_emit_sequence_reset() -> void:
+	var objective := HitTargets.new()
+	objective.target_ids = ["a", "b", "c"]
+	objective.require_order = true
+	add_child_autofree(objective)
+
+	watch_signals(objective)
+	objective.notify_target_hit("b") ## Wrong from the start — nothing to "reset" yet.
+
+	assert_signal_not_emitted(objective, "sequence_reset")

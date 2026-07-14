@@ -8,11 +8,13 @@ class_name PinballTable
 
 signal ball_lost
 signal objective_completed(objective_id: String)
+signal objective_sequence_reset(objective_id: String)
 
 @onready var objectives: Node = $ObjectiveManager
 
 func _ready() -> void:
 	objectives.objective_completed.connect(func(id: String) -> void: objective_completed.emit(id))
+	objectives.objective_sequence_reset.connect(func(id: String) -> void: objective_sequence_reset.emit(id))
 
 ## Called by any target/sensor node when the ball hits it, tagged with the
 ## id that objectives.json config refers to it by.

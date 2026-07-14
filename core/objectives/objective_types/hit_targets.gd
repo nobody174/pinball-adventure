@@ -7,6 +7,8 @@ class_name HitTargetsObjective
 ## "Objectives are data, not code").
 
 signal completed
+signal sequence_reset ## Wrong-order hit while progress existed — table layer should give feedback, not leave it silent.
+signal progressed(hit_count: int, total: int)
 
 var target_ids: Array = []
 var require_order: bool = false
@@ -19,12 +21,16 @@ func notify_target_hit(target_id: String) -> void:
 	if require_order:
 		var expected_index: int = _hit.size()
 		if expected_index >= target_ids.size() or target_ids[expected_index] != target_id:
+			var had_progress: bool = not _hit.is_empty()
 			_hit.clear() ## Wrong-order hit resets progress — makes the sequence a real skill target.
+			if had_progress:
+				sequence_reset.emit()
 			return
 		_hit.append(target_id)
 	elif target_id not in _hit:
 		_hit.append(target_id)
 
+	progressed.emit(_hit.size(), target_ids.size())
 	if _hit.size() >= target_ids.size():
 		completed.emit()
 

@@ -6,6 +6,7 @@ extends Node
 ## objective_id/target_id string actually means to a table.
 
 signal objective_completed(objective_id: String)
+signal objective_sequence_reset(objective_id: String)
 
 const HitTargets := preload("res://core/objectives/objective_types/hit_targets.gd")
 
@@ -20,6 +21,7 @@ func load_from_config(config: Array) -> void:
 				objective.target_ids = entry.get("target_ids", [])
 				objective.require_order = entry.get("require_order", false)
 				objective.completed.connect(func() -> void: objective_completed.emit(objective_id))
+				objective.sequence_reset.connect(func() -> void: objective_sequence_reset.emit(objective_id))
 				_objectives[objective_id] = objective
 				add_child(objective)
 			_:

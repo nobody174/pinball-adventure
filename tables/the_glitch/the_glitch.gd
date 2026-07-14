@@ -21,15 +21,26 @@ func _ready() -> void:
 		},
 	])
 	objective_completed.connect(_on_objective_completed)
+	objective_sequence_reset.connect(_on_objective_sequence_reset)
 	for target in $ShaderNodeTargets.get_children():
 		target.hit.connect(register_target_hit)
 
 func _on_objective_completed(objective_id: String) -> void:
 	if objective_id == "shader_rebuild":
-		_show_feedback("SHADER REBUILD COMPLETE")
+		_show_feedback("SHADER REBUILD COMPLETE", Color(1, 0.85, 0.2, 1))
 
-func _show_feedback(text: String) -> void:
+func _on_objective_sequence_reset(objective_id: String) -> void:
+	if objective_id != "shader_rebuild":
+		return
+	## Wrong-order hit — make the reset visible instead of silently doing
+	## nothing, which read as "broken" rather than "wrong shot."
+	for target in $ShaderNodeTargets.get_children():
+		target.flash(Color(1, 0.2, 0.2, 1), 0.25)
+	_show_feedback("SEQUENCE RESET — START OVER", Color(1, 0.3, 0.3, 1))
+
+func _show_feedback(text: String, color: Color) -> void:
 	_feedback_label.text = text
+	_feedback_label.add_theme_color_override("font_color", color)
 	_feedback_label.visible = true
 	await get_tree().create_timer(2.0).timeout
 	_feedback_label.visible = false

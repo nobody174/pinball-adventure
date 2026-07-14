@@ -20,9 +20,12 @@ func _on_body_entered(body: Node2D) -> void:
 	if not body is RigidBody2D:
 		return
 	hit.emit(target_id)
-	_flash()
+	flash(flash_color)
 
-func _flash() -> void:
-	_sprite.color = flash_color
-	await get_tree().create_timer(0.15).timeout
+## Public so the table can trigger feedback (e.g. a red flash on the whole
+## group when a sequence resets) without that being tangled into this node's
+## own hit-detection logic.
+func flash(color: Color, duration: float = 0.15) -> void:
+	_sprite.color = color
+	await get_tree().create_timer(duration).timeout
 	_sprite.color = _base_color
