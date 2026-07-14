@@ -43,6 +43,9 @@ blend_mode = 1
 [sub_resource type="CircleShape2D" id="CircleShape2D_lane_post"]
 radius = 9.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_pop_bumper"]
+radius = 22.0
+
 [node name="TheGlitch" unique_id=1364637713 instance=ExtResource("1_base")]
 script = ExtResource("4_glitch")
 
@@ -299,7 +302,63 @@ shape = SubResource("RectangleShape2D_drop_target")
 color = Color(1, 0.3, 0.3, 1)
 polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
 
-[node name="VramPipeline" type="Area2D" parent="." index="13" unique_id=1516095850]
+[node name="PopBumperCluster" type="Node2D" parent="." index="13"]
+
+[node name="PopBumperA" type="StaticBody2D" parent="PopBumperCluster" index="0"]
+position = Vector2(170, 190)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperA" index="0"]
+shape = SubResource("CircleShape2D_pop_bumper")
+
+[node name="Sprite" type="Polygon2D" parent="PopBumperCluster/PopBumperA" index="1"]
+color = Color(0.3, 1, 0.4, 1)
+polygon = PackedVector2Array(22, 0, 15.556, 15.556, 0, 22, -15.556, 15.556, -22, 0, -15.556, -15.556, 0, -22, 15.556, -15.556)
+
+[node name="KickArea" type="Area2D" parent="PopBumperCluster/PopBumperA" index="2"]
+script = ExtResource("7_bumper")
+kick_strength = 500.0
+target_id = "compile_a"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperA/KickArea" index="0"]
+shape = SubResource("CircleShape2D_pop_bumper")
+
+[node name="PopBumperB" type="StaticBody2D" parent="PopBumperCluster" index="1"]
+position = Vector2(250, 190)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperB" index="0"]
+shape = SubResource("CircleShape2D_pop_bumper")
+
+[node name="Sprite" type="Polygon2D" parent="PopBumperCluster/PopBumperB" index="1"]
+color = Color(0.3, 1, 0.4, 1)
+polygon = PackedVector2Array(22, 0, 15.556, 15.556, 0, 22, -15.556, 15.556, -22, 0, -15.556, -15.556, 0, -22, 15.556, -15.556)
+
+[node name="KickArea" type="Area2D" parent="PopBumperCluster/PopBumperB" index="2"]
+script = ExtResource("7_bumper")
+kick_strength = 500.0
+target_id = "compile_b"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperB/KickArea" index="0"]
+shape = SubResource("CircleShape2D_pop_bumper")
+
+[node name="PopBumperC" type="StaticBody2D" parent="PopBumperCluster" index="2"]
+position = Vector2(210, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperC" index="0"]
+shape = SubResource("CircleShape2D_pop_bumper")
+
+[node name="Sprite" type="Polygon2D" parent="PopBumperCluster/PopBumperC" index="1"]
+color = Color(0.3, 1, 0.4, 1)
+polygon = PackedVector2Array(22, 0, 15.556, 15.556, 0, 22, -15.556, 15.556, -22, 0, -15.556, -15.556, 0, -22, 15.556, -15.556)
+
+[node name="KickArea" type="Area2D" parent="PopBumperCluster/PopBumperC" index="2"]
+script = ExtResource("7_bumper")
+kick_strength = 500.0
+target_id = "compile_c"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperC/KickArea" index="0"]
+shape = SubResource("CircleShape2D_pop_bumper")
+
+[node name="VramPipeline" type="Area2D" parent="." index="14" unique_id=1516095850]
 position = Vector2(375, -230)
 script = ExtResource("3_target")
 target_id = "vram_pipeline"
@@ -312,7 +371,7 @@ shape = SubResource("RectangleShape2D_vram_sensor")
 color = Color(0.2, 1, 0.9, 0.6)
 polygon = PackedVector2Array(-18, -12, 18, -12, 18, 12, -18, 12)
 
-[node name="Feedback" type="CanvasLayer" parent="." index="14" unique_id=1738526509]
+[node name="Feedback" type="CanvasLayer" parent="." index="15" unique_id=1738526509]
 layer = 10
 
 [node name="Label" type="Label" parent="Feedback" index="0" unique_id=1340523282]

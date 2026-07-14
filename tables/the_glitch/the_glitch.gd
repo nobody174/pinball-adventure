@@ -23,6 +23,11 @@ const FW_D := "fw_d"
 const VRAM_PIPELINE := "vram_pipeline"
 const VRAM_THROUGHPUT_THRESHOLD := 4
 
+const COMPILE_A := "compile_a"
+const COMPILE_B := "compile_b"
+const COMPILE_C := "compile_c"
+const COMPILE_OVERCLOCK_THRESHOLD := 10
+
 const SHADER_TARGET_POINTS := 100
 const CORE_CHARGED_HIT_POINTS := 1000
 const CORE_UNCHARGED_HIT_POINTS := 50
@@ -35,6 +40,8 @@ const FIREWALL_TARGET_POINTS := 100
 const FIREWALL_BREACH_BONUS_POINTS := 1000
 const VRAM_PIPELINE_PASS_POINTS := 75
 const VRAM_THROUGHPUT_BONUS_POINTS := 600
+const COMPILE_BUMPER_POINTS := 60
+const COMPILE_OVERCLOCK_BONUS_POINTS := 800
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -69,6 +76,12 @@ func _ready() -> void:
 			"target_ids": [VRAM_PIPELINE],
 			"threshold": VRAM_THROUGHPUT_THRESHOLD,
 		},
+		{
+			"id": "compile_overclock",
+			"type": "accumulate_hits",
+			"target_ids": [COMPILE_A, COMPILE_B, COMPILE_C],
+			"threshold": COMPILE_OVERCLOCK_THRESHOLD,
+		},
 	])
 	objective_completed.connect(_on_objective_completed)
 	objective_sequence_reset.connect(_on_objective_sequence_reset)
@@ -87,6 +100,12 @@ func _ready() -> void:
 
 	wire_hit_group([$VramPipeline], VRAM_PIPELINE_PASS_POINTS,
 		func(id: String) -> void: _debug_terminal.log_event("> vram pipeline pass: %s" % id))
+
+	var pop_bumper_kick_areas: Array = []
+	for pop_bumper in $PopBumperCluster.get_children():
+		pop_bumper_kick_areas.append(pop_bumper.get_node("KickArea"))
+	wire_hit_group(pop_bumper_kick_areas, COMPILE_BUMPER_POINTS,
+		func(id: String) -> void: _debug_terminal.log_event("> compile core hit: %s" % id))
 
 	_glitch_core.hit_while_charged.connect(_on_core_hit_while_charged)
 	_glitch_core.hit_while_uncharged.connect(func() -> void: GameState.add_score(CORE_UNCHARGED_HIT_POINTS))
@@ -125,6 +144,10 @@ func _on_objective_completed(objective_id: String) -> void:
 		GameState.add_score(VRAM_THROUGHPUT_BONUS_POINTS)
 		_show_feedback("VRAM THROUGHPUT MAXED", Color(0.2, 1, 0.9, 1))
 		objectives.get_objective("vram_throughput").reset() ## Charge-style — repeats, same pattern as Sprite Defrag.
+	elif objective_id == "compile_overclock":
+		GameState.add_score(COMPILE_OVERCLOCK_BONUS_POINTS)
+		_show_feedback("COMPILE CLUSTER OVERCLOCKED", Color(0.3, 1, 0.4, 1))
+		objectives.get_objective("compile_overclock").reset() ## Charge-style — repeats, same pattern as Sprite Defrag.
 
 func _on_core_hit_while_charged() -> void:
 	## Closes the repair loop: rebuild the shaders, then cash it in at the
