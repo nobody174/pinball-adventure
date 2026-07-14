@@ -4,6 +4,8 @@ Status: living discussion draft. Scope is deliberately narrow for v1; everything
 
 Design inspiration notes (principle-level, not sourced from any original code/assets): [`inspiration/pinball_fantasies_analysis.md`](inspiration/pinball_fantasies_analysis.md), [`inspiration/physics_notes.md`](inspiration/physics_notes.md), [`inspiration/mission_ideas.md`](inspiration/mission_ideas.md).
 
+The Glitch's full table design (designer's complete vision, larger than the vertical-slice scope below — see its own scope note): [`the_glitch_table_layout.md`](the_glitch_table_layout.md). Rendering/material reference notes, translated from 3D concepts to our actual 2D pipeline: [`the_glitch_rendering_notes.md`](the_glitch_rendering_notes.md).
+
 ---
 
 ## 1. Vision
