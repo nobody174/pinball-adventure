@@ -15,6 +15,7 @@ var _pending_respawn: bool = false
 var _pending_teleport: bool = false
 var _pending_teleport_position: Vector2
 var _pending_teleport_velocity: Vector2
+var _ccd_reenable_countdown: int = -1
 
 func _ready() -> void:
 	var mat := PhysicsMaterial.new()
@@ -48,6 +49,18 @@ func _physics_process(delta: float) -> void:
 		_pending_respawn = true
 		_launched = false
 
+	## CCD_MODE_CAST_SHAPE sweeps from the body's position at the start of the
+	## step to its new one -- after a direct transform write (teleport or
+	## respawn), that sweep can still be computed from wherever the ball was
+	## *before* the jump, producing a bogus collision against whatever
+	## geometry happens to lie along that (physically meaningless) line.
+	## Keep CCD off for a couple of frames after any teleport so the solver
+	## never has stale start/end points to sweep between.
+	if _ccd_reenable_countdown > 0:
+		_ccd_reenable_countdown -= 1
+		if _ccd_reenable_countdown == 0:
+			continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
+
 ## Debug-only: instantly place the ball at an arbitrary position, e.g. to
 ## deterministically test a specific shot (saucer, loop mouth) without
 ## relying on lucky flipper-cascade RNG. Not exposed to normal play — see
@@ -67,9 +80,13 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		state.angular_velocity = 0.0
 		state.sleeping = false
 		_pending_respawn = false
+		continuous_cd = RigidBody2D.CCD_MODE_DISABLED
+		_ccd_reenable_countdown = 2
 	if _pending_teleport:
 		state.transform = Transform2D(0.0, _pending_teleport_position)
 		state.linear_velocity = _pending_teleport_velocity
 		state.angular_velocity = 0.0
 		state.sleeping = false
 		_pending_teleport = false
+		continuous_cd = RigidBody2D.CCD_MODE_DISABLED
+		_ccd_reenable_countdown = 2

@@ -44,3 +44,23 @@ func test_teleport_does_not_leave_ball_stuck_afterward() -> void:
 	await wait_physics_frames(10)
 
 	assert_gt(ball.global_position.y, y_after_teleport, "ball should keep falling under gravity after a teleport, not freeze in place")
+
+func test_teleport_disables_ccd_then_reenables_it() -> void:
+	## Regression test: caught via live MCP playtesting -- a ball teleported
+	## into an empty corridor was getting ejected sideways into unrelated
+	## geometry it was nowhere near. Root cause: CCD_MODE_CAST_SHAPE sweeps
+	## from the body's pre-teleport position to its new one, so a direct
+	## transform write can still trigger a bogus collision against whatever
+	## lies along that (physically meaningless) line. CCD must be off for a
+	## couple of frames after any teleport, then safely back on.
+	var ball := _make_ball()
+	assert_eq(ball.continuous_cd, RigidBody2D.CCD_MODE_CAST_SHAPE, "sanity check: CCD should be on by default")
+
+	ball.request_teleport(Vector2(300, -400))
+	await wait_physics_frames(1)
+
+	assert_eq(ball.continuous_cd, RigidBody2D.CCD_MODE_DISABLED, "CCD should be off immediately after a teleport")
+
+	await wait_physics_frames(2)
+
+	assert_eq(ball.continuous_cd, RigidBody2D.CCD_MODE_CAST_SHAPE, "CCD should be back on a couple of frames later")
