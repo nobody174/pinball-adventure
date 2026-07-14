@@ -15,6 +15,11 @@ const CACHE_B := "cache_b"
 const CACHE_C := "cache_c"
 const SPRITE_DEFRAG_THRESHOLD := 6
 
+const FW_A := "fw_a"
+const FW_B := "fw_b"
+const FW_C := "fw_c"
+const FW_D := "fw_d"
+
 const SHADER_TARGET_POINTS := 100
 const CORE_CHARGED_HIT_POINTS := 1000
 const CORE_UNCHARGED_HIT_POINTS := 50
@@ -23,6 +28,8 @@ const BUMPER_POINTS := 50
 const CACHE_BUMPER_POINTS := 50
 const SPRITE_DEFRAG_BONUS_POINTS := 750
 const CLOCK_LANE_POINTS := 150
+const FIREWALL_TARGET_POINTS := 100
+const FIREWALL_BREACH_BONUS_POINTS := 1000
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -45,6 +52,12 @@ func _ready() -> void:
 			"target_ids": [CACHE_A, CACHE_B, CACHE_C],
 			"threshold": SPRITE_DEFRAG_THRESHOLD,
 		},
+		{
+			"id": "firewall_breach",
+			"type": "hit_targets",
+			"target_ids": [FW_A, FW_B, FW_C, FW_D],
+			"require_order": true,
+		},
 	])
 	objective_completed.connect(_on_objective_completed)
 	objective_sequence_reset.connect(_on_objective_sequence_reset)
@@ -63,6 +76,10 @@ func _ready() -> void:
 	$RightSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
 	$PhysicsPrototype/Bumper/KickArea.kicked.connect(func() -> void: GameState.add_score(BUMPER_POINTS))
 	$ClockLane.hit.connect(_on_clock_lane_hit)
+	for drop_target in $FirewallBreach.get_children():
+		drop_target.hit.connect(func(_id: String) -> void: GameState.add_score(FIREWALL_TARGET_POINTS))
+		drop_target.hit.connect(register_target_hit)
+		drop_target.hit.connect(func(id: String) -> void: _debug_terminal.log_event("> firewall target down: %s" % id))
 
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.reset_score()
@@ -84,13 +101,22 @@ func _on_objective_completed(objective_id: String) -> void:
 		GameState.add_score(SPRITE_DEFRAG_BONUS_POINTS)
 		_show_feedback("SPRITE DEFRAG COMPLETE", Color(0.6, 0.2, 1, 1))
 		objectives.get_objective("sprite_defrag").reset() ## Charge-style — repeats, unlike the one-shot shader sequence.
+	elif objective_id == "firewall_breach":
+		GameState.add_score(FIREWALL_BREACH_BONUS_POINTS)
+		_show_feedback("FIREWALL BREACH COMPLETE", Color(1, 0.3, 0.3, 1))
+		for drop_target in $FirewallBreach.get_children():
+			drop_target.reset_target()
+		objectives.get_objective("firewall_breach").reset()
 
 func _on_core_hit_while_charged() -> void:
 	## Closes the repair loop: rebuild the shaders, then cash it in at the
-	## Core. Resets so the whole sequence can be run again.
+	## Core. Resets both the Core's own state and the underlying shader
+	## objective (which otherwise stays "complete" forever and silently
+	## ignores further hits) so the whole sequence can be run again.
 	_glitch_core.charged = false
 	GameState.add_score(CORE_CHARGED_HIT_POINTS)
 	_show_feedback("CORE STABILIZED", Color(0.2, 1, 0.5, 1))
+	objectives.get_objective("shader_rebuild").reset()
 
 func _on_clock_lane_hit(_target_id: String) -> void:
 	## Direct trigger, not a multi-step objective -- a real pinball lane like
@@ -99,13 +125,19 @@ func _on_clock_lane_hit(_target_id: String) -> void:
 	_show_feedback("CLOCK SYNC", Color(0.3, 0.9, 1, 1))
 
 func _on_objective_sequence_reset(objective_id: String) -> void:
-	if objective_id != "shader_rebuild":
-		return
 	## Wrong-order hit — make the reset visible instead of silently doing
 	## nothing, which read as "broken" rather than "wrong shot."
-	for target in $ShaderNodeTargets.get_children():
-		target.flash(Color(1, 0.2, 0.2, 1), 0.25)
-	_show_feedback("SEQUENCE RESET — START OVER", Color(1, 0.3, 0.3, 1))
+	if objective_id == "shader_rebuild":
+		for target in $ShaderNodeTargets.get_children():
+			target.flash(Color(1, 0.2, 0.2, 1), 0.25)
+		_show_feedback("SEQUENCE RESET — START OVER", Color(1, 0.3, 0.3, 1))
+	elif objective_id == "firewall_breach":
+		## Drop targets don't pop back up on their own — a whiffed sequence
+		## should visibly reset the wall, not leave already-downed targets
+		## stuck down with no way to retry the sequence.
+		for drop_target in $FirewallBreach.get_children():
+			drop_target.reset_target()
+		_show_feedback("FIREWALL RESET — START OVER", Color(1, 0.3, 0.3, 1))
 
 func _show_feedback(text: String, color: Color) -> void:
 	_feedback_label.text = text

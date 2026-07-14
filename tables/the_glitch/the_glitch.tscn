@@ -8,9 +8,13 @@
 [ext_resource type="Script" path="res://core/physics/slingshot.gd" id="6_slingshot"]
 [ext_resource type="Script" path="res://core/physics/bumper.gd" id="7_bumper"]
 [ext_resource type="PackedScene" path="res://core/ui/debug_terminal.tscn" id="8_terminal"]
+[ext_resource type="Script" path="res://core/physics/drop_target.gd" id="9_drop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_target"]
 size = Vector2(24, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_drop_target"]
+size = Vector2(20, 40)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cache_bumper"]
 radius = 18.0
@@ -195,6 +199,56 @@ shape = SubResource("RectangleShape2D_clock_lane")
 [node name="Sprite" type="Polygon2D" parent="ClockLane"]
 color = Color(0.3, 0.9, 1, 0.6)
 polygon = PackedVector2Array(-9, -130, 9, -130, 9, 130, -9, 130)
+
+[node name="FirewallBreach" type="Node2D" parent="."]
+
+[node name="FirewallA" type="Area2D" parent="FirewallBreach"]
+position = Vector2(130, 0)
+script = ExtResource("9_drop")
+target_id = "fw_a"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallA"]
+shape = SubResource("RectangleShape2D_drop_target")
+
+[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallA"]
+color = Color(1, 0.3, 0.3, 1)
+polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
+
+[node name="FirewallB" type="Area2D" parent="FirewallBreach"]
+position = Vector2(180, 0)
+script = ExtResource("9_drop")
+target_id = "fw_b"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallB"]
+shape = SubResource("RectangleShape2D_drop_target")
+
+[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallB"]
+color = Color(1, 0.3, 0.3, 1)
+polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
+
+[node name="FirewallC" type="Area2D" parent="FirewallBreach"]
+position = Vector2(230, 0)
+script = ExtResource("9_drop")
+target_id = "fw_c"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallC"]
+shape = SubResource("RectangleShape2D_drop_target")
+
+[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallC"]
+color = Color(1, 0.3, 0.3, 1)
+polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
+
+[node name="FirewallD" type="Area2D" parent="FirewallBreach"]
+position = Vector2(280, 0)
+script = ExtResource("9_drop")
+target_id = "fw_d"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirewallBreach/FirewallD"]
+shape = SubResource("RectangleShape2D_drop_target")
+
+[node name="Sprite" type="Polygon2D" parent="FirewallBreach/FirewallD"]
+color = Color(1, 0.3, 0.3, 1)
+polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
 
 [node name="Feedback" type="CanvasLayer" parent="."]
 layer = 10

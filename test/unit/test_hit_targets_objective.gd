@@ -87,3 +87,20 @@ func test_wrong_first_hit_does_not_emit_sequence_reset() -> void:
 	objective.notify_target_hit("b") ## Wrong from the start — nothing to "reset" yet.
 
 	assert_signal_not_emitted(objective, "sequence_reset")
+
+func test_reset_allows_completing_again() -> void:
+	var objective := HitTargets.new()
+	objective.target_ids = ["a", "b"]
+	add_child_autofree(objective)
+
+	objective.notify_target_hit("a")
+	objective.notify_target_hit("b")
+	assert_true(objective.is_complete())
+
+	objective.reset()
+	assert_false(objective.is_complete())
+
+	watch_signals(objective)
+	objective.notify_target_hit("a")
+	objective.notify_target_hit("b")
+	assert_signal_emitted(objective, "completed")

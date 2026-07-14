@@ -36,3 +36,9 @@ func notify_target_hit(target_id: String) -> void:
 
 func is_complete() -> bool:
 	return _hit.size() >= target_ids.size()
+
+## Without this, a completed sequence stays complete forever and further
+## hits are silently ignored (is_complete() guards notify_target_hit) --
+## call this when the table wants the sequence runnable again.
+func reset() -> void:
+	_hit.clear()
