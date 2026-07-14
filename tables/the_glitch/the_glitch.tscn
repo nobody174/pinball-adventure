@@ -27,7 +27,7 @@ radius = 35.0
 radius = 38.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_clock_lane"]
-size = Vector2(18, 180)
+size = Vector2(18, 260)
 
 [node name="TheGlitch" instance=ExtResource("1_base")]
 script = ExtResource("4_glitch")
@@ -43,7 +43,7 @@ color = Color(1, 0.2, 0.7, 1)
 [node name="ShaderNodeTargets" type="Node2D" parent="."]
 
 [node name="ShaderNodeA" type="Area2D" parent="ShaderNodeTargets"]
-position = Vector2(80, 140)
+position = Vector2(80, -260)
 script = ExtResource("3_target")
 target_id = "shader_a"
 flash_color = Color(1, 0.85, 0.2, 1)
@@ -56,7 +56,7 @@ color = Color(0.2, 0.8, 1, 1)
 polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
 
 [node name="ShaderNodeB" type="Area2D" parent="ShaderNodeTargets"]
-position = Vector2(55, 210)
+position = Vector2(50, -170)
 script = ExtResource("3_target")
 target_id = "shader_b"
 flash_color = Color(1, 0.85, 0.2, 1)
@@ -69,7 +69,7 @@ color = Color(0.2, 0.8, 1, 1)
 polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
 
 [node name="ShaderNodeC" type="Area2D" parent="ShaderNodeTargets"]
-position = Vector2(105, 210)
+position = Vector2(110, -170)
 script = ExtResource("3_target")
 target_id = "shader_c"
 flash_color = Color(1, 0.85, 0.2, 1)
@@ -129,7 +129,7 @@ polygon = PackedVector2Array(0, -18, 14, 14, -22, 14)
 [node name="SpriteCacheBumpers" type="Node2D" parent="."]
 
 [node name="CacheBumperA" type="StaticBody2D" parent="SpriteCacheBumpers"]
-position = Vector2(270, 300)
+position = Vector2(280, -240)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperA"]
 shape = SubResource("CircleShape2D_cache_bumper")
@@ -147,7 +147,7 @@ target_id = "cache_a"
 shape = SubResource("CircleShape2D_cache_bumper")
 
 [node name="CacheBumperB" type="StaticBody2D" parent="SpriteCacheBumpers"]
-position = Vector2(310, 340)
+position = Vector2(320, -160)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperB"]
 shape = SubResource("CircleShape2D_cache_bumper")
@@ -165,7 +165,7 @@ target_id = "cache_b"
 shape = SubResource("CircleShape2D_cache_bumper")
 
 [node name="CacheBumperC" type="StaticBody2D" parent="SpriteCacheBumpers"]
-position = Vector2(260, 380)
+position = Vector2(270, -80)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperC"]
 shape = SubResource("CircleShape2D_cache_bumper")
@@ -183,7 +183,7 @@ target_id = "cache_c"
 shape = SubResource("CircleShape2D_cache_bumper")
 
 [node name="ClockLane" type="Area2D" parent="."]
-position = Vector2(30, 350)
+position = Vector2(30, -200)
 script = ExtResource("3_target")
 target_id = "clock_lane"
 flash_color = Color(0.3, 0.9, 1, 1)
@@ -193,16 +193,16 @@ shape = SubResource("RectangleShape2D_clock_lane")
 
 [node name="Sprite" type="Polygon2D" parent="ClockLane"]
 color = Color(0.3, 0.9, 1, 0.6)
-polygon = PackedVector2Array(-9, -90, 9, -90, 9, 90, -9, 90)
+polygon = PackedVector2Array(-9, -130, 9, -130, 9, 130, -9, 130)
 
 [node name="Feedback" type="CanvasLayer" parent="."]
 layer = 10
 
 [node name="Label" type="Label" parent="Feedback"]
 offset_left = 20.0
-offset_top = 300.0
+offset_top = 650.0
 offset_right = 400.0
-offset_bottom = 340.0
+offset_bottom = 690.0
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_font_sizes/font_size = 28
 text = "SHADER REBUILD COMPLETE"

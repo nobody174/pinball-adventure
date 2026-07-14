@@ -22,7 +22,7 @@ GameState="*res://autoload/GameState.gd"
 [display]
 
 window/size/viewport_width=420
-window/size/viewport_height=700
+window/size/viewport_height=1050
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep"
 
