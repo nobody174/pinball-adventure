@@ -80,7 +80,41 @@ color = Color(1, 1, 1, 1)
 polygon = PackedVector2Array(-20, -680, 440, -680, 440, 720, -20, 720)
 uv = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
 
-[node name="PhysicsPrototype" parent="." index="3" unique_id=1217632911 instance=ExtResource("2_physics")]
+[node name="LeftRailGlow" type="Line2D" parent="." index="3"]
+material = SubResource("CanvasItemMaterial_neon_glow")
+points = PackedVector2Array(15, 460, 14, 560, 25, 615, 55, 650, 95, 615, 125, 579)
+width = 16.0
+default_color = Color(0.2, 0.9, 1, 0.2)
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="LeftRail" type="Line2D" parent="." index="4"]
+points = PackedVector2Array(15, 460, 14, 560, 25, 615, 55, 650, 95, 615, 125, 579)
+width = 12.0
+default_color = Color(0.3, 0.35, 0.42, 1)
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="RightRailGlow" type="Line2D" parent="." index="5"]
+material = SubResource("CanvasItemMaterial_neon_glow")
+points = PackedVector2Array(405, 460, 406, 560, 395, 615, 365, 650, 325, 615, 295, 579)
+width = 16.0
+default_color = Color(1, 0.2, 0.7, 0.2)
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="RightRail" type="Line2D" parent="." index="6"]
+points = PackedVector2Array(405, 460, 406, 560, 395, 615, 365, 650, 325, 615, 295, 579)
+width = 12.0
+default_color = Color(0.3, 0.35, 0.42, 1)
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="PhysicsPrototype" parent="." index="7" unique_id=1217632911 instance=ExtResource("2_physics")]
 
 [node name="LeftWallSprite" parent="PhysicsPrototype/Boundary" index="1"]
 color = Color(0.13, 0.15, 0.22, 1)
@@ -131,7 +165,7 @@ width = 2.5
 default_color = Color(1, 0.7, 0.9, 1)
 joint_mode = 1
 
-[node name="ShaderNodeTargets" type="Node2D" parent="." index="4" unique_id=1436813506]
+[node name="ShaderNodeTargets" type="Node2D" parent="." index="8" unique_id=1436813506]
 
 [node name="ShaderNodeA" type="Area2D" parent="ShaderNodeTargets" index="0" unique_id=1550424965]
 position = Vector2(80, -260)
@@ -172,13 +206,13 @@ shape = SubResource("RectangleShape2D_target")
 color = Color(0.2, 0.8, 1, 1)
 polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
 
-[node name="GlitchCoreBounce" type="StaticBody2D" parent="." index="5" unique_id=1159394699]
+[node name="GlitchCoreBounce" type="StaticBody2D" parent="." index="9" unique_id=1159394699]
 position = Vector2(210, 430)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GlitchCoreBounce" index="0" unique_id=759893931]
 shape = SubResource("CircleShape2D_core_bounce")
 
-[node name="GlitchCore" type="Area2D" parent="." index="6" unique_id=668917325]
+[node name="GlitchCore" type="Area2D" parent="." index="10" unique_id=668917325]
 position = Vector2(210, 430)
 script = ExtResource("5_toy")
 
@@ -189,7 +223,7 @@ shape = SubResource("CircleShape2D_core_hit")
 color = Color(1, 0.2, 0.3, 1)
 polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
-[node name="LeftSlingshot" type="Area2D" parent="." index="7" unique_id=1190830539]
+[node name="LeftSlingshot" type="Area2D" parent="." index="11" unique_id=1190830539]
 position = Vector2(125, 565)
 script = ExtResource("6_slingshot")
 kick_direction = Vector2(-0.4, -1)
@@ -201,22 +235,22 @@ shape = SubResource("ConvexPolygonShape2D_sling_left")
 
 [node name="Sprite" type="Polygon2D" parent="LeftSlingshot" index="1" unique_id=401909266]
 color = Color(0.08, 0.1, 0.14, 0.65)
-polygon = PackedVector2Array(0, -18, 22, 14, -14, 14)
+polygon = PackedVector2Array(0, -20, 20, 2, 0, 16, -10, 6)
 
 [node name="GlowOutline" type="Line2D" parent="LeftSlingshot" index="2"]
 material = SubResource("CanvasItemMaterial_neon_glow")
-points = PackedVector2Array(0, -18, 22, 14, -14, 14, 0, -18)
+points = PackedVector2Array(0, -20, 20, 2, 0, 16, -10, 6, 0, -20)
 width = 12.0
 default_color = Color(0.2, 0.9, 1, 0.35)
 joint_mode = 1
 
 [node name="Outline" type="Line2D" parent="LeftSlingshot" index="3"]
-points = PackedVector2Array(0, -18, 22, 14, -14, 14, 0, -18)
+points = PackedVector2Array(0, -20, 20, 2, 0, 16, -10, 6, 0, -20)
 width = 3.0
 default_color = Color(0.2, 0.9, 1, 1)
 joint_mode = 1
 
-[node name="RightSlingshot" type="Area2D" parent="." index="8" unique_id=946211689]
+[node name="RightSlingshot" type="Area2D" parent="." index="12" unique_id=946211689]
 position = Vector2(295, 565)
 script = ExtResource("6_slingshot")
 kick_direction = Vector2(0.4, -1)
@@ -228,22 +262,22 @@ shape = SubResource("ConvexPolygonShape2D_sling_right")
 
 [node name="Sprite" type="Polygon2D" parent="RightSlingshot" index="1" unique_id=308332373]
 color = Color(0.14, 0.08, 0.1, 0.65)
-polygon = PackedVector2Array(0, -18, 14, 14, -22, 14)
+polygon = PackedVector2Array(0, -20, -20, 2, 0, 16, 10, 6)
 
 [node name="GlowOutline" type="Line2D" parent="RightSlingshot" index="2"]
 material = SubResource("CanvasItemMaterial_neon_glow")
-points = PackedVector2Array(0, -18, 14, 14, -22, 14, 0, -18)
+points = PackedVector2Array(0, -20, -20, 2, 0, 16, 10, 6, 0, -20)
 width = 12.0
 default_color = Color(1, 0.2, 0.7, 0.35)
 joint_mode = 1
 
 [node name="Outline" type="Line2D" parent="RightSlingshot" index="3"]
-points = PackedVector2Array(0, -18, 14, 14, -22, 14, 0, -18)
+points = PackedVector2Array(0, -20, -20, 2, 0, 16, 10, 6, 0, -20)
 width = 3.0
 default_color = Color(1, 0.2, 0.7, 1)
 joint_mode = 1
 
-[node name="LeftOutlanePost" type="StaticBody2D" parent="." index="9"]
+[node name="LeftOutlanePost" type="StaticBody2D" parent="." index="13"]
 position = Vector2(55, 638)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftOutlanePost" index="0"]
@@ -253,7 +287,7 @@ shape = SubResource("CircleShape2D_lane_post")
 color = Color(0.35, 0.35, 0.4, 1)
 polygon = PackedVector2Array(9, 0, 6.364, 6.364, 0, 9, -6.364, 6.364, -9, 0, -6.364, -6.364, 0, -9, 6.364, -6.364)
 
-[node name="RightOutlanePost" type="StaticBody2D" parent="." index="10"]
+[node name="RightOutlanePost" type="StaticBody2D" parent="." index="14"]
 position = Vector2(365, 638)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightOutlanePost" index="0"]
@@ -263,7 +297,7 @@ shape = SubResource("CircleShape2D_lane_post")
 color = Color(0.35, 0.35, 0.4, 1)
 polygon = PackedVector2Array(9, 0, 6.364, 6.364, 0, 9, -6.364, 6.364, -9, 0, -6.364, -6.364, 0, -9, 6.364, -6.364)
 
-[node name="SpriteCacheBumpers" type="Node2D" parent="." index="11" unique_id=556817153]
+[node name="SpriteCacheBumpers" type="Node2D" parent="." index="15" unique_id=556817153]
 
 [node name="CacheBumperA" type="StaticBody2D" parent="SpriteCacheBumpers" index="0" unique_id=1368140525]
 position = Vector2(280, -240)
@@ -319,7 +353,7 @@ target_id = "cache_c"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperC/KickArea" index="0" unique_id=2104524530]
 shape = SubResource("CircleShape2D_cache_bumper")
 
-[node name="ClockLane" type="Area2D" parent="." index="12" unique_id=2044595204]
+[node name="ClockLane" type="Area2D" parent="." index="16" unique_id=2044595204]
 position = Vector2(30, -200)
 script = ExtResource("3_target")
 target_id = "clock_lane"
@@ -332,7 +366,7 @@ shape = SubResource("RectangleShape2D_clock_lane")
 color = Color(0.3, 0.9, 1, 0.6)
 polygon = PackedVector2Array(-9, -130, 9, -130, 9, 130, -9, 130)
 
-[node name="Spinner" type="Area2D" parent="." index="13"]
+[node name="Spinner" type="Area2D" parent="." index="17"]
 position = Vector2(375, 50)
 script = ExtResource("10_spinner")
 target_id = "spin_a"
@@ -344,7 +378,7 @@ shape = SubResource("RectangleShape2D_spinner")
 color = Color(1, 0.85, 0.2, 1)
 polygon = PackedVector2Array(-22, -3, 22, -3, 22, 3, -22, 3)
 
-[node name="RolloverGate" type="Area2D" parent="." index="14"]
+[node name="RolloverGate" type="Area2D" parent="." index="18"]
 position = Vector2(75, 75)
 script = ExtResource("3_target")
 target_id = "rollover_gate"
@@ -357,7 +391,7 @@ shape = SubResource("RectangleShape2D_rollover")
 color = Color(0.4, 1, 0.5, 0.6)
 polygon = PackedVector2Array(-7, -50, 7, -50, 7, 50, -7, 50)
 
-[node name="StandupBank" type="Node2D" parent="." index="15"]
+[node name="StandupBank" type="Node2D" parent="." index="19"]
 
 [node name="Standup1" type="Area2D" parent="StandupBank" index="0"]
 position = Vector2(350, 100)
@@ -424,7 +458,7 @@ shape = SubResource("RectangleShape2D_standup")
 color = Color(1, 0.5, 0.9, 1)
 polygon = PackedVector2Array(-11, -11, 11, -11, 11, 11, -11, 11)
 
-[node name="FirewallBreach" type="Node2D" parent="." index="16" unique_id=756633679]
+[node name="FirewallBreach" type="Node2D" parent="." index="20" unique_id=756633679]
 
 [node name="FirewallA" type="Area2D" parent="FirewallBreach" index="0" unique_id=2074171290]
 position = Vector2(130, 0)
@@ -474,7 +508,7 @@ shape = SubResource("RectangleShape2D_drop_target")
 color = Color(1, 0.3, 0.3, 1)
 polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
 
-[node name="PopBumperCluster" type="Node2D" parent="." index="17"]
+[node name="PopBumperCluster" type="Node2D" parent="." index="21"]
 
 [node name="PopBumperA" type="StaticBody2D" parent="PopBumperCluster" index="0"]
 position = Vector2(170, 190)
@@ -530,7 +564,7 @@ target_id = "compile_c"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperC/KickArea" index="0"]
 shape = SubResource("CircleShape2D_pop_bumper")
 
-[node name="VramPipeline" type="Area2D" parent="." index="18" unique_id=1516095850]
+[node name="VramPipeline" type="Area2D" parent="." index="22" unique_id=1516095850]
 position = Vector2(375, -230)
 script = ExtResource("3_target")
 target_id = "vram_pipeline"
@@ -543,7 +577,7 @@ shape = SubResource("RectangleShape2D_vram_sensor")
 color = Color(0.2, 1, 0.9, 0.6)
 polygon = PackedVector2Array(-18, -12, 18, -12, 18, 12, -18, 12)
 
-[node name="Saucer" type="Area2D" parent="." index="19"]
+[node name="Saucer" type="Area2D" parent="." index="23"]
 position = Vector2(200, -480)
 script = ExtResource("11_saucer")
 target_id = "saucer_main"
@@ -558,7 +592,7 @@ shape = SubResource("CircleShape2D_saucer")
 color = Color(0.9, 0.3, 1, 1)
 polygon = PackedVector2Array(26, 0, 18.385, 18.385, 0, 26, -18.385, 18.385, -26, 0, -18.385, -18.385, 0, -26, 18.385, -18.385)
 
-[node name="HighSpeedLoop" type="Area2D" parent="." index="20"]
+[node name="HighSpeedLoop" type="Area2D" parent="." index="24"]
 position = Vector2(362, -585)
 script = ExtResource("3_target")
 target_id = "high_speed_loop"
@@ -571,7 +605,7 @@ shape = SubResource("RectangleShape2D_loop_sensor")
 color = Color(1, 0.85, 0.2, 0.6)
 polygon = PackedVector2Array(-25, -7, 25, -7, 25, 7, -25, 7)
 
-[node name="Saucer2" type="Area2D" parent="." index="21"]
+[node name="Saucer2" type="Area2D" parent="." index="25"]
 position = Vector2(270, -560)
 script = ExtResource("11_saucer")
 target_id = "saucer_secondary"
@@ -586,7 +620,7 @@ shape = SubResource("CircleShape2D_saucer")
 color = Color(0.9, 0.3, 1, 1)
 polygon = PackedVector2Array(26, 0, 18.385, 18.385, 0, 26, -18.385, 18.385, -26, 0, -18.385, -18.385, 0, -26, 18.385, -18.385)
 
-[node name="Spinner2" type="Area2D" parent="." index="22"]
+[node name="Spinner2" type="Area2D" parent="." index="26"]
 position = Vector2(40, 50)
 script = ExtResource("10_spinner")
 target_id = "spin_b"
@@ -598,7 +632,7 @@ shape = SubResource("RectangleShape2D_spinner")
 color = Color(1, 0.85, 0.2, 1)
 polygon = PackedVector2Array(-22, -3, 22, -3, 22, 3, -22, 3)
 
-[node name="Feedback" type="CanvasLayer" parent="." index="23" unique_id=1738526509]
+[node name="Feedback" type="CanvasLayer" parent="." index="27" unique_id=1738526509]
 layer = 10
 
 [node name="Label" type="Label" parent="Feedback" index="0" unique_id=1340523282]
