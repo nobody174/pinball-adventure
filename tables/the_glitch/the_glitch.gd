@@ -51,6 +51,7 @@ const COMPILE_OVERCLOCK_BONUS_POINTS := 800
 const SPINNER_POINTS := 30
 const STANDUP_BANK_TARGET_POINTS := 80
 const STANDUP_BANK_BONUS_POINTS := 500
+const ROLLOVER_GATE_POINTS := 40
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -128,6 +129,7 @@ func _ready() -> void:
 	$RightSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
 	$PhysicsPrototype/Bumper/KickArea.kicked.connect(func() -> void: GameState.add_score(BUMPER_POINTS))
 	$ClockLane.hit.connect(_on_clock_lane_hit)
+	$RolloverGate.hit.connect(func(_id: String) -> void: GameState.add_score(ROLLOVER_GATE_POINTS))
 	$Spinner.spun.connect(func(_id: String) -> void: GameState.add_score(SPINNER_POINTS))
 
 	wire_hit_group($StandupBank.get_children(), STANDUP_BANK_TARGET_POINTS,
