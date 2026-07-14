@@ -26,6 +26,9 @@ size = Vector2(85, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_outlane_wall"]
 size = Vector2(10, 178)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_save_post"]
+radius = 11.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_guide"]
 size = Vector2(169.7, 14)
 
@@ -125,6 +128,15 @@ shape = SubResource("RectangleShape2D_outlane_wall")
 position = Vector2(405, 549)
 color = Color(1, 0.85, 0.2, 1)
 polygon = PackedVector2Array(-5, -89, 5, -89, 5, 89, -5, 89)
+
+[node name="RightFlipperSavePost" type="CollisionShape2D" parent="Ramp" unique_id=3182004415]
+position = Vector2(350, 605)
+shape = SubResource("CircleShape2D_save_post")
+
+[node name="RightFlipperSavePostSprite" type="Polygon2D" parent="Ramp" unique_id=3182004416]
+position = Vector2(350, 605)
+color = Color(0.35, 0.35, 0.4, 1)
+polygon = PackedVector2Array(11, 0, 7.778, 7.778, 0, 11, -7.778, 7.778, -11, 0, -7.778, -7.778, 0, -11, 7.778, -7.778)
 
 [node name="Guides" type="StaticBody2D" parent="." unique_id=1736905529]
 
