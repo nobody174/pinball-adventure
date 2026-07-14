@@ -37,6 +37,9 @@ size = Vector2(20, 40)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vram_sensor"]
 size = Vector2(36, 24)
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_neon_glow"]
+blend_mode = 1
+
 [node name="TheGlitch" unique_id=1364637713 instance=ExtResource("1_base")]
 script = ExtResource("4_glitch")
 
@@ -111,8 +114,21 @@ flash_color = Color(1, 0.85, 0.2, 1)
 shape = SubResource("ConvexPolygonShape2D_sling_left")
 
 [node name="Sprite" type="Polygon2D" parent="LeftSlingshot" index="1" unique_id=401909266]
-color = Color(0.2, 0.9, 1, 1)
+color = Color(0.08, 0.1, 0.14, 0.65)
 polygon = PackedVector2Array(0, -18, 22, 14, -14, 14)
+
+[node name="GlowOutline" type="Line2D" parent="LeftSlingshot" index="2"]
+material = SubResource("CanvasItemMaterial_neon_glow")
+points = PackedVector2Array(0, -18, 22, 14, -14, 14, 0, -18)
+width = 12.0
+default_color = Color(0.2, 0.9, 1, 0.35)
+joint_mode = 1
+
+[node name="Outline" type="Line2D" parent="LeftSlingshot" index="3"]
+points = PackedVector2Array(0, -18, 22, 14, -14, 14, 0, -18)
+width = 3.0
+default_color = Color(0.2, 0.9, 1, 1)
+joint_mode = 1
 
 [node name="RightSlingshot" type="Area2D" parent="." index="7" unique_id=946211689]
 position = Vector2(240, 595)
@@ -125,8 +141,21 @@ flash_color = Color(1, 0.85, 0.2, 1)
 shape = SubResource("ConvexPolygonShape2D_sling_right")
 
 [node name="Sprite" type="Polygon2D" parent="RightSlingshot" index="1" unique_id=308332373]
-color = Color(1, 0.2, 0.7, 1)
+color = Color(0.14, 0.08, 0.1, 0.65)
 polygon = PackedVector2Array(0, -18, 14, 14, -22, 14)
+
+[node name="GlowOutline" type="Line2D" parent="RightSlingshot" index="2"]
+material = SubResource("CanvasItemMaterial_neon_glow")
+points = PackedVector2Array(0, -18, 14, 14, -22, 14, 0, -18)
+width = 12.0
+default_color = Color(1, 0.2, 0.7, 0.35)
+joint_mode = 1
+
+[node name="Outline" type="Line2D" parent="RightSlingshot" index="3"]
+points = PackedVector2Array(0, -18, 14, 14, -22, 14, 0, -18)
+width = 3.0
+default_color = Color(1, 0.2, 0.7, 1)
+joint_mode = 1
 
 [node name="SpriteCacheBumpers" type="Node2D" parent="." index="8" unique_id=556817153]
 
