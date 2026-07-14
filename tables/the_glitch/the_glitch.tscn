@@ -149,7 +149,7 @@ target_id = "cache_a"
 shape = SubResource("CircleShape2D_cache_bumper")
 
 [node name="CacheBumperB" type="StaticBody2D" parent="SpriteCacheBumpers" index="1" unique_id=1746423442]
-position = Vector2(320, -160)
+position = Vector2(285, -170)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteCacheBumpers/CacheBumperB" index="0" unique_id=2048401409]
 shape = SubResource("CircleShape2D_cache_bumper")

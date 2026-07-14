@@ -91,11 +91,11 @@ color = Color(1, 0.85, 0.2, 1)
 polygon = PackedVector2Array(-5, -380, 5, -380, 5, 380, -5, 380)
 
 [node name="InnerWall" type="CollisionShape2D" parent="Ramp" unique_id=1633310216]
-position = Vector2(350, 130)
+position = Vector2(325, 130)
 shape = SubResource("RectangleShape2D_ramp_inner")
 
 [node name="InnerWallSprite" type="Polygon2D" parent="Ramp" unique_id=1096490736]
-position = Vector2(350, 130)
+position = Vector2(325, 130)
 color = Color(1, 0.85, 0.2, 1)
 polygon = PackedVector2Array(-5, -330, 5, -330, 5, 330, -5, 330)
 
