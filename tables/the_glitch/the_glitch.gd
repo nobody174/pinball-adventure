@@ -28,6 +28,12 @@ const COMPILE_B := "compile_b"
 const COMPILE_C := "compile_c"
 const COMPILE_OVERCLOCK_THRESHOLD := 10
 
+const BANK_1 := "bank_1"
+const BANK_2 := "bank_2"
+const BANK_3 := "bank_3"
+const BANK_4 := "bank_4"
+const BANK_5 := "bank_5"
+
 const SHADER_TARGET_POINTS := 100
 const CORE_CHARGED_HIT_POINTS := 1000
 const CORE_UNCHARGED_HIT_POINTS := 50
@@ -43,6 +49,8 @@ const VRAM_THROUGHPUT_BONUS_POINTS := 600
 const COMPILE_BUMPER_POINTS := 60
 const COMPILE_OVERCLOCK_BONUS_POINTS := 800
 const SPINNER_POINTS := 30
+const STANDUP_BANK_TARGET_POINTS := 80
+const STANDUP_BANK_BONUS_POINTS := 500
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -83,6 +91,12 @@ func _ready() -> void:
 			"target_ids": [COMPILE_A, COMPILE_B, COMPILE_C],
 			"threshold": COMPILE_OVERCLOCK_THRESHOLD,
 		},
+		{
+			"id": "standup_bank",
+			"type": "hit_targets",
+			"target_ids": [BANK_1, BANK_2, BANK_3, BANK_4, BANK_5],
+			"require_order": false,
+		},
 	])
 	objective_completed.connect(_on_objective_completed)
 	objective_sequence_reset.connect(_on_objective_sequence_reset)
@@ -115,6 +129,9 @@ func _ready() -> void:
 	$PhysicsPrototype/Bumper/KickArea.kicked.connect(func() -> void: GameState.add_score(BUMPER_POINTS))
 	$ClockLane.hit.connect(_on_clock_lane_hit)
 	$Spinner.spun.connect(func(_id: String) -> void: GameState.add_score(SPINNER_POINTS))
+
+	wire_hit_group($StandupBank.get_children(), STANDUP_BANK_TARGET_POINTS,
+		func(id: String) -> void: _debug_terminal.log_event("> standup bank hit: %s" % id))
 
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.reset_score()
@@ -150,6 +167,10 @@ func _on_objective_completed(objective_id: String) -> void:
 		GameState.add_score(COMPILE_OVERCLOCK_BONUS_POINTS)
 		_show_feedback("COMPILE CLUSTER OVERCLOCKED", Color(0.3, 1, 0.4, 1))
 		objectives.get_objective("compile_overclock").reset() ## Charge-style — repeats, same pattern as Sprite Defrag.
+	elif objective_id == "standup_bank":
+		GameState.add_score(STANDUP_BANK_BONUS_POINTS)
+		_show_feedback("BANK CLEARED", Color(1, 0.5, 0.9, 1))
+		objectives.get_objective("standup_bank").reset() ## Flash-recover targets, unlike Firewall's drop bank — safe to repeat immediately.
 
 func _on_core_hit_while_charged() -> void:
 	## Closes the repair loop: rebuild the shaders, then cash it in at the
