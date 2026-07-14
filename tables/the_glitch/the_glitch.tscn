@@ -4,9 +4,16 @@
 [ext_resource type="PackedScene" path="res://core/physics/physics_prototype.tscn" id="2_physics"]
 [ext_resource type="Script" path="res://core/physics/standup_target.gd" id="3_target"]
 [ext_resource type="Script" path="res://tables/the_glitch/the_glitch.gd" id="4_glitch"]
+[ext_resource type="Script" path="res://core/physics/rotating_toy.gd" id="5_toy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_target"]
 size = Vector2(24, 24)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_core_bounce"]
+radius = 35.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_core_hit"]
+radius = 38.0
 
 [node name="TheGlitch" instance=ExtResource("1_base")]
 script = ExtResource("4_glitch")
@@ -53,6 +60,23 @@ shape = SubResource("RectangleShape2D_target")
 [node name="Sprite" type="Polygon2D" parent="ShaderNodeTargets/ShaderNodeC"]
 color = Color(0.2, 0.8, 1, 1)
 polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+
+[node name="GlitchCoreBounce" type="StaticBody2D" parent="."]
+position = Vector2(210, 430)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GlitchCoreBounce"]
+shape = SubResource("CircleShape2D_core_bounce")
+
+[node name="GlitchCore" type="Area2D" parent="."]
+position = Vector2(210, 430)
+script = ExtResource("5_toy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GlitchCore"]
+shape = SubResource("CircleShape2D_core_hit")
+
+[node name="Sprite" type="Polygon2D" parent="GlitchCore"]
+color = Color(1, 0.2, 0.3, 1)
+polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
 [node name="Feedback" type="CanvasLayer" parent="."]
 layer = 10

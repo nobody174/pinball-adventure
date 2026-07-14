@@ -9,6 +9,7 @@ const SHADER_B := "shader_b"
 const SHADER_C := "shader_c"
 
 @onready var _feedback_label: Label = $Feedback/Label
+@onready var _glitch_core: Area2D = $GlitchCore
 
 func _ready() -> void:
 	super._ready()
@@ -24,10 +25,18 @@ func _ready() -> void:
 	objective_sequence_reset.connect(_on_objective_sequence_reset)
 	for target in $ShaderNodeTargets.get_children():
 		target.hit.connect(register_target_hit)
+	_glitch_core.hit_while_charged.connect(_on_core_hit_while_charged)
 
 func _on_objective_completed(objective_id: String) -> void:
 	if objective_id == "shader_rebuild":
-		_show_feedback("SHADER REBUILD COMPLETE", Color(1, 0.85, 0.2, 1))
+		_show_feedback("SHADER REBUILD COMPLETE — CORE CHARGED", Color(1, 0.85, 0.2, 1))
+		_glitch_core.charged = true
+
+func _on_core_hit_while_charged() -> void:
+	## Closes the repair loop: rebuild the shaders, then cash it in at the
+	## Core. Resets so the whole sequence can be run again.
+	_glitch_core.charged = false
+	_show_feedback("CORE STABILIZED", Color(0.2, 1, 0.5, 1))
 
 func _on_objective_sequence_reset(objective_id: String) -> void:
 	if objective_id != "shader_rebuild":
