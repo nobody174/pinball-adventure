@@ -52,6 +52,8 @@ const SPINNER_POINTS := 30
 const STANDUP_BANK_TARGET_POINTS := 80
 const STANDUP_BANK_BONUS_POINTS := 500
 const ROLLOVER_GATE_POINTS := 40
+const SAUCER_CAPTURE_POINTS := 150
+const HIGH_SPEED_LOOP_POINTS := 120
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -130,6 +132,13 @@ func _ready() -> void:
 	$PhysicsPrototype/Bumper/KickArea.kicked.connect(func() -> void: GameState.add_score(BUMPER_POINTS))
 	$ClockLane.hit.connect(_on_clock_lane_hit)
 	$RolloverGate.hit.connect(func(_id: String) -> void: GameState.add_score(ROLLOVER_GATE_POINTS))
+	$Saucer.captured.connect(func(_id: String) -> void:
+		GameState.add_score(SAUCER_CAPTURE_POINTS)
+		_debug_terminal.log_event("> saucer captured ball"))
+	$Saucer.ejected.connect(func(_id: String) -> void: _debug_terminal.log_event("> saucer ejected ball"))
+	$HighSpeedLoop.hit.connect(func(_id: String) -> void:
+		GameState.add_score(HIGH_SPEED_LOOP_POINTS)
+		_show_feedback("HIGH-SPEED LOOP", Color(1, 0.85, 0.2, 1)))
 	$Spinner.spun.connect(func(_id: String) -> void: GameState.add_score(SPINNER_POINTS))
 
 	wire_hit_group($StandupBank.get_children(), STANDUP_BANK_TARGET_POINTS,
