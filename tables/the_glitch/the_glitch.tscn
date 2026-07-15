@@ -103,7 +103,37 @@ radius = 12.0
 size = Vector2(8, 70)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_skill_shot_lane"]
-size = Vector2(8, 220)
+size = Vector2(8, 150)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_0"]
+size = Vector2(61.96, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_1"]
+size = Vector2(57.2, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_2"]
+size = Vector2(48.52, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_3"]
+size = Vector2(37.9, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_4"]
+size = Vector2(29.48, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_5"]
+size = Vector2(29.48, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_6"]
+size = Vector2(37.9, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_7"]
+size = Vector2(48.52, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_8"]
+size = Vector2(57.2, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_9"]
+size = Vector2(61.96, 8)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xramp_seg_0"]
 size = Vector2(56.44, 8)
@@ -1262,6 +1292,546 @@ target_collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/CrossoverZone/RampBExit" index="0"]
 shape = SubResource("CircleShape2D_subway")
+
+[node name="TopZone" type="Node2D" parent="UpperZone" index="2"]
+
+[node name="CapsuleLock" type="Area2D" parent="UpperZone/TopZone" index="0"]
+position = Vector2(150, -1290)
+script = ExtResource("11_saucer")
+target_id = "capsule_lock"
+hold_duration_seconds = 0.5
+eject_direction = Vector2(0, 1)
+eject_strength = 350.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/TopZone/CapsuleLock" index="0"]
+shape = SubResource("CircleShape2D_saucer")
+
+[node name="Sprite" type="Polygon2D" parent="UpperZone/TopZone/CapsuleLock" index="1"]
+color = Color(0.9, 0.3, 1, 1)
+polygon = PackedVector2Array(26, 0, 18.385, 18.385, 0, 26, -18.385, 18.385, -26, 0, -18.385, -18.385, 0, -26, 18.385, -18.385)
+
+[node name="MagneticAcceleratorTrap" type="Area2D" parent="UpperZone/TopZone" index="1"]
+position = Vector2(270, -1290)
+script = ExtResource("13_magnet")
+pull_strength = 400.0
+active_duration_seconds = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/TopZone/MagneticAcceleratorTrap" index="0"]
+shape = SubResource("CircleShape2D_magnet")
+
+[node name="Sprite" type="Polygon2D" parent="UpperZone/TopZone/MagneticAcceleratorTrap" index="1"]
+color = Color(1, 0.85, 0.2, 1)
+polygon = PackedVector2Array(20, 0, 14.14, 14.14, 0, 20, -14.14, 14.14, -20, 0, -14.14, -14.14, 0, -20, 14.14, -14.14)
+
+[node name="CaptiveBallLane" type="StaticBody2D" parent="UpperZone/TopZone" index="2"]
+
+[node name="LeftWallCollision" type="CollisionShape2D" parent="UpperZone/TopZone/CaptiveBallLane" index="0"]
+position = Vector2(160, -1370)
+shape = SubResource("RectangleShape2D_captive_wall")
+
+[node name="LeftWallSprite" type="Polygon2D" parent="UpperZone/TopZone/CaptiveBallLane" index="1"]
+position = Vector2(160, -1370)
+color = Color(0.3, 0.3, 0.35, 1)
+polygon = PackedVector2Array(-4, -35, 4, -35, 4, 35, -4, 35)
+
+[node name="RightWallCollision" type="CollisionShape2D" parent="UpperZone/TopZone/CaptiveBallLane" index="2"]
+position = Vector2(260, -1370)
+shape = SubResource("RectangleShape2D_captive_wall")
+
+[node name="RightWallSprite" type="Polygon2D" parent="UpperZone/TopZone/CaptiveBallLane" index="3"]
+position = Vector2(260, -1370)
+color = Color(0.3, 0.3, 0.35, 1)
+polygon = PackedVector2Array(-4, -35, 4, -35, 4, 35, -4, 35)
+
+[node name="CaptiveBall1" type="RigidBody2D" parent="UpperZone/TopZone" index="3"]
+position = Vector2(190, -1370)
+script = ExtResource("17_captive")
+target_id = "captive_1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/TopZone/CaptiveBall1" index="0"]
+shape = SubResource("CircleShape2D_captive")
+
+[node name="Sprite" type="Polygon2D" parent="UpperZone/TopZone/CaptiveBall1" index="1"]
+color = Color(0.9, 0.9, 0.9, 1)
+polygon = PackedVector2Array(12, 0, 8.485, 8.485, 0, 12, -8.485, 8.485, -12, 0, -8.485, -8.485, 0, -12, 8.485, -8.485)
+
+[node name="CaptiveBall2" type="RigidBody2D" parent="UpperZone/TopZone" index="4"]
+position = Vector2(230, -1370)
+script = ExtResource("17_captive")
+target_id = "captive_2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/TopZone/CaptiveBall2" index="0"]
+shape = SubResource("CircleShape2D_captive")
+
+[node name="Sprite" type="Polygon2D" parent="UpperZone/TopZone/CaptiveBall2" index="1"]
+color = Color(0.9, 0.9, 0.9, 1)
+polygon = PackedVector2Array(12, 0, 8.485, 8.485, 0, 12, -8.485, 8.485, -12, 0, -8.485, -8.485, 0, -12, 8.485, -8.485)
+
+[node name="SkillShotLane" type="StaticBody2D" parent="UpperZone/TopZone" index="5"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/TopZone/SkillShotLane" index="0"]
+position = Vector2(408, -1325)
+shape = SubResource("RectangleShape2D_skill_shot_lane")
+
+[node name="Sprite" type="Polygon2D" parent="UpperZone/TopZone/SkillShotLane" index="1"]
+position = Vector2(408, -1325)
+color = Color(1, 0.85, 0.2, 0.6)
+polygon = PackedVector2Array(-4, -75, 4, -75, 4, 75, -4, 75)
+
+[node name="SkillShotTarget" type="Area2D" parent="UpperZone/TopZone" index="6"]
+position = Vector2(408, -1385)
+script = ExtResource("3_target")
+target_id = "skill_shot"
+flash_color = Color(1, 0.85, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/TopZone/SkillShotTarget" index="0"]
+shape = SubResource("RectangleShape2D_mini_target")
+
+[node name="Sprite" type="Polygon2D" parent="UpperZone/TopZone/SkillShotTarget" index="1"]
+color = Color(1, 0.85, 0.2, 1)
+polygon = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+
+[node name="LeftOrbit" type="StaticBody2D" parent="UpperZone/TopZone" index="7"]
+[node name="Inner_0" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="0"]
+position = Vector2(38.16, -1184.76)
+rotation = -1.4996
+shape = SubResource("RectangleShape2D_orbit_seg_0")
+
+[node name="InnerSprite_0" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="1"]
+position = Vector2(38.16, -1184.76)
+rotation = -1.4996
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-30.98, -4, 30.98, -4, 30.98, 4, -30.98, 4)
+
+[node name="Inner_1" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="2"]
+position = Vector2(46.39, -1241.10)
+rotation = -1.3454
+shape = SubResource("RectangleShape2D_orbit_seg_1")
+
+[node name="InnerSprite_1" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="3"]
+position = Vector2(46.39, -1241.10)
+rotation = -1.3454
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-28.60, -4, 28.60, -4, 28.60, 4, -28.60, 4)
+
+[node name="Inner_2" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="4"]
+position = Vector2(61.73, -1288.11)
+rotation = -1.1479
+shape = SubResource("RectangleShape2D_orbit_seg_2")
+
+[node name="InnerSprite_2" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="5"]
+position = Vector2(61.73, -1288.11)
+rotation = -1.1479
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-24.26, -4, 24.26, -4, 24.26, 4, -24.26, 4)
+
+[node name="Inner_3" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="6"]
+position = Vector2(81.64, -1320.42)
+rotation = -0.8474
+shape = SubResource("RectangleShape2D_orbit_seg_3")
+
+[node name="InnerSprite_3" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="7"]
+position = Vector2(81.64, -1320.42)
+rotation = -0.8474
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-18.95, -4, 18.95, -4, 18.95, 4, -18.95, 4)
+
+[node name="Inner_4" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="8"]
+position = Vector2(101.41, -1335.01)
+rotation = -0.3384
+shape = SubResource("RectangleShape2D_orbit_seg_4")
+
+[node name="InnerSprite_4" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="9"]
+position = Vector2(101.41, -1335.01)
+rotation = -0.3384
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-14.74, -4, 14.74, -4, 14.74, 4, -14.74, 4)
+
+[node name="Inner_5" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="10"]
+position = Vector2(118.59, -1335.01)
+rotation = 0.3384
+shape = SubResource("RectangleShape2D_orbit_seg_5")
+
+[node name="InnerSprite_5" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="11"]
+position = Vector2(118.59, -1335.01)
+rotation = 0.3384
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-14.74, -4, 14.74, -4, 14.74, 4, -14.74, 4)
+
+[node name="Inner_6" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="12"]
+position = Vector2(138.36, -1320.42)
+rotation = 0.8474
+shape = SubResource("RectangleShape2D_orbit_seg_6")
+
+[node name="InnerSprite_6" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="13"]
+position = Vector2(138.36, -1320.42)
+rotation = 0.8474
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-18.95, -4, 18.95, -4, 18.95, 4, -18.95, 4)
+
+[node name="Inner_7" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="14"]
+position = Vector2(158.27, -1288.11)
+rotation = 1.1479
+shape = SubResource("RectangleShape2D_orbit_seg_7")
+
+[node name="InnerSprite_7" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="15"]
+position = Vector2(158.27, -1288.11)
+rotation = 1.1479
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-24.26, -4, 24.26, -4, 24.26, 4, -24.26, 4)
+
+[node name="Inner_8" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="16"]
+position = Vector2(173.61, -1241.10)
+rotation = 1.3454
+shape = SubResource("RectangleShape2D_orbit_seg_8")
+
+[node name="InnerSprite_8" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="17"]
+position = Vector2(173.61, -1241.10)
+rotation = 1.3454
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-28.60, -4, 28.60, -4, 28.60, 4, -28.60, 4)
+
+[node name="Inner_9" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="18"]
+position = Vector2(181.84, -1184.76)
+rotation = 1.4996
+shape = SubResource("RectangleShape2D_orbit_seg_9")
+
+[node name="InnerSprite_9" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="19"]
+position = Vector2(181.84, -1184.76)
+rotation = 1.4996
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-30.98, -4, 30.98, -4, 30.98, 4, -30.98, 4)
+
+[node name="Outer_0" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="20"]
+position = Vector2(6.24, -1187.04)
+rotation = -1.4996
+shape = SubResource("RectangleShape2D_orbit_seg_0")
+
+[node name="OuterSprite_0" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="21"]
+position = Vector2(6.24, -1187.04)
+rotation = -1.4996
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-30.98, -4, 30.98, -4, 30.98, 4, -30.98, 4)
+
+[node name="Outer_1" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="22"]
+position = Vector2(15.20, -1248.26)
+rotation = -1.3454
+shape = SubResource("RectangleShape2D_orbit_seg_1")
+
+[node name="OuterSprite_1" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="23"]
+position = Vector2(15.20, -1248.26)
+rotation = -1.3454
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-28.60, -4, 28.60, -4, 28.60, 4, -28.60, 4)
+
+[node name="Outer_2" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="24"]
+position = Vector2(32.55, -1301.25)
+rotation = -1.1479
+shape = SubResource("RectangleShape2D_orbit_seg_2")
+
+[node name="OuterSprite_2" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="25"]
+position = Vector2(32.55, -1301.25)
+rotation = -1.1479
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-24.26, -4, 24.26, -4, 24.26, 4, -24.26, 4)
+
+[node name="Outer_3" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="26"]
+position = Vector2(57.65, -1341.60)
+rotation = -0.8474
+shape = SubResource("RectangleShape2D_orbit_seg_3")
+
+[node name="OuterSprite_3" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="27"]
+position = Vector2(57.65, -1341.60)
+rotation = -0.8474
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-18.95, -4, 18.95, -4, 18.95, 4, -18.95, 4)
+
+[node name="Outer_4" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="28"]
+position = Vector2(90.78, -1365.20)
+rotation = -0.3384
+shape = SubResource("RectangleShape2D_orbit_seg_4")
+
+[node name="OuterSprite_4" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="29"]
+position = Vector2(90.78, -1365.20)
+rotation = -0.3384
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-14.74, -4, 14.74, -4, 14.74, 4, -14.74, 4)
+
+[node name="Outer_5" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="30"]
+position = Vector2(129.22, -1365.20)
+rotation = 0.3384
+shape = SubResource("RectangleShape2D_orbit_seg_5")
+
+[node name="OuterSprite_5" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="31"]
+position = Vector2(129.22, -1365.20)
+rotation = 0.3384
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-14.74, -4, 14.74, -4, 14.74, 4, -14.74, 4)
+
+[node name="Outer_6" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="32"]
+position = Vector2(162.35, -1341.60)
+rotation = 0.8474
+shape = SubResource("RectangleShape2D_orbit_seg_6")
+
+[node name="OuterSprite_6" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="33"]
+position = Vector2(162.35, -1341.60)
+rotation = 0.8474
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-18.95, -4, 18.95, -4, 18.95, 4, -18.95, 4)
+
+[node name="Outer_7" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="34"]
+position = Vector2(187.45, -1301.25)
+rotation = 1.1479
+shape = SubResource("RectangleShape2D_orbit_seg_7")
+
+[node name="OuterSprite_7" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="35"]
+position = Vector2(187.45, -1301.25)
+rotation = 1.1479
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-24.26, -4, 24.26, -4, 24.26, 4, -24.26, 4)
+
+[node name="Outer_8" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="36"]
+position = Vector2(204.80, -1248.26)
+rotation = 1.3454
+shape = SubResource("RectangleShape2D_orbit_seg_8")
+
+[node name="OuterSprite_8" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="37"]
+position = Vector2(204.80, -1248.26)
+rotation = 1.3454
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-28.60, -4, 28.60, -4, 28.60, 4, -28.60, 4)
+
+[node name="Outer_9" type="CollisionShape2D" parent="UpperZone/TopZone/LeftOrbit" index="38"]
+position = Vector2(213.76, -1187.04)
+rotation = 1.4996
+shape = SubResource("RectangleShape2D_orbit_seg_9")
+
+[node name="OuterSprite_9" type="Polygon2D" parent="UpperZone/TopZone/LeftOrbit" index="39"]
+position = Vector2(213.76, -1187.04)
+rotation = 1.4996
+color = Color(0.2, 0.9, 1, 0.7)
+polygon = PackedVector2Array(-30.98, -4, 30.98, -4, 30.98, 4, -30.98, 4)
+
+[node name="RightOrbit" type="StaticBody2D" parent="UpperZone/TopZone" index="8"]
+[node name="Inner_0" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="0"]
+position = Vector2(413.76, -1187.04)
+rotation = -1.6419
+shape = SubResource("RectangleShape2D_orbit_seg_0")
+
+[node name="InnerSprite_0" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="1"]
+position = Vector2(413.76, -1187.04)
+rotation = -1.6419
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-30.98, -4, 30.98, -4, 30.98, 4, -30.98, 4)
+
+[node name="Inner_1" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="2"]
+position = Vector2(404.80, -1248.26)
+rotation = -1.7962
+shape = SubResource("RectangleShape2D_orbit_seg_1")
+
+[node name="InnerSprite_1" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="3"]
+position = Vector2(404.80, -1248.26)
+rotation = -1.7962
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-28.60, -4, 28.60, -4, 28.60, 4, -28.60, 4)
+
+[node name="Inner_2" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="4"]
+position = Vector2(387.45, -1301.25)
+rotation = -1.9937
+shape = SubResource("RectangleShape2D_orbit_seg_2")
+
+[node name="InnerSprite_2" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="5"]
+position = Vector2(387.45, -1301.25)
+rotation = -1.9937
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-24.26, -4, 24.26, -4, 24.26, 4, -24.26, 4)
+
+[node name="Inner_3" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="6"]
+position = Vector2(362.35, -1341.60)
+rotation = -2.2942
+shape = SubResource("RectangleShape2D_orbit_seg_3")
+
+[node name="InnerSprite_3" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="7"]
+position = Vector2(362.35, -1341.60)
+rotation = -2.2942
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-18.95, -4, 18.95, -4, 18.95, 4, -18.95, 4)
+
+[node name="Inner_4" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="8"]
+position = Vector2(329.22, -1365.20)
+rotation = -2.8032
+shape = SubResource("RectangleShape2D_orbit_seg_4")
+
+[node name="InnerSprite_4" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="9"]
+position = Vector2(329.22, -1365.20)
+rotation = -2.8032
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-14.74, -4, 14.74, -4, 14.74, 4, -14.74, 4)
+
+[node name="Inner_5" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="10"]
+position = Vector2(290.78, -1365.20)
+rotation = 2.8032
+shape = SubResource("RectangleShape2D_orbit_seg_5")
+
+[node name="InnerSprite_5" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="11"]
+position = Vector2(290.78, -1365.20)
+rotation = 2.8032
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-14.74, -4, 14.74, -4, 14.74, 4, -14.74, 4)
+
+[node name="Inner_6" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="12"]
+position = Vector2(257.65, -1341.60)
+rotation = 2.2942
+shape = SubResource("RectangleShape2D_orbit_seg_6")
+
+[node name="InnerSprite_6" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="13"]
+position = Vector2(257.65, -1341.60)
+rotation = 2.2942
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-18.95, -4, 18.95, -4, 18.95, 4, -18.95, 4)
+
+[node name="Inner_7" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="14"]
+position = Vector2(232.55, -1301.25)
+rotation = 1.9937
+shape = SubResource("RectangleShape2D_orbit_seg_7")
+
+[node name="InnerSprite_7" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="15"]
+position = Vector2(232.55, -1301.25)
+rotation = 1.9937
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-24.26, -4, 24.26, -4, 24.26, 4, -24.26, 4)
+
+[node name="Inner_8" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="16"]
+position = Vector2(215.20, -1248.26)
+rotation = 1.7962
+shape = SubResource("RectangleShape2D_orbit_seg_8")
+
+[node name="InnerSprite_8" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="17"]
+position = Vector2(215.20, -1248.26)
+rotation = 1.7962
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-28.60, -4, 28.60, -4, 28.60, 4, -28.60, 4)
+
+[node name="Inner_9" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="18"]
+position = Vector2(206.24, -1187.04)
+rotation = 1.6419
+shape = SubResource("RectangleShape2D_orbit_seg_9")
+
+[node name="InnerSprite_9" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="19"]
+position = Vector2(206.24, -1187.04)
+rotation = 1.6419
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-30.98, -4, 30.98, -4, 30.98, 4, -30.98, 4)
+
+[node name="Outer_0" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="20"]
+position = Vector2(381.84, -1184.76)
+rotation = -1.6419
+shape = SubResource("RectangleShape2D_orbit_seg_0")
+
+[node name="OuterSprite_0" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="21"]
+position = Vector2(381.84, -1184.76)
+rotation = -1.6419
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-30.98, -4, 30.98, -4, 30.98, 4, -30.98, 4)
+
+[node name="Outer_1" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="22"]
+position = Vector2(373.61, -1241.10)
+rotation = -1.7962
+shape = SubResource("RectangleShape2D_orbit_seg_1")
+
+[node name="OuterSprite_1" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="23"]
+position = Vector2(373.61, -1241.10)
+rotation = -1.7962
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-28.60, -4, 28.60, -4, 28.60, 4, -28.60, 4)
+
+[node name="Outer_2" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="24"]
+position = Vector2(358.27, -1288.11)
+rotation = -1.9937
+shape = SubResource("RectangleShape2D_orbit_seg_2")
+
+[node name="OuterSprite_2" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="25"]
+position = Vector2(358.27, -1288.11)
+rotation = -1.9937
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-24.26, -4, 24.26, -4, 24.26, 4, -24.26, 4)
+
+[node name="Outer_3" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="26"]
+position = Vector2(338.36, -1320.42)
+rotation = -2.2942
+shape = SubResource("RectangleShape2D_orbit_seg_3")
+
+[node name="OuterSprite_3" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="27"]
+position = Vector2(338.36, -1320.42)
+rotation = -2.2942
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-18.95, -4, 18.95, -4, 18.95, 4, -18.95, 4)
+
+[node name="Outer_4" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="28"]
+position = Vector2(318.59, -1335.01)
+rotation = -2.8032
+shape = SubResource("RectangleShape2D_orbit_seg_4")
+
+[node name="OuterSprite_4" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="29"]
+position = Vector2(318.59, -1335.01)
+rotation = -2.8032
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-14.74, -4, 14.74, -4, 14.74, 4, -14.74, 4)
+
+[node name="Outer_5" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="30"]
+position = Vector2(301.41, -1335.01)
+rotation = 2.8032
+shape = SubResource("RectangleShape2D_orbit_seg_5")
+
+[node name="OuterSprite_5" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="31"]
+position = Vector2(301.41, -1335.01)
+rotation = 2.8032
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-14.74, -4, 14.74, -4, 14.74, 4, -14.74, 4)
+
+[node name="Outer_6" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="32"]
+position = Vector2(281.64, -1320.42)
+rotation = 2.2942
+shape = SubResource("RectangleShape2D_orbit_seg_6")
+
+[node name="OuterSprite_6" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="33"]
+position = Vector2(281.64, -1320.42)
+rotation = 2.2942
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-18.95, -4, 18.95, -4, 18.95, 4, -18.95, 4)
+
+[node name="Outer_7" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="34"]
+position = Vector2(261.73, -1288.11)
+rotation = 1.9937
+shape = SubResource("RectangleShape2D_orbit_seg_7")
+
+[node name="OuterSprite_7" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="35"]
+position = Vector2(261.73, -1288.11)
+rotation = 1.9937
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-24.26, -4, 24.26, -4, 24.26, 4, -24.26, 4)
+
+[node name="Outer_8" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="36"]
+position = Vector2(246.39, -1241.10)
+rotation = 1.7962
+shape = SubResource("RectangleShape2D_orbit_seg_8")
+
+[node name="OuterSprite_8" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="37"]
+position = Vector2(246.39, -1241.10)
+rotation = 1.7962
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-28.60, -4, 28.60, -4, 28.60, 4, -28.60, 4)
+
+[node name="Outer_9" type="CollisionShape2D" parent="UpperZone/TopZone/RightOrbit" index="38"]
+position = Vector2(238.16, -1184.76)
+rotation = 1.6419
+shape = SubResource("RectangleShape2D_orbit_seg_9")
+
+[node name="OuterSprite_9" type="Polygon2D" parent="UpperZone/TopZone/RightOrbit" index="39"]
+position = Vector2(238.16, -1184.76)
+rotation = 1.6419
+color = Color(1, 0.2, 0.7, 0.7)
+polygon = PackedVector2Array(-30.98, -4, 30.98, -4, 30.98, 4, -30.98, 4)
 
 [node name="Feedback" type="CanvasLayer" parent="." index="28" unique_id=1738526509]
 layer = 10
