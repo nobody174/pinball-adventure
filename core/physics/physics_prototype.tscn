@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dtypcr3tcdvpl" path="res://core/physics/flipper.gd" id="2_flipper"]
 [ext_resource type="Script" uid="uid://bq4kgyaeumx04" path="res://core/physics/touch_zones.gd" id="3_touch"]
 [ext_resource type="Script" uid="uid://y1wdnb0w8kmr" path="res://core/physics/bumper.gd" id="4_bumper"]
+[ext_resource type="Script" path="res://core/physics/ball_follow_camera.gd" id="5_camera"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
 size = Vector2(20, 2100)
@@ -217,7 +218,7 @@ polygon = PackedVector2Array(0, -10, -90, -10, -90, 10, 0, 10)
 script = ExtResource("3_touch")
 
 [node name="LeftZone" type="TouchScreenButton" parent="TouchZones" unique_id=1103866490]
-position = Vector2(65, 2035)
+position = Vector2(65, 985)
 shape = SubResource("RectangleShape2D_touch_zone")
 
 [node name="LeftZoneVisual" type="Polygon2D" parent="TouchZones/LeftZone" unique_id=1249598117]
@@ -229,7 +230,7 @@ color = Color(0.2, 0.8, 1, 0.6)
 polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
 [node name="RightZone" type="TouchScreenButton" parent="TouchZones" unique_id=839068721]
-position = Vector2(415, 2035)
+position = Vector2(415, 985)
 shape = SubResource("RectangleShape2D_touch_zone")
 
 [node name="RightZoneVisual" type="Polygon2D" parent="TouchZones/RightZone" unique_id=1327102787]
@@ -241,6 +242,10 @@ color = Color(0.2, 0.8, 1, 0.6)
 polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2134439033]
-position = Vector2(225, -350)
+position = Vector2(225, 175)
+script = ExtResource("5_camera")
+target_path = NodePath("../Ball")
+min_camera_y = -875.0
+max_camera_y = 175.0
 
 [connection signal="body_entered" from="Bumper/KickArea" to="Bumper/KickArea" method="_on_body_entered"]
