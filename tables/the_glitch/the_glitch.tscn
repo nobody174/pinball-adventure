@@ -103,7 +103,7 @@ radius = 12.0
 size = Vector2(8, 70)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_skill_shot_lane"]
-size = Vector2(8, 150)
+size = Vector2(8, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_orbit_seg_0"]
 size = Vector2(61.96, 8)
@@ -1379,13 +1379,13 @@ polygon = PackedVector2Array(12, 0, 8.485, 8.485, 0, 12, -8.485, 8.485, -12, 0, 
 [node name="SkillShotLane" type="StaticBody2D" parent="UpperZone/TopZone" index="5"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/TopZone/SkillShotLane" index="0"]
-position = Vector2(408, -1325)
+position = Vector2(408, -1370)
 shape = SubResource("RectangleShape2D_skill_shot_lane")
 
 [node name="Sprite" type="Polygon2D" parent="UpperZone/TopZone/SkillShotLane" index="1"]
-position = Vector2(408, -1325)
+position = Vector2(408, -1370)
 color = Color(1, 0.85, 0.2, 0.6)
-polygon = PackedVector2Array(-4, -75, 4, -75, 4, 75, -4, 75)
+polygon = PackedVector2Array(-4, -30, 4, -30, 4, 30, -4, 30)
 
 [node name="SkillShotTarget" type="Area2D" parent="UpperZone/TopZone" index="6"]
 position = Vector2(408, -1385)
