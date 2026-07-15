@@ -58,7 +58,6 @@ launch_ball={
 2d_physics/layer_1="default"
 2d_physics/layer_2="cyber_ramp_a"
 2d_physics/layer_3="cyber_ramp_b"
-2d_physics/layer_4="right_orbit"
 
 [rendering]
 
