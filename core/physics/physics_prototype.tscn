@@ -80,11 +80,11 @@ color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-225, -10, 225, -10, 225, 10, -225, 10)
 
 [node name="ShooterLaneWall" type="CollisionShape2D" parent="Boundary" unique_id=3182004420]
-position = Vector2(420, -275)
+position = Vector2(401, -275)
 shape = SubResource("RectangleShape2D_shooter_lane_wall")
 
 [node name="ShooterLaneWallSprite" type="Polygon2D" parent="Boundary" unique_id=3182004421]
-position = Vector2(420, -275)
+position = Vector2(401, -275)
 color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-5, -975, 5, -975, 5, 975, -5, 975)
 
@@ -167,7 +167,7 @@ color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-50.25, -7, 50.25, -7, 50.25, 7, -50.25, 7)
 
 [node name="Ball" type="RigidBody2D" parent="." unique_id=1994410899]
-position = Vector2(435, 650)
+position = Vector2(423, 650)
 script = ExtResource("1_ball")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball" unique_id=840662744]
