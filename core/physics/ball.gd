@@ -16,7 +16,7 @@ extends RigidBody2D
 @export var nudge_impulse: float = 400.0
 @export var nudge_cooldown_seconds: float = 0.4
 @export var launch_impulse_min: float = 250.0
-@export var launch_impulse_max: float = 950.0
+@export var launch_impulse_max: float = 2600.0
 @export var launch_charge_duration_seconds: float = 0.8
 
 signal launch_charge_changed(charge_ratio: float)
