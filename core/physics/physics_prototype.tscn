@@ -5,6 +5,9 @@
 [ext_resource type="Script" uid="uid://bq4kgyaeumx04" path="res://core/physics/touch_zones.gd" id="3_touch"]
 [ext_resource type="Script" uid="uid://y1wdnb0w8kmr" path="res://core/physics/bumper.gd" id="4_bumper"]
 [ext_resource type="Script" path="res://core/physics/ball_follow_camera.gd" id="5_camera"]
+[ext_resource type="Texture2D" path="res://core/physics/art/ball.png" id="6_ball_tex"]
+[ext_resource type="Texture2D" path="res://core/physics/art/flipper_left.png" id="7_flipper_left_tex"]
+[ext_resource type="Texture2D" path="res://core/physics/art/flipper_right.png" id="8_flipper_right_tex"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
 size = Vector2(20, 2100)
@@ -170,9 +173,9 @@ script = ExtResource("1_ball")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball" unique_id=840662744]
 shape = SubResource("CircleShape2D_ball")
 
-[node name="Sprite" type="Polygon2D" parent="Ball" unique_id=1859874000]
-color = Color(0.9, 0.9, 0.9, 1)
-polygon = PackedVector2Array(-14, 0, -10, -10, 0, -14, 10, -10, 14, 0, 10, 10, 0, 14, -10, 10)
+[node name="Sprite" type="Sprite2D" parent="Ball" unique_id=1859874000]
+scale = Vector2(0.1004, 0.1004)
+texture = ExtResource("6_ball_tex")
 
 [node name="LeftFlipperAnchor" type="StaticBody2D" parent="." unique_id=1254061006]
 position = Vector2(110, 620)
@@ -189,9 +192,10 @@ script = ExtResource("2_flipper")
 position = Vector2(45, 0)
 shape = SubResource("RectangleShape2D_flipper")
 
-[node name="Sprite" type="Polygon2D" parent="LeftFlipper" unique_id=1138073603]
-color = Color(0.827451, 0.11372549, 0.45882353, 1)
-polygon = PackedVector2Array(0, -10, 90, -10, 90, 10, 0, 10)
+[node name="Sprite" type="Sprite2D" parent="LeftFlipper" unique_id=1138073603]
+position = Vector2(45, 0)
+scale = Vector2(0.0957, 0.0957)
+texture = ExtResource("7_flipper_left_tex")
 
 [node name="RightFlipperAnchor" type="StaticBody2D" parent="." unique_id=570834916]
 position = Vector2(310, 620)
@@ -210,9 +214,10 @@ input_action = "flip_right"
 position = Vector2(-45, 0)
 shape = SubResource("RectangleShape2D_flipper")
 
-[node name="Sprite" type="Polygon2D" parent="RightFlipper" unique_id=1869551587]
-color = Color(0.827451, 0.11372549, 0.45882353, 1)
-polygon = PackedVector2Array(0, -10, -90, -10, -90, 10, 0, 10)
+[node name="Sprite" type="Sprite2D" parent="RightFlipper" unique_id=1869551587]
+position = Vector2(-45, 0)
+scale = Vector2(0.0957, 0.0957)
+texture = ExtResource("8_flipper_right_tex")
 
 [node name="TouchZones" type="CanvasLayer" parent="." unique_id=1387303047]
 script = ExtResource("3_touch")

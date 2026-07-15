@@ -18,11 +18,13 @@ signal hit(target_id: String)
 @export var target_id: String = ""
 @export var flash_color: Color = Color(1, 1, 1, 1)
 
-var _base_color: Color
-@onready var _sprite: Polygon2D = $Sprite
+## CanvasItem, not Polygon2D -- $Sprite can be either a flat placeholder
+## shape or a baked-texture Sprite2D depending on the table's art pass;
+## modulate works identically on both since it's a CanvasItem property,
+## unlike Polygon2D's own .color.
+@onready var _sprite: CanvasItem = $Sprite
 
 func _ready() -> void:
-	_base_color = _sprite.color
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
@@ -35,8 +37,8 @@ func _on_body_entered(body: Node2D) -> void:
 ## group when a sequence resets) without that being tangled into this node's
 ## own hit-detection logic.
 func flash(color: Color, duration: float = 0.15) -> void:
-	_sprite.color = color
+	_sprite.modulate = color
 	await get_tree().create_timer(duration).timeout
-	_sprite.color = _base_color
+	_sprite.modulate = Color.WHITE
 
 # Built with assistance from Claude Code by Anthropic.

@@ -22,11 +22,9 @@ signal kicked
 @export var flash_color: Color = Color(1, 1, 1, 1)
 
 var _cooldown_remaining: float = 0.0
-var _base_color: Color
-@onready var _sprite: Polygon2D = $Sprite
+@onready var _sprite: CanvasItem = $Sprite
 
 func _ready() -> void:
-	_base_color = _sprite.color
 	body_entered.connect(_on_body_entered)
 
 func _physics_process(delta: float) -> void:
@@ -41,8 +39,8 @@ func _on_body_entered(body: Node2D) -> void:
 	_flash()
 
 func _flash() -> void:
-	_sprite.color = flash_color
+	_sprite.modulate = flash_color
 	await get_tree().create_timer(0.12).timeout
-	_sprite.color = _base_color
+	_sprite.modulate = Color.WHITE
 
 # Built with assistance from Claude Code by Anthropic.

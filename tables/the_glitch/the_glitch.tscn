@@ -19,6 +19,11 @@
 [ext_resource type="Script" path="res://core/physics/captive_ball.gd" id="17_captive"]
 [ext_resource type="Script" path="res://core/physics/ramp_layer_zone.gd" id="18_ramplayer"]
 [ext_resource type="Script" uid="uid://dtypcr3tcdvpl" path="res://core/physics/flipper.gd" id="19_flipper"]
+[ext_resource type="Texture2D" path="res://tables/the_glitch/art/pop_bumper.png" id="20_pop_bumper_tex"]
+[ext_resource type="Texture2D" path="res://tables/the_glitch/art/saucer.png" id="21_saucer_tex"]
+[ext_resource type="Texture2D" path="res://tables/the_glitch/art/slingshot_left.png" id="22_sling_left_tex"]
+[ext_resource type="Texture2D" path="res://tables/the_glitch/art/slingshot_right.png" id="23_sling_right_tex"]
+[ext_resource type="Texture2D" path="res://tables/the_glitch/art/standup_target.png" id="24_target_tex"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
 shader = ExtResource("12_bg_shader")
@@ -219,40 +224,6 @@ color = Color(0.13, 0.15, 0.22, 1)
 [node name="RightGuideSprite" parent="PhysicsPrototype/Guides" index="3"]
 color = Color(0.13, 0.15, 0.22, 1)
 
-[node name="Sprite" parent="PhysicsPrototype/LeftFlipper" index="1"]
-color = Color(0.2, 0.9, 1, 1)
-polygon = PackedVector2Array(0, -12, 20, -11, 40, -9, 60, -6.5, 75, -4, 85, -2, 90, 0, 85, 2, 75, 4, 60, 6.5, 40, 9, 20, 11, 0, 12)
-
-[node name="GlowOutline" type="Line2D" parent="PhysicsPrototype/LeftFlipper" index="2"]
-material = SubResource("CanvasItemMaterial_neon_glow")
-points = PackedVector2Array(0, -12, 20, -11, 40, -9, 60, -6.5, 75, -4, 85, -2, 90, 0, 85, 2, 75, 4, 60, 6.5, 40, 9, 20, 11, 0, 12, 0, -12)
-width = 10.0
-default_color = Color(0.2, 0.9, 1, 0.35)
-joint_mode = 1
-
-[node name="Outline" type="Line2D" parent="PhysicsPrototype/LeftFlipper" index="3"]
-points = PackedVector2Array(0, -12, 20, -11, 40, -9, 60, -6.5, 75, -4, 85, -2, 90, 0, 85, 2, 75, 4, 60, 6.5, 40, 9, 20, 11, 0, 12, 0, -12)
-width = 2.5
-default_color = Color(0.7, 1, 1, 1)
-joint_mode = 1
-
-[node name="Sprite" parent="PhysicsPrototype/RightFlipper" index="1"]
-color = Color(1, 0.2, 0.7, 1)
-polygon = PackedVector2Array(0, -12, -20, -11, -40, -9, -60, -6.5, -75, -4, -85, -2, -90, 0, -85, 2, -75, 4, -60, 6.5, -40, 9, -20, 11, 0, 12)
-
-[node name="GlowOutline" type="Line2D" parent="PhysicsPrototype/RightFlipper" index="2"]
-material = SubResource("CanvasItemMaterial_neon_glow")
-points = PackedVector2Array(0, -12, -20, -11, -40, -9, -60, -6.5, -75, -4, -85, -2, -90, 0, -85, 2, -75, 4, -60, 6.5, -40, 9, -20, 11, 0, 12, 0, -12)
-width = 10.0
-default_color = Color(1, 0.2, 0.7, 0.35)
-joint_mode = 1
-
-[node name="Outline" type="Line2D" parent="PhysicsPrototype/RightFlipper" index="3"]
-points = PackedVector2Array(0, -12, -20, -11, -40, -9, -60, -6.5, -75, -4, -85, -2, -90, 0, -85, 2, -75, 4, -60, 6.5, -40, 9, -20, 11, 0, 12, 0, -12)
-width = 2.5
-default_color = Color(1, 0.7, 0.9, 1)
-joint_mode = 1
-
 [node name="ShaderNodeTargets" type="Node2D" parent="." index="8" unique_id=1436813506]
 
 [node name="ShaderNodeA" type="Area2D" parent="ShaderNodeTargets" index="0" unique_id=1550424965]
@@ -321,22 +292,10 @@ flash_color = Color(1, 0.85, 0.2, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftSlingshot" index="0" unique_id=2038252409]
 shape = SubResource("ConvexPolygonShape2D_sling_left")
 
-[node name="Sprite" type="Polygon2D" parent="LeftSlingshot" index="1" unique_id=401909266]
-color = Color(0.08, 0.1, 0.14, 0.65)
-polygon = PackedVector2Array(0, -20, 20, 2, 0, 16, -10, 6)
-
-[node name="GlowOutline" type="Line2D" parent="LeftSlingshot" index="2"]
-material = SubResource("CanvasItemMaterial_neon_glow")
-points = PackedVector2Array(0, -20, 20, 2, 0, 16, -10, 6, 0, -20)
-width = 12.0
-default_color = Color(0.2, 0.9, 1, 0.35)
-joint_mode = 1
-
-[node name="Outline" type="Line2D" parent="LeftSlingshot" index="3"]
-points = PackedVector2Array(0, -20, 20, 2, 0, 16, -10, 6, 0, -20)
-width = 3.0
-default_color = Color(0.2, 0.9, 1, 1)
-joint_mode = 1
+[node name="Sprite" type="Sprite2D" parent="LeftSlingshot" index="1" unique_id=401909266]
+position = Vector2(5, -2)
+scale = Vector2(0.1261, 0.1586)
+texture = ExtResource("22_sling_left_tex")
 
 [node name="RightSlingshot" type="Area2D" parent="." index="12" unique_id=946211689]
 position = Vector2(295, 565)
@@ -348,22 +307,10 @@ flash_color = Color(1, 0.85, 0.2, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightSlingshot" index="0" unique_id=1955428830]
 shape = SubResource("ConvexPolygonShape2D_sling_right")
 
-[node name="Sprite" type="Polygon2D" parent="RightSlingshot" index="1" unique_id=308332373]
-color = Color(0.14, 0.08, 0.1, 0.65)
-polygon = PackedVector2Array(0, -20, -20, 2, 0, 16, 10, 6)
-
-[node name="GlowOutline" type="Line2D" parent="RightSlingshot" index="2"]
-material = SubResource("CanvasItemMaterial_neon_glow")
-points = PackedVector2Array(0, -20, -20, 2, 0, 16, 10, 6, 0, -20)
-width = 12.0
-default_color = Color(1, 0.2, 0.7, 0.35)
-joint_mode = 1
-
-[node name="Outline" type="Line2D" parent="RightSlingshot" index="3"]
-points = PackedVector2Array(0, -20, -20, 2, 0, 16, 10, 6, 0, -20)
-width = 3.0
-default_color = Color(1, 0.2, 0.7, 1)
-joint_mode = 1
+[node name="Sprite" type="Sprite2D" parent="RightSlingshot" index="1" unique_id=308332373]
+position = Vector2(-5, -2)
+scale = Vector2(0.1261, 0.1586)
+texture = ExtResource("23_sling_right_tex")
 
 [node name="LeftOutlanePost" type="StaticBody2D" parent="." index="13"]
 position = Vector2(55, 638)
@@ -490,9 +437,9 @@ flash_color = Color(1, 1, 1, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StandupBank/Standup1" index="0"]
 shape = SubResource("RectangleShape2D_standup")
 
-[node name="Sprite" type="Polygon2D" parent="StandupBank/Standup1" index="1"]
-color = Color(1, 0.5, 0.9, 1)
-polygon = PackedVector2Array(-11, -11, 11, -11, 11, 11, -11, 11)
+[node name="Sprite" type="Sprite2D" parent="StandupBank/Standup1" index="1"]
+scale = Vector2(0.0815, 0.0815)
+texture = ExtResource("24_target_tex")
 
 [node name="Standup2" type="Area2D" parent="StandupBank" index="1"]
 position = Vector2(350, 132)
@@ -503,9 +450,9 @@ flash_color = Color(1, 1, 1, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StandupBank/Standup2" index="0"]
 shape = SubResource("RectangleShape2D_standup")
 
-[node name="Sprite" type="Polygon2D" parent="StandupBank/Standup2" index="1"]
-color = Color(1, 0.5, 0.9, 1)
-polygon = PackedVector2Array(-11, -11, 11, -11, 11, 11, -11, 11)
+[node name="Sprite" type="Sprite2D" parent="StandupBank/Standup2" index="1"]
+scale = Vector2(0.0815, 0.0815)
+texture = ExtResource("24_target_tex")
 
 [node name="Standup3" type="Area2D" parent="StandupBank" index="2"]
 position = Vector2(350, 164)
@@ -516,9 +463,9 @@ flash_color = Color(1, 1, 1, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StandupBank/Standup3" index="0"]
 shape = SubResource("RectangleShape2D_standup")
 
-[node name="Sprite" type="Polygon2D" parent="StandupBank/Standup3" index="1"]
-color = Color(1, 0.5, 0.9, 1)
-polygon = PackedVector2Array(-11, -11, 11, -11, 11, 11, -11, 11)
+[node name="Sprite" type="Sprite2D" parent="StandupBank/Standup3" index="1"]
+scale = Vector2(0.0815, 0.0815)
+texture = ExtResource("24_target_tex")
 
 [node name="Standup4" type="Area2D" parent="StandupBank" index="3"]
 position = Vector2(350, 196)
@@ -529,9 +476,9 @@ flash_color = Color(1, 1, 1, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StandupBank/Standup4" index="0"]
 shape = SubResource("RectangleShape2D_standup")
 
-[node name="Sprite" type="Polygon2D" parent="StandupBank/Standup4" index="1"]
-color = Color(1, 0.5, 0.9, 1)
-polygon = PackedVector2Array(-11, -11, 11, -11, 11, 11, -11, 11)
+[node name="Sprite" type="Sprite2D" parent="StandupBank/Standup4" index="1"]
+scale = Vector2(0.0815, 0.0815)
+texture = ExtResource("24_target_tex")
 
 [node name="Standup5" type="Area2D" parent="StandupBank" index="4"]
 position = Vector2(350, 228)
@@ -542,9 +489,9 @@ flash_color = Color(1, 1, 1, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StandupBank/Standup5" index="0"]
 shape = SubResource("RectangleShape2D_standup")
 
-[node name="Sprite" type="Polygon2D" parent="StandupBank/Standup5" index="1"]
-color = Color(1, 0.5, 0.9, 1)
-polygon = PackedVector2Array(-11, -11, 11, -11, 11, 11, -11, 11)
+[node name="Sprite" type="Sprite2D" parent="StandupBank/Standup5" index="1"]
+scale = Vector2(0.0815, 0.0815)
+texture = ExtResource("24_target_tex")
 
 [node name="FirewallBreach" type="Node2D" parent="." index="20" unique_id=756633679]
 
@@ -604,9 +551,9 @@ position = Vector2(170, 190)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperA" index="0"]
 shape = SubResource("CircleShape2D_pop_bumper")
 
-[node name="Sprite" type="Polygon2D" parent="PopBumperCluster/PopBumperA" index="1"]
-color = Color(0.3, 1, 0.4, 1)
-polygon = PackedVector2Array(22, 0, 15.556, 15.556, 0, 22, -15.556, 15.556, -22, 0, -15.556, -15.556, 0, -22, 15.556, -15.556)
+[node name="Sprite" type="Sprite2D" parent="PopBumperCluster/PopBumperA" index="1"]
+scale = Vector2(0.1146, 0.1146)
+texture = ExtResource("20_pop_bumper_tex")
 
 [node name="KickArea" type="Area2D" parent="PopBumperCluster/PopBumperA" index="2"]
 script = ExtResource("7_bumper")
@@ -622,9 +569,9 @@ position = Vector2(250, 190)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperB" index="0"]
 shape = SubResource("CircleShape2D_pop_bumper")
 
-[node name="Sprite" type="Polygon2D" parent="PopBumperCluster/PopBumperB" index="1"]
-color = Color(0.3, 1, 0.4, 1)
-polygon = PackedVector2Array(22, 0, 15.556, 15.556, 0, 22, -15.556, 15.556, -22, 0, -15.556, -15.556, 0, -22, 15.556, -15.556)
+[node name="Sprite" type="Sprite2D" parent="PopBumperCluster/PopBumperB" index="1"]
+scale = Vector2(0.1146, 0.1146)
+texture = ExtResource("20_pop_bumper_tex")
 
 [node name="KickArea" type="Area2D" parent="PopBumperCluster/PopBumperB" index="2"]
 script = ExtResource("7_bumper")
@@ -640,9 +587,9 @@ position = Vector2(210, 260)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PopBumperCluster/PopBumperC" index="0"]
 shape = SubResource("CircleShape2D_pop_bumper")
 
-[node name="Sprite" type="Polygon2D" parent="PopBumperCluster/PopBumperC" index="1"]
-color = Color(0.3, 1, 0.4, 1)
-polygon = PackedVector2Array(22, 0, 15.556, 15.556, 0, 22, -15.556, 15.556, -22, 0, -15.556, -15.556, 0, -22, 15.556, -15.556)
+[node name="Sprite" type="Sprite2D" parent="PopBumperCluster/PopBumperC" index="1"]
+scale = Vector2(0.1146, 0.1146)
+texture = ExtResource("20_pop_bumper_tex")
 
 [node name="KickArea" type="Area2D" parent="PopBumperCluster/PopBumperC" index="2"]
 script = ExtResource("7_bumper")
@@ -676,9 +623,9 @@ eject_strength = 420.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Saucer" index="0"]
 shape = SubResource("CircleShape2D_saucer")
 
-[node name="Sprite" type="Polygon2D" parent="Saucer" index="1"]
-color = Color(0.9, 0.3, 1, 1)
-polygon = PackedVector2Array(26, 0, 18.385, 18.385, 0, 26, -18.385, 18.385, -26, 0, -18.385, -18.385, 0, -26, 18.385, -18.385)
+[node name="Sprite" type="Sprite2D" parent="Saucer" index="1"]
+scale = Vector2(0.1016, 0.1016)
+texture = ExtResource("21_saucer_tex")
 
 [node name="HighSpeedLoop" type="Area2D" parent="." index="24"]
 position = Vector2(362, -585)
@@ -704,9 +651,9 @@ eject_strength = 420.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Saucer2" index="0"]
 shape = SubResource("CircleShape2D_saucer")
 
-[node name="Sprite" type="Polygon2D" parent="Saucer2" index="1"]
-color = Color(0.9, 0.3, 1, 1)
-polygon = PackedVector2Array(26, 0, 18.385, 18.385, 0, 26, -18.385, 18.385, -26, 0, -18.385, -18.385, 0, -26, 18.385, -18.385)
+[node name="Sprite" type="Sprite2D" parent="Saucer2" index="1"]
+scale = Vector2(0.1016, 0.1016)
+texture = ExtResource("21_saucer_tex")
 
 [node name="Spinner2" type="Area2D" parent="." index="26"]
 position = Vector2(40, 50)
@@ -747,9 +694,9 @@ flash_color = Color(1, 1, 1, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/MidZone/MiniTargets/MiniTarget1" index="0"]
 shape = SubResource("RectangleShape2D_mini_target")
 
-[node name="Sprite" type="Polygon2D" parent="UpperZone/MidZone/MiniTargets/MiniTarget1" index="1"]
-color = Color(1, 0.5, 0.9, 1)
-polygon = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+[node name="Sprite" type="Sprite2D" parent="UpperZone/MidZone/MiniTargets/MiniTarget1" index="1"]
+scale = Vector2(0.0519, 0.0519)
+texture = ExtResource("24_target_tex")
 
 [node name="MiniTarget2" type="Area2D" parent="UpperZone/MidZone/MiniTargets" index="1"]
 position = Vector2(170, -860)
@@ -760,9 +707,9 @@ flash_color = Color(1, 1, 1, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/MidZone/MiniTargets/MiniTarget2" index="0"]
 shape = SubResource("RectangleShape2D_mini_target")
 
-[node name="Sprite" type="Polygon2D" parent="UpperZone/MidZone/MiniTargets/MiniTarget2" index="1"]
-color = Color(1, 0.5, 0.9, 1)
-polygon = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+[node name="Sprite" type="Sprite2D" parent="UpperZone/MidZone/MiniTargets/MiniTarget2" index="1"]
+scale = Vector2(0.0519, 0.0519)
+texture = ExtResource("24_target_tex")
 
 [node name="MiniTarget3" type="Area2D" parent="UpperZone/MidZone/MiniTargets" index="2"]
 position = Vector2(190, -840)
@@ -773,9 +720,9 @@ flash_color = Color(1, 1, 1, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/MidZone/MiniTargets/MiniTarget3" index="0"]
 shape = SubResource("RectangleShape2D_mini_target")
 
-[node name="Sprite" type="Polygon2D" parent="UpperZone/MidZone/MiniTargets/MiniTarget3" index="1"]
-color = Color(1, 0.5, 0.9, 1)
-polygon = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+[node name="Sprite" type="Sprite2D" parent="UpperZone/MidZone/MiniTargets/MiniTarget3" index="1"]
+scale = Vector2(0.0519, 0.0519)
+texture = ExtResource("24_target_tex")
 
 [node name="MiniFlipperAnchor" type="Node2D" parent="UpperZone/MidZone" index="2"]
 position = Vector2(220, -700)
@@ -811,9 +758,9 @@ eject_strength = 800.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/MidZone/VukToLevel2" index="0"]
 shape = SubResource("CircleShape2D_saucer")
 
-[node name="Sprite" type="Polygon2D" parent="UpperZone/MidZone/VukToLevel2" index="1"]
-color = Color(0.9, 0.3, 1, 1)
-polygon = PackedVector2Array(26, 0, 18.385, 18.385, 0, 26, -18.385, 18.385, -26, 0, -18.385, -18.385, 0, -26, 18.385, -18.385)
+[node name="Sprite" type="Sprite2D" parent="UpperZone/MidZone/VukToLevel2" index="1"]
+scale = Vector2(0.1016, 0.1016)
+texture = ExtResource("21_saucer_tex")
 
 [node name="MiniSaucerKickout" type="Area2D" parent="UpperZone/MidZone" index="5"]
 position = Vector2(340, -685)
@@ -826,9 +773,9 @@ eject_strength = 400.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/MidZone/MiniSaucerKickout" index="0"]
 shape = SubResource("CircleShape2D_saucer")
 
-[node name="Sprite" type="Polygon2D" parent="UpperZone/MidZone/MiniSaucerKickout" index="1"]
-color = Color(0.9, 0.3, 1, 1)
-polygon = PackedVector2Array(26, 0, 18.385, 18.385, 0, 26, -18.385, 18.385, -26, 0, -18.385, -18.385, 0, -26, 18.385, -18.385)
+[node name="Sprite" type="Sprite2D" parent="UpperZone/MidZone/MiniSaucerKickout" index="1"]
+scale = Vector2(0.1016, 0.1016)
+texture = ExtResource("21_saucer_tex")
 
 [node name="CollapsingBridge" type="StaticBody2D" parent="UpperZone/MidZone" index="6"]
 position = Vector2(125, -680)
@@ -1315,9 +1262,9 @@ eject_strength = 350.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/TopZone/CapsuleLock" index="0"]
 shape = SubResource("CircleShape2D_saucer")
 
-[node name="Sprite" type="Polygon2D" parent="UpperZone/TopZone/CapsuleLock" index="1"]
-color = Color(0.9, 0.3, 1, 1)
-polygon = PackedVector2Array(26, 0, 18.385, 18.385, 0, 26, -18.385, 18.385, -26, 0, -18.385, -18.385, 0, -26, 18.385, -18.385)
+[node name="Sprite" type="Sprite2D" parent="UpperZone/TopZone/CapsuleLock" index="1"]
+scale = Vector2(0.1016, 0.1016)
+texture = ExtResource("21_saucer_tex")
 
 [node name="MagneticAcceleratorTrap" type="Area2D" parent="UpperZone/TopZone" index="1"]
 position = Vector2(270, -1290)

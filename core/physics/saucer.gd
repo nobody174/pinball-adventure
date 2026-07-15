@@ -25,7 +25,6 @@ signal ejected(target_id: String)
 @export var eject_strength: float = 400.0
 
 var _holding: bool = false
-@onready var _sprite: Polygon2D = $Sprite
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
