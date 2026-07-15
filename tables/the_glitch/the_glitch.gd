@@ -87,11 +87,16 @@ const SKILL_SHOT_POINTS := 500
 const SUBWAY_POINTS := 100
 const CYBER_RAMP_POINTS := 250
 
+const LEVEL2_DURATION_SECONDS := 15.0
+const LEVEL2_SCORE_MULTIPLIER := 2
+
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
 @onready var _high_score_label: Label = $Feedback/HighScoreLabel
 @onready var _debug_terminal: DebugTerminal = $Feedback/DebugTerminal
 @onready var _glitch_core: Area2D = $GlitchCore
+
+var _level2_active: bool = false
 
 func _ready() -> void:
 	super._ready()
@@ -207,18 +212,18 @@ func _ready() -> void:
 
 	for captive in [top_zone.get_node("CaptiveBall1"), top_zone.get_node("CaptiveBall2")]:
 		captive.struck.connect(func(id: String) -> void:
-			GameState.add_score(CAPTIVE_STRIKE_POINTS)
+			_award(CAPTIVE_STRIKE_POINTS)
 			register_target_hit(id)
 			_debug_terminal.log_event("> captive ball struck: %s" % id))
 
 	crossover_zone.get_node("RollunderGate").hit.connect(func(_id: String) -> void:
-		GameState.add_score(ROLLUNDER_GATE_POINTS)
+		_award(ROLLUNDER_GATE_POINTS)
 		crossover_zone.get_node("MultiLevelGate").trigger_open())
 
 	mid_zone.get_node("VukToLevel2").captured.connect(func(_id: String) -> void:
 		GameState.add_score(VUK_LEVEL2_POINTS)
 		top_zone.get_node("MagneticAcceleratorTrap").activate()
-		_debug_terminal.log_event("> VUK to level 2"))
+		_start_level2_mode())
 
 	mid_zone.get_node("MiniSaucerKickout").captured.connect(func(_id: String) -> void:
 		GameState.add_score(MINI_SAUCER_KICKOUT_POINTS))
@@ -235,10 +240,10 @@ func _ready() -> void:
 		_debug_terminal.log_event("> subway entered"))
 
 	crossover_zone.get_node("RampAEntrance").entered.connect(func(_id: String) -> void:
-		GameState.add_score(CYBER_RAMP_POINTS)
+		_award(CYBER_RAMP_POINTS)
 		_show_feedback("CYBER RAMP A", Color(0.2, 0.9, 1, 1)))
 	crossover_zone.get_node("RampBEntrance").entered.connect(func(_id: String) -> void:
-		GameState.add_score(CYBER_RAMP_POINTS)
+		_award(CYBER_RAMP_POINTS)
 		_show_feedback("CYBER RAMP B", Color(1, 0.2, 0.7, 1)))
 
 	## Visual plunger: pulls back proportionally while charging, snaps back
@@ -325,6 +330,22 @@ func _on_objective_sequence_reset(objective_id: String) -> void:
 	for target in $ShaderNodeTargets.get_children():
 		target.flash(Color(1, 0.2, 0.2, 1), 0.25)
 	_show_feedback("SEQUENCE RESET — START OVER", Color(1, 0.3, 0.3, 1))
+
+## Doubles the given points while Level 2 mode is active. Only wired to the
+## upper-zone elements thematically tied to Level 2 (rollunder gate, cyber
+## ramps, captive balls) -- not a blanket multiplier over every score call
+## on the table.
+func _award(points: int) -> void:
+	GameState.add_score(points * LEVEL2_SCORE_MULTIPLIER if _level2_active else points)
+
+func _start_level2_mode() -> void:
+	if _level2_active:
+		return
+	_level2_active = true
+	_show_feedback("LEVEL 2 ACTIVE — 2X SCORING", Color(0.9, 0.3, 1, 1))
+	await get_tree().create_timer(LEVEL2_DURATION_SECONDS).timeout
+	_level2_active = false
+	_show_feedback("LEVEL 2 ENDED", Color(0.5, 0.5, 0.6, 1))
 
 func _show_feedback(text: String, color: Color) -> void:
 	_feedback_label.text = text
