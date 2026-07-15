@@ -64,3 +64,44 @@ func test_teleport_disables_ccd_then_reenables_it() -> void:
 	await wait_physics_frames(2)
 
 	assert_eq(ball.continuous_cd, RigidBody2D.CCD_MODE_CAST_SHAPE, "CCD should be back on a couple of frames later")
+
+func test_plunger_charges_while_held_and_fires_on_release() -> void:
+	var ball := _make_ball()
+	ball.launch_charge_duration_seconds = 0.1
+	ball.launch_impulse_min = 200.0
+	ball.launch_impulse_max = 800.0
+
+	Input.action_press("launch_ball")
+	await wait_seconds(0.05) ## Half the charge duration -- partial charge, not full.
+	assert_gt(ball._launch_charge, 0.0)
+	assert_lt(ball._launch_charge, 1.0)
+
+	Input.action_release("launch_ball")
+	await wait_physics_frames(2)
+
+	assert_true(ball._launched)
+	assert_lt(ball.linear_velocity.y, -200.0, "a partial charge should still fire at least the minimum impulse")
+	assert_gt(ball.linear_velocity.y, -800.0, "a partial (not full) charge shouldn't fire the max impulse")
+
+func test_full_charge_fires_max_impulse() -> void:
+	var ball := _make_ball()
+	ball.gravity_scale = 0.0
+	ball.launch_charge_duration_seconds = 0.05
+	ball.launch_impulse_min = 200.0
+	ball.launch_impulse_max = 800.0
+
+	Input.action_press("launch_ball")
+	await wait_seconds(0.15) ## Well past the charge duration -- should clamp at full charge.
+	Input.action_release("launch_ball")
+	await wait_physics_frames(2)
+
+	assert_almost_eq(ball.linear_velocity.y, -800.0, 5.0)
+
+func test_releasing_without_charging_does_not_launch() -> void:
+	var ball := _make_ball()
+
+	Input.action_press("launch_ball")
+	Input.action_release("launch_ball")
+	await wait_physics_frames(2)
+
+	assert_false(ball._launched, "an instant press+release with zero held time shouldn't fire the plunger")

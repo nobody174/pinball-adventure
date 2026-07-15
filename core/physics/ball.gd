@@ -15,11 +15,16 @@ extends RigidBody2D
 @export var friction: float = 0.1
 @export var nudge_impulse: float = 400.0
 @export var nudge_cooldown_seconds: float = 0.4
-@export var launch_impulse: float = 500.0
+@export var launch_impulse_min: float = 250.0
+@export var launch_impulse_max: float = 950.0
+@export var launch_charge_duration_seconds: float = 0.8
+
+signal launch_charge_changed(charge_ratio: float)
 
 var _spawn_position: Vector2
 var _nudge_cooldown_remaining: float = 0.0
 var _launched: bool = false
+var _launch_charge: float = 0.0
 var _pending_respawn: bool = false
 var _pending_teleport: bool = false
 var _pending_teleport_position: Vector2
@@ -37,11 +42,21 @@ func _ready() -> void:
 	_spawn_position = position
 
 func _physics_process(delta: float) -> void:
-	## Placeholder launch: no plunger/lane yet (GDD hasn't reached that), so
-	## this is just a direct impulse stand-in — real plunger feel is later work.
-	if not _launched and Input.is_action_just_pressed("launch_ball"):
-		apply_central_impulse(Vector2(0, -1.0) * launch_impulse)
-		_launched = true
+	## Real charge-and-release plunger: hold launch_ball to pull back (charge
+	## ramps 0->1 over launch_charge_duration_seconds), release to fire an
+	## impulse scaled between launch_impulse_min/max by how long it was held
+	## -- replaces the old instant-fire placeholder now that there's an
+	## actual shooter lane + visual plunger rod for this to drive.
+	if not _launched:
+		if Input.is_action_pressed("launch_ball"):
+			_launch_charge = clampf(_launch_charge + delta / launch_charge_duration_seconds, 0.0, 1.0)
+			launch_charge_changed.emit(_launch_charge)
+		if Input.is_action_just_released("launch_ball") and _launch_charge > 0.0:
+			var impulse := lerpf(launch_impulse_min, launch_impulse_max, _launch_charge)
+			apply_central_impulse(Vector2(0, -1.0) * impulse)
+			_launched = true
+			_launch_charge = 0.0
+			launch_charge_changed.emit(0.0)
 
 	_nudge_cooldown_remaining = maxf(0.0, _nudge_cooldown_remaining - delta)
 	if Input.is_action_just_pressed("nudge") and _nudge_cooldown_remaining <= 0.0:

@@ -241,6 +241,13 @@ func _ready() -> void:
 		GameState.add_score(CYBER_RAMP_POINTS)
 		_show_feedback("CYBER RAMP B", Color(1, 0.2, 0.7, 1)))
 
+	## Visual plunger: pulls back proportionally while charging, snaps back
+	## to rest the instant the ball actually launches (charge resets to 0).
+	$PhysicsPrototype/Ball.launch_charge_changed.connect(func(charge_ratio: float) -> void:
+		var pulled_y := 690.0 + charge_ratio * 30.0
+		$PlungerRod.position.y = pulled_y
+		$PlungerTip.position.y = pulled_y)
+
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.reset_score()
 	_high_score_label.text = "HIGH SCORE: %d" % GameState.get_high_score(TABLE_ID)
