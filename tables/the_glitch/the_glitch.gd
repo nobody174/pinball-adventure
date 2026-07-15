@@ -377,5 +377,23 @@ func _input(event: InputEvent) -> void:
 			## a static teleport wouldn't test the cap-rattle behavior at all.
 			ball.request_teleport(Vector2(362, 440), Vector2(0, -600))
 			_debug_terminal.log_event("> debug teleport: loop shot (into channel, moving up)")
+		KEY_4:
+			## UpperZone content -- lets Cowork verify Level 2 mode (and
+			## everything downstream of it) independent of the shooter lane
+			## fix, since normal play can't reach here until that's sorted.
+			ball.request_teleport($UpperZone/MidZone/VukToLevel2.global_position)
+			_debug_terminal.log_event("> debug teleport: VUK to Level 2")
+		KEY_5:
+			ball.request_teleport($UpperZone/CrossoverZone/RollunderGate.global_position)
+			_debug_terminal.log_event("> debug teleport: rollunder gate")
+		KEY_6:
+			ball.request_teleport($UpperZone/CrossoverZone/RampAEntrance.global_position)
+			_debug_terminal.log_event("> debug teleport: cyber ramp A entrance")
+		KEY_7:
+			## Offset above the captive ball with downward velocity so it
+			## actually collides with it, rather than teleporting into the
+			## exact same position and overlapping.
+			ball.request_teleport(Vector2(190, -1390), Vector2(0, 300))
+			_debug_terminal.log_event("> debug teleport: captive ball 1 (falling toward it)")
 
 # Built with assistance from Claude Code by Anthropic.
