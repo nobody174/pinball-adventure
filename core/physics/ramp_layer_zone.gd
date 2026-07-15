@@ -19,6 +19,9 @@ extends Area2D
 ## on the default layer so it can detect the ball regardless of the ball's
 ## current custom mask.
 
+signal entered(target_id: String)
+
+@export var target_id: String = ""
 @export var target_collision_mask: int = 1
 
 func _ready() -> void:
@@ -27,5 +30,6 @@ func _ready() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body is RigidBody2D:
 		body.collision_mask = target_collision_mask
+		entered.emit(target_id)
 
 # Built with assistance from Claude Code by Anthropic.

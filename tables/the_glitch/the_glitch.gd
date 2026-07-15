@@ -46,6 +46,13 @@ const BANK_5 := "bank_5"
 const SAUCER_MAIN := "saucer_main"
 const SAUCER_SECONDARY := "saucer_secondary"
 
+const MINI_TARGET_1 := "mini_target_1"
+const MINI_TARGET_2 := "mini_target_2"
+const MINI_TARGET_3 := "mini_target_3"
+
+const CAPTIVE_1 := "captive_1"
+const CAPTIVE_2 := "captive_2"
+
 const SHADER_TARGET_POINTS := 100
 const CORE_CHARGED_HIT_POINTS := 1000
 const CORE_UNCHARGED_HIT_POINTS := 50
@@ -67,6 +74,18 @@ const ROLLOVER_GATE_POINTS := 40
 const SAUCER_CAPTURE_POINTS := 150
 const HIGH_SPEED_LOOP_POINTS := 120
 const SAUCER_DOUBLE_BONUS_POINTS := 900
+
+const MINI_TARGET_POINTS := 60
+const MINI_TARGET_CLUSTER_BONUS_POINTS := 700
+const CAPTIVE_STRIKE_POINTS := 100
+const CAPTIVE_DUAL_BONUS_POINTS := 1200
+const ROLLUNDER_GATE_POINTS := 50
+const VUK_LEVEL2_POINTS := 200
+const MINI_SAUCER_KICKOUT_POINTS := 150
+const CAPSULE_LOCK_POINTS := 175
+const SKILL_SHOT_POINTS := 500
+const SUBWAY_POINTS := 100
+const CYBER_RAMP_POINTS := 250
 
 @onready var _feedback_label: Label = $Feedback/Label
 @onready var _score_label: Label = $Feedback/ScoreLabel
@@ -119,6 +138,18 @@ func _ready() -> void:
 			"target_ids": [SAUCER_MAIN, SAUCER_SECONDARY],
 			"require_order": false,
 		},
+		{
+			"id": "mini_target_cluster",
+			"type": "hit_targets",
+			"target_ids": [MINI_TARGET_1, MINI_TARGET_2, MINI_TARGET_3],
+			"require_order": false,
+		},
+		{
+			"id": "captive_dual",
+			"type": "hit_targets",
+			"target_ids": [CAPTIVE_1, CAPTIVE_2],
+			"require_order": false,
+		},
 	])
 	objective_completed.connect(_on_objective_completed)
 	objective_sequence_reset.connect(_on_objective_sequence_reset)
@@ -166,6 +197,50 @@ func _ready() -> void:
 	wire_hit_group($StandupBank.get_children(), STANDUP_BANK_TARGET_POINTS,
 		func(id: String) -> void: _debug_terminal.log_event("> standup bank hit: %s" % id))
 
+	## -- UpperZone (full-layout rebuild) wiring --
+	var mid_zone := $UpperZone/MidZone
+	var crossover_zone := $UpperZone/CrossoverZone
+	var top_zone := $UpperZone/TopZone
+
+	wire_hit_group(mid_zone.get_node("MiniTargets").get_children(), MINI_TARGET_POINTS,
+		func(id: String) -> void: _debug_terminal.log_event("> mini target hit: %s" % id))
+
+	for captive in [top_zone.get_node("CaptiveBall1"), top_zone.get_node("CaptiveBall2")]:
+		captive.struck.connect(func(id: String) -> void:
+			GameState.add_score(CAPTIVE_STRIKE_POINTS)
+			register_target_hit(id)
+			_debug_terminal.log_event("> captive ball struck: %s" % id))
+
+	crossover_zone.get_node("RollunderGate").hit.connect(func(_id: String) -> void:
+		GameState.add_score(ROLLUNDER_GATE_POINTS)
+		crossover_zone.get_node("MultiLevelGate").trigger_open())
+
+	mid_zone.get_node("VukToLevel2").captured.connect(func(_id: String) -> void:
+		GameState.add_score(VUK_LEVEL2_POINTS)
+		top_zone.get_node("MagneticAcceleratorTrap").activate()
+		_debug_terminal.log_event("> VUK to level 2"))
+
+	mid_zone.get_node("MiniSaucerKickout").captured.connect(func(_id: String) -> void:
+		GameState.add_score(MINI_SAUCER_KICKOUT_POINTS))
+
+	top_zone.get_node("CapsuleLock").captured.connect(func(_id: String) -> void:
+		GameState.add_score(CAPSULE_LOCK_POINTS))
+
+	top_zone.get_node("SkillShotTarget").hit.connect(func(_id: String) -> void:
+		GameState.add_score(SKILL_SHOT_POINTS)
+		_show_feedback("SKILL SHOT", Color(1, 0.85, 0.2, 1)))
+
+	mid_zone.get_node("SubwayEntrance").entered.connect(func(_id: String) -> void:
+		GameState.add_score(SUBWAY_POINTS)
+		_debug_terminal.log_event("> subway entered"))
+
+	crossover_zone.get_node("RampAEntrance").entered.connect(func(_id: String) -> void:
+		GameState.add_score(CYBER_RAMP_POINTS)
+		_show_feedback("CYBER RAMP A", Color(0.2, 0.9, 1, 1)))
+	crossover_zone.get_node("RampBEntrance").entered.connect(func(_id: String) -> void:
+		GameState.add_score(CYBER_RAMP_POINTS)
+		_show_feedback("CYBER RAMP B", Color(1, 0.2, 0.7, 1)))
+
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.reset_score()
 	_high_score_label.text = "HIGH SCORE: %d" % GameState.get_high_score(TABLE_ID)
@@ -203,11 +278,21 @@ func _on_objective_completed(objective_id: String) -> void:
 	elif objective_id == "standup_bank":
 		GameState.add_score(STANDUP_BANK_BONUS_POINTS)
 		_show_feedback("BANK CLEARED", Color(1, 0.5, 0.9, 1))
+		$UpperZone/MidZone/TimedGate.trigger_open()
 		objectives.get_objective("standup_bank").reset() ## Flash-recover targets, unlike Firewall's drop bank — safe to repeat immediately.
 	elif objective_id == "saucer_double":
 		GameState.add_score(SAUCER_DOUBLE_BONUS_POINTS)
 		_show_feedback("DUAL CAPTURE", Color(0.9, 0.3, 1, 1))
 		objectives.get_objective("saucer_double").reset() ## Each saucer can be hit again any time — safe to repeat immediately.
+	elif objective_id == "mini_target_cluster":
+		GameState.add_score(MINI_TARGET_CLUSTER_BONUS_POINTS)
+		_show_feedback("MINI TARGETS CLEARED", Color(1, 0.5, 0.9, 1))
+		$UpperZone/MidZone/CollapsingBridge.trigger_collapse()
+		objectives.get_objective("mini_target_cluster").reset() ## Flash-recover targets — safe to repeat immediately.
+	elif objective_id == "captive_dual":
+		GameState.add_score(CAPTIVE_DUAL_BONUS_POINTS)
+		_show_feedback("CAPTIVE LOCK", Color(0.9, 0.9, 1, 1))
+		objectives.get_objective("captive_dual").reset() ## Each captive ball can be struck again any time — safe to repeat immediately.
 
 func _on_core_hit_while_charged() -> void:
 	## Closes the repair loop: rebuild the shaders, then cash it in at the

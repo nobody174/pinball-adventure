@@ -2,10 +2,11 @@ extends GutTest
 
 const RampLayerZoneScript := preload("res://core/physics/ramp_layer_zone.gd")
 
-func _make_zone(target_mask: int) -> Area2D:
+func _make_zone(target_mask: int, id: String = "") -> Area2D:
 	var zone := Area2D.new()
 	zone.set_script(RampLayerZoneScript)
 	zone.target_collision_mask = target_mask
+	zone.target_id = id
 	add_child_autofree(zone)
 	return zone
 
@@ -31,6 +32,16 @@ func test_exit_zone_restores_default_mask() -> void:
 
 	exit_zone._on_body_entered(ball)
 	assert_eq(ball.collision_mask, 1)
+
+func test_emits_entered_with_target_id() -> void:
+	var zone := _make_zone(1 | 2, "ramp_a")
+	var ball := RigidBody2D.new()
+	add_child_autofree(ball)
+	watch_signals(zone)
+
+	zone._on_body_entered(ball)
+
+	assert_signal_emitted_with_parameters(zone, "entered", ["ramp_a"])
 
 func test_ignores_non_rigidbody() -> void:
 	var zone := _make_zone(1 | 2)
