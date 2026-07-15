@@ -34,7 +34,7 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	_holding = true
 	captured.emit(target_id)
-	body.freeze = true
+	body.set_deferred("freeze", true)
 	body.linear_velocity = Vector2.ZERO
 	body.global_position = global_position
 	await get_tree().create_timer(hold_duration_seconds).timeout

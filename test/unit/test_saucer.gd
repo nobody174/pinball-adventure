@@ -29,6 +29,8 @@ func test_captures_ball_on_contact() -> void:
 	watch_signals(saucer)
 
 	saucer._on_body_entered(ball)
+	await wait_physics_frames(1) ## freeze is set via set_deferred to avoid erroring when
+	## _on_body_entered fires during the physics engine's own query-flush phase.
 
 	assert_signal_emitted_with_parameters(saucer, "captured", ["saucer_a"])
 	assert_true(ball.freeze, "ball should be frozen while held")
