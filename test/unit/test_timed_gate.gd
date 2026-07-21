@@ -25,6 +25,8 @@ func test_trigger_open_disables_collision_and_emits_opened() -> void:
 	watch_signals(gate)
 
 	gate.trigger_open()
+	await get_tree().physics_frame ## disabled is set via set_deferred to avoid erroring
+	await get_tree().physics_frame ## when called mid-physics-flush (from a body_entered callback)
 
 	assert_true(gate._collision.disabled, "collision should be disabled while open")
 	assert_signal_emitted(gate, "opened")

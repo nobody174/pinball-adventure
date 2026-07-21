@@ -28,7 +28,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
-	if not body is RigidBody2D:
+	if not body is PinballBall:
 		return
 	hit.emit(target_id)
 	flash(flash_color)

@@ -32,12 +32,12 @@ func trigger_collapse() -> void:
 	if _is_collapsed:
 		return
 	_is_collapsed = true
-	_collision.disabled = true
+	_collision.set_deferred("disabled", true)
 	_update_visual()
 	collapsed.emit()
 	await get_tree().create_timer(collapse_duration_seconds).timeout
 	_is_collapsed = false
-	_collision.disabled = false
+	_collision.set_deferred("disabled", false)
 	_update_visual()
 	reset.emit()
 

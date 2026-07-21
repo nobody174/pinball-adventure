@@ -1,6 +1,7 @@
 extends GutTest
 
 const SaucerScript := preload("res://core/physics/saucer.gd")
+const BallScript := preload("res://core/physics/ball.gd")
 
 func _make_saucer() -> Area2D:
 	var saucer := Area2D.new()
@@ -17,7 +18,11 @@ func _make_saucer() -> Area2D:
 	return saucer
 
 func _make_ball() -> RigidBody2D:
+	## Must be a real PinballBall, not a bare RigidBody2D -- saucer.gd only
+	## captures PinballBall instances (a plain RigidBody2D, e.g. a flipper
+	## knocked off its pivot, must pass through untouched).
 	var ball := RigidBody2D.new()
+	ball.set_script(BallScript)
 	ball.gravity_scale = 0.0 ## Isolate the eject impulse from gravity during the waited frames.
 	add_child_autofree(ball)
 	return ball
@@ -56,6 +61,21 @@ func test_non_rigidbody_is_not_captured() -> void:
 	saucer._on_body_entered(autofree(Node2D.new()))
 
 	assert_signal_not_emitted(saucer, "captured")
+
+func test_non_ball_rigidbody_is_not_captured() -> void:
+	## Regression test: a flipper is a RigidBody2D too (kinematically driven),
+	## and can be physically knocked into a saucer's trigger area by the
+	## ball. Capturing it as if it were the ball would freeze/eject it,
+	## permanently detaching it from its pivot.
+	var saucer := _make_saucer()
+	var not_a_ball := RigidBody2D.new()
+	add_child_autofree(not_a_ball)
+	watch_signals(saucer)
+
+	saucer._on_body_entered(not_a_ball)
+
+	assert_signal_not_emitted(saucer, "captured")
+	assert_false(not_a_ball.freeze, "a non-ball body should never be frozen by a saucer")
 
 func test_second_contact_during_hold_is_ignored() -> void:
 	var saucer := _make_saucer()

@@ -26,7 +26,7 @@ func _physics_process(delta: float) -> void:
 	_cooldown_remaining = maxf(0.0, _cooldown_remaining - delta)
 
 func _on_body_entered(body: Node2D) -> void:
-	if not body is RigidBody2D or _cooldown_remaining > 0.0:
+	if not body is PinballBall or _cooldown_remaining > 0.0:
 		return
 	var direction := (body.global_position - global_position).normalized()
 	if direction == Vector2.ZERO:

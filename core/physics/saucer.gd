@@ -30,7 +30,11 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
-	if not body is RigidBody2D or _holding:
+	## Must check for the ball specifically, not just any RigidBody2D --
+	## flippers are RigidBody2D too (kinematically driven), and a ball can
+	## physically knock one into a saucer's trigger area. Freezing/ejecting
+	## a flipper this way silently detaches it from its pivot for good.
+	if not body is PinballBall or _holding:
 		return
 	_holding = true
 	captured.emit(target_id)

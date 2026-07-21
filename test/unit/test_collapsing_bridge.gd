@@ -25,6 +25,7 @@ func test_trigger_collapse_disables_collision_and_emits_collapsed() -> void:
 	watch_signals(bridge)
 
 	bridge.trigger_collapse()
+	await wait_physics_frames(2)
 
 	assert_true(bridge._collision.disabled, "collision should be disabled while collapsed")
 	assert_signal_emitted(bridge, "collapsed")

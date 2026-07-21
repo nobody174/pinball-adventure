@@ -30,12 +30,12 @@ func trigger_open() -> void:
 	if _is_open:
 		return
 	_is_open = true
-	_collision.disabled = true
+	_collision.set_deferred("disabled", true)
 	_update_visual()
 	opened.emit()
 	await get_tree().create_timer(open_duration_seconds).timeout
 	_is_open = false
-	_collision.disabled = false
+	_collision.set_deferred("disabled", false)
 	_update_visual()
 	closed.emit()
 

@@ -8,6 +8,7 @@
 #
 
 extends RigidBody2D
+class_name PinballBall
 
 ## Placeholder pinball. Tunable in the inspector for §10a feel-testing.
 
@@ -18,8 +19,10 @@ extends RigidBody2D
 @export var launch_impulse_min: float = 250.0
 @export var launch_impulse_max: float = 2600.0
 @export var launch_charge_duration_seconds: float = 0.8
+@export var max_velocity: float = 4500.0 ## Safety clamp, not a gameplay tuning knob -- see _integrate_forces.
 
 signal launch_charge_changed(charge_ratio: float)
+signal drained ## Emitted the moment this ball leaves play (see the y>900/off-table check below).
 
 var _spawn_position: Vector2
 var _nudge_cooldown_remaining: float = 0.0
@@ -40,6 +43,10 @@ func _ready() -> void:
 	max_contacts_reported = 4
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
 	_spawn_position = position
+	add_to_group("balls") ## Group tag alongside class_name PinballBall -- lets
+	## table/objective code use the common Godot is_in_group("balls") /
+	## get_tree().get_nodes_in_group("balls") idiom without needing to know
+	## about (or import) this specific script's type.
 
 func _physics_process(delta: float) -> void:
 	## Real charge-and-release plunger: hold launch_ball to pull back (charge
@@ -72,6 +79,16 @@ func _physics_process(delta: float) -> void:
 	if position.y > 900 or absf(position.x - 210) > 600:
 		_pending_respawn = true
 		_launched = false
+		drained.emit()
+
+	## A weak shot can fall back and settle in the shooter lane itself
+	## (on the lane floor, around y=700-780) without ever crossing the drain
+	## threshold above -- that used to leave _launched permanently true,
+	## silently locking out the plunger forever (the charge branch above only
+	## runs `if not _launched`). Detect "at rest back in the lane" directly
+	## rather than only reacting to leaving the table entirely.
+	if _launched and position.y > 690 and position.y < 800 and absf(position.x - 423) < 30 and linear_velocity.length() < 20.0:
+		_launched = false
 
 	## CCD_MODE_CAST_SHAPE sweeps from the body's position at the start of the
 	## step to its new one -- after a direct transform write (teleport or
@@ -98,6 +115,18 @@ func request_teleport(target_position: Vector2, target_velocity: Vector2 = Vecto
 ## callback fights the physics server's own transform sync and can leave the
 ## body stuck with gravity no longer applying — teleports must go through here.
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	## Safety net, not a fix for a known root cause: rare, hard-to-reproduce
+	## collision interactions (e.g. a fast ball catching a seam or corner at
+	## an unlucky angle) can in principle hand the solver a velocity far
+	## beyond anything a real shot should produce. Other Godot pinball
+	## projects hit the same class of issue and ship the same mitigation
+	## (a sane clamp) rather than claiming to have found every root cause —
+	## this doesn't replace fixing an actual bug if one is found, it just
+	## stops a rare one from launching the ball off the table unrecoverably.
+	var velocity := state.get_linear_velocity()
+	if velocity.length() > max_velocity:
+		state.set_linear_velocity(velocity.limit_length(max_velocity))
+
 	if _pending_respawn:
 		state.transform = Transform2D(0.0, _spawn_position)
 		state.linear_velocity = Vector2.ZERO

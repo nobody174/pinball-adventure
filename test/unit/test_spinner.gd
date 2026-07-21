@@ -1,6 +1,7 @@
 extends GutTest
 
 const SpinnerScript := preload("res://core/physics/spinner.gd")
+const BallScript := preload("res://core/physics/ball.gd")
 
 func _make_spinner() -> Area2D:
 	var spinner := Area2D.new()
@@ -12,11 +13,17 @@ func _make_spinner() -> Area2D:
 	add_child_autofree(spinner)
 	return spinner
 
+func _make_ball() -> RigidBody2D:
+	var ball := RigidBody2D.new()
+	ball.set_script(BallScript)
+	add_child_autofree(ball)
+	return ball
+
 func test_spins_and_emits_id_on_contact() -> void:
 	var spinner := _make_spinner()
 	watch_signals(spinner)
 
-	spinner._on_body_entered(autofree(RigidBody2D.new()))
+	spinner._on_body_entered(_make_ball())
 
 	assert_signal_emitted_with_parameters(spinner, "spun", ["spin_a"])
 
@@ -28,11 +35,23 @@ func test_does_not_spin_again_during_cooldown() -> void:
 	## the thin Area2D's edge could re-trigger body_entered repeatedly.
 	var spinner := _make_spinner()
 	spinner.spin_cooldown_seconds = 1.0
-	var ball: RigidBody2D = autofree(RigidBody2D.new())
+	var ball := _make_ball()
 
 	spinner._on_body_entered(ball)
 	watch_signals(spinner)
 	spinner._on_body_entered(ball) ## Still within cooldown -- should be ignored.
+
+	assert_signal_not_emitted(spinner, "spun")
+
+func test_non_ball_does_not_spin() -> void:
+	## Regression test: a flipper is a RigidBody2D too (kinematically driven)
+	## and could be knocked into a spinner's Area2D by the ball -- must not
+	## be treated as a real pass-through. See saucer.gd's identical, more
+	## severe version of this bug (fixed this session).
+	var spinner := _make_spinner()
+	watch_signals(spinner)
+
+	spinner._on_body_entered(autofree(RigidBody2D.new()))
 
 	assert_signal_not_emitted(spinner, "spun")
 
@@ -46,7 +65,7 @@ func test_non_rigidbody_does_not_spin() -> void:
 
 func test_repeated_contact_during_spin_does_not_restart_tween() -> void:
 	var spinner := _make_spinner()
-	var ball: RigidBody2D = autofree(RigidBody2D.new())
+	var ball := _make_ball()
 
 	spinner._on_body_entered(ball)
 	var spinning_after_first_hit: bool = spinner._spinning
