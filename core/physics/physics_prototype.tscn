@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" path="res://core/physics/art/flipper_right.png" id="8_flipper_right_tex"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
-size = Vector2(20, 2100)
+size = Vector2(20, 2200)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_top"]
 size = Vector2(450, 20)
@@ -37,7 +37,10 @@ size = Vector2(169.7, 14)
 size = Vector2(100.5, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_shooter_lane_wall"]
-size = Vector2(10, 1950)
+size = Vector2(10, 2050)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shooter_lane_floor"]
+size = Vector2(39, 10)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ball"]
 radius = 14.0
@@ -53,22 +56,22 @@ size = Vector2(130, 130)
 [node name="Boundary" type="StaticBody2D" parent="." unique_id=11964670]
 
 [node name="LeftWall" type="CollisionShape2D" parent="Boundary" unique_id=182639212]
-position = Vector2(0, -350)
+position = Vector2(0, -300)
 shape = SubResource("RectangleShape2D_wall_side")
 
 [node name="LeftWallSprite" type="Polygon2D" parent="Boundary" unique_id=2044888972]
-position = Vector2(0, -350)
+position = Vector2(0, -300)
 color = Color(0.5, 0.5, 0.55, 1)
-polygon = PackedVector2Array(-10, -1050, 10, -1050, 10, 1050, -10, 1050)
+polygon = PackedVector2Array(-10, -1100, 10, -1100, 10, 1100, -10, 1100)
 
 [node name="RightWall" type="CollisionShape2D" parent="Boundary" unique_id=828326114]
-position = Vector2(450, -350)
+position = Vector2(450, -300)
 shape = SubResource("RectangleShape2D_wall_side")
 
 [node name="RightWallSprite" type="Polygon2D" parent="Boundary" unique_id=1959204579]
-position = Vector2(450, -350)
+position = Vector2(450, -300)
 color = Color(0.5, 0.5, 0.55, 1)
-polygon = PackedVector2Array(-10, -1050, 10, -1050, 10, 1050, -10, 1050)
+polygon = PackedVector2Array(-10, -1100, 10, -1100, 10, 1100, -10, 1100)
 
 [node name="TopWall" type="CollisionShape2D" parent="Boundary" unique_id=989107409]
 position = Vector2(225, -1400)
@@ -80,13 +83,22 @@ color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-225, -10, 225, -10, 225, 10, -225, 10)
 
 [node name="ShooterLaneWall" type="CollisionShape2D" parent="Boundary" unique_id=3182004420]
-position = Vector2(401, -275)
+position = Vector2(401, -225)
 shape = SubResource("RectangleShape2D_shooter_lane_wall")
 
 [node name="ShooterLaneWallSprite" type="Polygon2D" parent="Boundary" unique_id=3182004421]
-position = Vector2(401, -275)
+position = Vector2(401, -225)
 color = Color(0.5, 0.5, 0.55, 1)
-polygon = PackedVector2Array(-5, -975, 5, -975, 5, 975, -5, 975)
+polygon = PackedVector2Array(-5, -1025, 5, -1025, 5, 1025, -5, 1025)
+
+[node name="ShooterLaneFloor" type="CollisionShape2D" parent="Boundary" unique_id=3182004422]
+position = Vector2(425.5, 750)
+shape = SubResource("RectangleShape2D_shooter_lane_floor")
+
+[node name="ShooterLaneFloorSprite" type="Polygon2D" parent="Boundary" unique_id=3182004423]
+position = Vector2(425.5, 750)
+color = Color(0.5, 0.5, 0.55, 1)
+polygon = PackedVector2Array(-19.5, -5, 19.5, -5, 19.5, 5, -19.5, 5)
 
 [node name="Bumper" type="StaticBody2D" parent="." unique_id=1891454527]
 position = Vector2(210, 250)
@@ -223,7 +235,7 @@ texture = ExtResource("8_flipper_right_tex")
 script = ExtResource("3_touch")
 
 [node name="LeftZone" type="TouchScreenButton" parent="TouchZones" unique_id=1103866490]
-position = Vector2(65, 985)
+position = Vector2(65, 885)
 shape = SubResource("RectangleShape2D_touch_zone")
 
 [node name="LeftZoneVisual" type="Polygon2D" parent="TouchZones/LeftZone" unique_id=1249598117]
@@ -235,7 +247,7 @@ color = Color(0.2, 0.8, 1, 0.6)
 polygon = PackedVector2Array(35, 0, 24.75, 24.75, 0, 35, -24.75, 24.75, -35, 0, -24.75, -24.75, 0, -35, 24.75, -24.75)
 
 [node name="RightZone" type="TouchScreenButton" parent="TouchZones" unique_id=839068721]
-position = Vector2(415, 985)
+position = Vector2(415, 885)
 shape = SubResource("RectangleShape2D_touch_zone")
 
 [node name="RightZoneVisual" type="Polygon2D" parent="TouchZones/RightZone" unique_id=1327102787]
@@ -251,6 +263,6 @@ position = Vector2(225, 175)
 script = ExtResource("5_camera")
 target_path = NodePath("../Ball")
 min_camera_y = -875.0
-max_camera_y = 175.0
+max_camera_y = 275.0
 
 [connection signal="body_entered" from="Bumper/KickArea" to="Bumper/KickArea" method="_on_body_entered"]

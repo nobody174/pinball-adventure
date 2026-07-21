@@ -15,7 +15,6 @@
 [ext_resource type="Script" path="res://core/physics/magnet.gd" id="13_magnet"]
 [ext_resource type="Script" path="res://core/physics/timed_gate.gd" id="14_gate"]
 [ext_resource type="Script" path="res://core/physics/collapsing_bridge.gd" id="15_bridge"]
-[ext_resource type="Script" path="res://core/physics/subway_tunnel.gd" id="16_subway"]
 [ext_resource type="Script" path="res://core/physics/captive_ball.gd" id="17_captive"]
 [ext_resource type="Script" path="res://core/physics/ramp_layer_zone.gd" id="18_ramplayer"]
 [ext_resource type="Script" uid="uid://dtypcr3tcdvpl" path="res://core/physics/flipper.gd" id="19_flipper"]
@@ -753,23 +752,6 @@ shape = SubResource("RectangleShape2D_bridge")
 color = Color(0.5, 0.5, 0.55, 1)
 polygon = PackedVector2Array(-40, -7, 40, -7, 40, 7, -40, 7)
 
-[node name="SubwayExitMarker" type="Node2D" parent="UpperZone/MidZone" index="7"]
-position = Vector2(360, -880)
-
-[node name="SubwayEntrance" type="Area2D" parent="UpperZone/MidZone" index="8"]
-position = Vector2(60, -670)
-script = ExtResource("16_subway")
-target_id = "subway_a"
-exit_point = NodePath("../SubwayExitMarker")
-exit_velocity = Vector2(0, -300)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperZone/MidZone/SubwayEntrance" index="0"]
-shape = SubResource("CircleShape2D_subway")
-
-[node name="Sprite" type="Polygon2D" parent="UpperZone/MidZone/SubwayEntrance" index="1"]
-color = Color(0.2, 1, 0.9, 0.6)
-polygon = PackedVector2Array(16, 0, 11.3, 11.3, 0, 16, -11.3, 11.3, -16, 0, -11.3, -11.3, 0, -16, 11.3, -11.3)
-
 [node name="CrossoverZone" type="Node2D" parent="UpperZone" index="1"]
 
 [node name="RollunderGate" type="Area2D" parent="UpperZone/CrossoverZone" index="0"]
@@ -1015,12 +997,12 @@ color = Color(0.2, 0.9, 1, 0.7)
 polygon = PackedVector2Array(-3.99, 0.23, -4.92, -16.20, -7.39, -28.78, -11.14, -38.95, -15.94, -47.09, -21.74, -53.66, -28.69, -59.04, -37.01, -63.43, -46.83, -66.82, -58.13, -69.17, -70.82, -70.41, -84.72, -70.52, -99.67, -69.54, -115.47, -67.52, -131.95, -64.52, -148.95, -60.63, -166.32, -55.94, -183.89, -50.56, -201.52, -44.57, -219.07, -38.09, -236.40, -31.21, -253.36, -24.03, -269.83, -16.66, -285.67, -9.21, -300.74, -1.78, -314.90, 5.53, -328.01, 12.60, -339.94, 19.33, -350.53, 25.60, -359.62, 31.28, -367.37, 36.46, -371.82, 29.81, -363.96, 24.56, -354.68, 18.77, -343.94, 12.41, -331.87, 5.60, -318.63, -1.55, -304.34, -8.92, -289.14, -16.42, -273.17, -23.93, -256.56, -31.37, -239.43, -38.61, -221.93, -45.56, -204.19, -52.11, -186.34, -58.17, -168.53, -63.63, -150.89, -68.39, -133.56, -72.35, -116.69, -75.42, -100.44, -77.51, -84.95, -78.52, -70.39, -78.40, -56.93, -77.08, -44.70, -74.54, -33.83, -70.77, -24.36, -65.77, -16.26, -59.49, -9.46, -51.79, -3.91, -42.38, 0.31, -30.94, 3.02, -17.20, 3.99, -0.23)
 
 [node name="PlungerRod" type="Polygon2D" parent="." index="28"]
-position = Vector2(423, 690)
+position = Vector2(423, 710)
 color = Color(0.7, 0.7, 0.75, 1)
 polygon = PackedVector2Array(-5, 0, 5, 0, 5, 40, -5, 40)
 
 [node name="PlungerTip" type="Polygon2D" parent="." index="29"]
-position = Vector2(423, 690)
+position = Vector2(423, 710)
 color = Color(0.3, 0.35, 0.42, 1)
 polygon = PackedVector2Array(-9, -6, 9, -6, 9, 6, -9, 6)
 

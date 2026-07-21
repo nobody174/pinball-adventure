@@ -15,6 +15,8 @@ extends PinballTable
 
 const TABLE_ID := "the_glitch"
 
+const GlitchZapScene := preload("res://tables/the_glitch/fx/glitch_zap.tscn")
+
 const SHADER_A := "shader_a"
 const SHADER_B := "shader_b"
 const SHADER_C := "shader_c"
@@ -73,6 +75,17 @@ const STANDUP_BANK_BONUS_POINTS := 500
 const ROLLOVER_GATE_POINTS := 40
 const SAUCER_CAPTURE_POINTS := 150
 const HIGH_SPEED_LOOP_POINTS := 120
+
+## Reality Break: the Glitch Core's 3 "gates" (see rotating_toy.gd) are each
+## raised by completing one major objective from a different zone -- one
+## reason chosen per gate: shader_rebuild is the lower/mid-zone repair loop,
+## firewall_breach is the mid-zone drop-target bank, captive_dual is the
+## upper-zone lock. Raising all 3 is the wizard-mode-style readiness check;
+## the actual reward (multiball) fires once, and both the Core's own gates
+## and the underlying objectives reset so the whole climb can repeat.
+const REALITY_BREAK_BALL_COUNT := 3
+const REALITY_BREAK_LAUNCH_VELOCITY := Vector2(0, -1400)
+const REALITY_BREAK_BONUS_POINTS := 2000
 const SAUCER_DOUBLE_BONUS_POINTS := 900
 
 const MINI_TARGET_POINTS := 60
@@ -84,7 +97,6 @@ const VUK_LEVEL2_POINTS := 200
 const MINI_SAUCER_KICKOUT_POINTS := 150
 const CAPSULE_LOCK_POINTS := 175
 const SKILL_SHOT_POINTS := 500
-const SUBWAY_POINTS := 100
 const CYBER_RAMP_POINTS := 250
 
 const LEVEL2_DURATION_SECONDS := 15.0
@@ -182,6 +194,7 @@ func _ready() -> void:
 
 	_glitch_core.hit_while_charged.connect(_on_core_hit_while_charged)
 	_glitch_core.hit_while_uncharged.connect(func() -> void: GameState.add_score(CORE_UNCHARGED_HIT_POINTS))
+	_glitch_core.all_gates_raised.connect(_on_reality_break_ready)
 	$LeftSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
 	$RightSlingshot.kicked.connect(func() -> void: GameState.add_score(SLINGSHOT_POINTS))
 	$PhysicsPrototype/Bumper/KickArea.kicked.connect(func() -> void: GameState.add_score(BUMPER_POINTS))
@@ -235,10 +248,6 @@ func _ready() -> void:
 		GameState.add_score(SKILL_SHOT_POINTS)
 		_show_feedback("SKILL SHOT", Color(1, 0.85, 0.2, 1)))
 
-	mid_zone.get_node("SubwayEntrance").entered.connect(func(_id: String) -> void:
-		GameState.add_score(SUBWAY_POINTS)
-		_debug_terminal.log_event("> subway entered"))
-
 	crossover_zone.get_node("RampAEntrance").entered.connect(func(_id: String) -> void:
 		_award(CYBER_RAMP_POINTS)
 		_show_feedback("CYBER RAMP A", Color(0.2, 0.9, 1, 1)))
@@ -246,12 +255,33 @@ func _ready() -> void:
 		_award(CYBER_RAMP_POINTS)
 		_show_feedback("CYBER RAMP B", Color(1, 0.2, 0.7, 1)))
 
-	## Visual plunger: pulls back proportionally while charging, snaps back
-	## to rest the instant the ball actually launches (charge resets to 0).
+	register_ball($PhysicsPrototype/Ball)
+
+	## Visual plunger: pulls back proportionally while charging (input now
+	## bound to the Down arrow, not Up -- pulling a real plunger toward the
+	## player is a pull-back/down motion, matching how launch_ball is now
+	## mapped in project.godot), snaps back to rest the instant the ball
+	## actually launches (charge resets to 0).
+	##
+	## The table's playable area was extended a modest 100px downward
+	## (core/physics/physics_prototype.tscn -- side walls, camera's
+	## max_camera_y, touch zones all updated together) to give the plunger a
+	## real home to retract into -- a first attempt at 300px was much more
+	## than a 40px rod animation actually needed and was scaled back down.
+	## Earlier attempts at just widening the travel distance in place (with
+	## no new space at all) failed because the rod's old rest position
+	## (y=690) sat almost exactly on the camera's old visible-bottom-edge
+	## (y=700), so any larger pull-back drove it off-screen regardless of
+	## direction.
+	const PLUNGER_REST_Y := 710.0
+	const PLUNGER_MAX_PULLBACK := 40.0 ## Retracts *down*, away from the ball -- the physically correct direction.
+	var plunger_tip_rest_color: Color = $PlungerTip.color
+	var plunger_tip_charged_color := Color(1, 0.85, 0.2, 1)
 	$PhysicsPrototype/Ball.launch_charge_changed.connect(func(charge_ratio: float) -> void:
-		var pulled_y := 690.0 + charge_ratio * 30.0
+		var pulled_y := PLUNGER_REST_Y + charge_ratio * PLUNGER_MAX_PULLBACK
 		$PlungerRod.position.y = pulled_y
-		$PlungerTip.position.y = pulled_y)
+		$PlungerTip.position.y = pulled_y
+		$PlungerTip.color = plunger_tip_charged_color if charge_ratio >= 1.0 else plunger_tip_rest_color)
 
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.reset_score()
@@ -279,6 +309,7 @@ func _on_objective_completed(objective_id: String) -> void:
 		for drop_target in $FirewallBreach.get_children():
 			drop_target.reset_target()
 		objectives.get_objective("firewall_breach").reset()
+		_glitch_core.raise_gate(1)
 	elif objective_id == "vram_throughput":
 		GameState.add_score(VRAM_THROUGHPUT_BONUS_POINTS)
 		_show_feedback("VRAM THROUGHPUT MAXED", Color(0.2, 1, 0.9, 1))
@@ -305,6 +336,7 @@ func _on_objective_completed(objective_id: String) -> void:
 		GameState.add_score(CAPTIVE_DUAL_BONUS_POINTS)
 		_show_feedback("CAPTIVE LOCK", Color(0.9, 0.9, 1, 1))
 		objectives.get_objective("captive_dual").reset() ## Each captive ball can be struck again any time — safe to repeat immediately.
+		_glitch_core.raise_gate(2)
 
 func _on_core_hit_while_charged() -> void:
 	## Closes the repair loop: rebuild the shaders, then cash it in at the
@@ -315,6 +347,20 @@ func _on_core_hit_while_charged() -> void:
 	GameState.add_score(CORE_CHARGED_HIT_POINTS)
 	_show_feedback("CORE STABILIZED", Color(0.2, 1, 0.5, 1))
 	objectives.get_objective("shader_rebuild").reset()
+	_glitch_core.raise_gate(0)
+
+func _on_reality_break_ready() -> void:
+	## All 3 Glitch Core gates raised (see rotating_toy.gd): the wizard-mode-
+	## style readiness check has passed. Fire the reward once, then reset
+	## the gates so the whole climb can be repeated in the same session,
+	## same pattern as every other repeatable bonus objective on this table.
+	GameState.add_score(REALITY_BREAK_BONUS_POINTS)
+	_show_feedback("REALITY BREAK", Color(1, 0.2, 0.6, 1))
+	var zap: Node2D = GlitchZapScene.instantiate()
+	zap.global_position = _glitch_core.global_position
+	add_child(zap)
+	start_multiball(REALITY_BREAK_BALL_COUNT, $PhysicsPrototype/Ball.position, REALITY_BREAK_LAUNCH_VELOCITY)
+	_glitch_core.reset_gates()
 
 func _on_clock_lane_hit(_target_id: String) -> void:
 	## Direct trigger, not a multi-step objective -- a real pinball lane like
