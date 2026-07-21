@@ -1,0 +1,65 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://core/physics/physics_prototype.tscn" id="1_physics"]
+[ext_resource type="Script" path="res://spike_10c/phasing_wall.gd" id="2_phasing"]
+[ext_resource type="Script" path="res://spike_10c/corrupted_orbit_zone.gd" id="3_orbit"]
+[ext_resource type="Script" path="res://spike_10c/multiball_spawner.gd" id="4_multiball"]
+[ext_resource type="Script" path="res://spike_10b/fps_overlay.gd" id="5_fps"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_phasing"]
+size = Vector2(120, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_orbit"]
+radius = 40.0
+
+[node name="DynamicCollisionSpike10c" type="Node2D"]
+
+[node name="PhysicsPrototype" parent="." instance=ExtResource("1_physics")]
+
+[node name="PhasingWall" type="StaticBody2D" parent="."]
+position = Vector2(423, 350)
+script = ExtResource("2_phasing")
+phase_period_seconds = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhasingWall"]
+shape = SubResource("RectangleShape2D_phasing")
+
+[node name="Sprite" type="Polygon2D" parent="PhasingWall"]
+color = Color(0.5, 0.5, 0.55, 1)
+polygon = PackedVector2Array(-60, -8, 60, -8, 60, 8, -60, 8)
+
+[node name="CorruptedOrbitZone" type="Area2D" parent="."]
+position = Vector2(423, 100)
+script = ExtResource("3_orbit")
+exit_position = Vector2(100, 500)
+exit_velocity = Vector2(200, -900)
+cooldown_seconds = 0.3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CorruptedOrbitZone"]
+shape = SubResource("CircleShape2D_orbit")
+
+[node name="Sprite" type="Polygon2D" parent="CorruptedOrbitZone"]
+color = Color(0.6, 0.2, 1, 0.4)
+polygon = PackedVector2Array(40, 0, 28.3, 28.3, 0, 40, -28.3, 28.3, -40, 0, -28.3, -28.3, 0, -40, 28.3, -28.3)
+
+[node name="MultiballSpawner" type="Node2D" parent="."]
+script = ExtResource("4_multiball")
+extra_ball_count = 5
+spawn_position = Vector2(423, 500)
+launch_velocity = Vector2(0, -1600)
+spawn_interval_seconds = 0.15
+
+[node name="FpsOverlay" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("5_fps")
+
+[node name="Label" type="Label" parent="FpsOverlay"]
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 160.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "FPS: --"
+
+[connection signal="body_entered" from="CorruptedOrbitZone" to="CorruptedOrbitZone" method="_on_body_entered"]
