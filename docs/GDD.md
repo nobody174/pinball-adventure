@@ -45,22 +45,31 @@ v1 loop is intentionally single-table: play → complete objectives → chase pe
 
 ## 3. MVP Scope (v1)
 
-**Locked MVP theme: "The Glitch."** A corrupted video game world — the ball repairs broken game code. Style: synthwave, neon colors, digital corruption, glitch effects. This gives the table a strong, contained visual identity that fits Godot's shader/lighting strengths (§5.1) without requiring the multi-stage evolution complexity of a theme like Arcade Evolution — a sensible first pick for proving the pipeline before attempting something more ambitious.
+**Revised 2026-07-21** — superseding the original "3–5 objectives" scope below. The designer produced a full creative design bible for The Glitch (fantasy-pinball wizard-mode structure: zoned playfield, Glitch Core centerpiece/boss, named modes, tiered multiball, dynamic-collision mechanics) that is a genuine expansion of what v1 delivers, not a re-skin of the same small scope. Per the project's standing instruction — quality and long-term architecture over sunk cost or speed — this is treated as a deliberate scope decision, made explicitly, not creep. A technical feasibility pass (see note below) confirmed it fits the existing Godot 2D / GL Compatibility / baked-sprite architecture with no engine or renderer pivot required, so this is a scope change, not an architecture change.
+
+**Locked MVP theme: "The Glitch."** A corrupted video game world — the ball repairs broken game code. Style: synthwave, neon colors, digital corruption, glitch effects, holographic UI overlays, chromatic aberration/scanline VFX. Still the sensible first theme to prove the pipeline before attempting something more ambitious (per §5.1's original reasoning) — the scope inside that theme has grown, not the decision to start with it.
 
 **In:**
-- 1 fully polished pinball table, "The Glitch" theme
-- Solid, hand-tuned physics (flippers, ball, ramps, bumpers, tilt/nudge)
-- 3–5 objectives themed around the "repair corrupted areas / activate loops / restore systems" mechanics from the theme concept — e.g., hit a bank of corrupted targets to "repair" a section (visually resolving glitch effects to clean neon), complete a ramp loop to "activate" it, reach a score/combo threshold to "restore" a system and unlock a multiball or new ramp path. This is the "adventure" hook even within a single table — objectives should feel like progress against the corruption, not generic pinball goals with a skin on top
+- 1 fully polished pinball table, "The Glitch" theme, built across three named zones (upper/feature, middle/main gameplay, lower/classic) per the designer's table-structure document
+- Solid, hand-tuned physics (flippers, ball, ramps, bumpers, tilt/nudge) — unchanged top priority, per §1's critical-path order
+- A themed objective/mode set built around "repair corrupted areas / activate loops / restore systems," now explicitly including:
+  - Named base modes (e.g. Pixel Storm bumper cluster, Firewall drop-target sequence, Debug Tunnel puzzle chamber)
+  - A Glitch Core centerpiece that changes table rules/state as the game progresses (Overload, Corruption Surge, Reality Break)
+  - Multiball, tiered by mode (a smaller/starter multiball plus a larger high-tier one) — ball count per tier to be set after the physics spike below, not assumed at 4–6 up front
+  - A wizard mode ("Heart of the Glitch") as the table's climax — a scripted final encounter using `AnimatedSprite2D`-based enemy visuals (per the feasibility review, a real rigged/skeletal character is explicitly out of scope; sprite-sheet animation is not)
+  - Dynamic-collision mechanics as a named category — Corrupted Orbit (reverses/teleports), Broken Ramp (flickers solid/intangible), Quantum Diverter (redirects ramp routing) — gated behind the spike test in the new §10c before being built into the live table (see below)
 - Local high score, persisted per device
-- A compact input-log replay system (records flipper/nudge inputs + timestamps, not video) — built now because it's foundational to both scoring integrity and any future "watch a replay" feature, and is much harder to retrofit later
-- Responsive UI/controls that work on desktop (keyboard) and mobile (touch), including portrait/landscape scaling of the table view
+- A compact input-log replay system (records flipper/nudge inputs + timestamps, not video)
+- Responsive UI/controls for desktop (keyboard) and mobile (touch), including a holographic/scanline HUD treatment and portrait/landscape scaling
+- Camera work: zoom on the upper zone, screen shake on glitch events, chromatic aberration during corruption mode — implemented as `Camera2D` zoom/offset tweens and screen-space shaders per the feasibility review (§10, new spike item), not a 3D/perspective camera
 
-**Explicitly out of v1** (see roadmap):
+**Explicitly out of v1** (unchanged from original scope, still deferred to later phases):
 - Multiple themes/tables
-- XP, missions, cosmetics, table modifiers, achievements, challenge modes
+- XP, missions, cosmetics, table modifiers, achievements, challenge modes outside this table
 - Friend groups, online/global leaderboards
 - Theme-evolution visuals (Arcade Evolution style)
-- Boss events, character events
+- True HDR/automatic bloom (would require Forward+/Mobile renderer — stays out per the feasibility review; glow stays hand-authored/faked, consistent with the existing 2.5D baked-sprite pipeline)
+- Rigged/skeletal boss character animation (sprite-sheet-based boss visuals only)
 
 ---
 
@@ -186,6 +195,20 @@ Test on actual target hardware, not just a dev machine — specifically a low/mi
 - If frame rate and responsiveness hold up on target hardware → proceed to Glitch production art as planned.
 - If not → simplify the visual approach (fewer simultaneous particle emitters, baked lighting instead of dynamic, reduced shader complexity) before committing to full production, not after.
 
+### 10c. Dynamic-collision spike (added 2026-07-21 — gates the Corrupted Orbit / Broken Ramp / Quantum Diverter mechanics and high-ball-count multiball)
+
+Goal: this project's actual, repeated failure mode has never been visuals — it's collision-state bugs (ball tunneling, CCD-vs-teleport interaction, and twice now, disabling a `CollisionShape2D` mid-physics-flush causing a hard crash). The design bible's dynamic-collision mechanics are, by design, the same category of risk as every incident already logged in `docs/PROGRESS.md`, just made intentional and load-bearing instead of accidental. This spike exists so those mechanics are proven safe *before* they're wired into live table content, not discovered broken during a playtest like the shooter lane was.
+
+Scope — a throwaway test scene (outside `core/`/`tables/`, same convention as `spike_10b/`), covering:
+- A collision shape that toggles solid/intangible on a timer and on trigger, exercising the fix pattern now required project-wide: every such toggle goes through `set_deferred("disabled", ...)` (or `call_deferred`), never a direct synchronous write from a signal callback — this is the exact bug fixed in `collapsing_bridge.gd` and `timed_gate.gd` this session, and must be treated as a hard rule for every future collision-state mechanic, not a fix applied reactively per-bug
+- A rail/orbit segment that reverses ball direction and a version that teleports the ball mid-flight, verified against the CCD-sweep bug already diagnosed and fixed once (disabling CCD for a couple of physics frames around any teleport)
+- 4–6 simultaneous `RigidBody2D` balls sharing the existing flipper/bumper/ramp geometry at realistic speeds, to find tunneling/jitter under real multi-ball contention rather than assuming single-ball tuning generalizes
+- Run headless-verified first (per this project's established practice), then on the real low/mid-range mobile HTML5 export target from §10b, since simultaneous fast bodies are exactly the kind of load that a dev-machine-only test would hide
+
+**Decision gate:**
+- If all three mechanisms hold up (no crashes, no tunneling, acceptable frame time with the higher ball count) on target hardware → build Corrupted Orbit / Broken Ramp / Quantum Diverter and the higher-tier multiball into the live table as designed.
+- If not → simplify per-mechanic (e.g., cap multiball at a lower ball count than initially wanted, restrict teleports to slow-ball states, or drop "intangible" ramps in favor of a diverter-gate mechanic that only ever fully opens/closes rather than partially phasing) before committing them to the live table, following the same "revert cleanly rather than ship an unverified fix" discipline already established in this project's session history.
+
 ---
 
 ## 11. Proposed Godot Project Architecture
@@ -261,6 +284,7 @@ This structure is a proposal to validate empirically in Phase 2, not treat as fi
 - **Table architecture:** base `PinballTable` scene with per-table scenes inheriting from it — locked as the mechanism for the content-pack philosophy (§5.2, §6).
 - **Replay format:** input-log (flipper/nudge/timestamp), not video — locked now since it's foundational to both MVP scoring and Phase 4 server verification.
 - **MVP theme: "The Glitch"** — locked. Synthwave/neon/glitch-corruption style; objectives built around repair/loop/restore mechanics (§3).
+- **MVP scope expansion (2026-07-21)** — locked per the revised §3: wizard-mode structure (zones, Glitch Core centerpiece, named modes, tiered multiball, wizard-mode finale) is now in scope for v1, not deferred. Stays inside the existing Godot 2D / GL Compatibility architecture (no renderer pivot). Dynamic-collision mechanics (Corrupted Orbit, Broken Ramp, Quantum Diverter) and any multiball above the currently-proven ball count are gated behind the §10c spike before being built into the live table.
 - **Phase 2 theme: "The Basement"** — locked. Chosen deliberately as the visual/mechanical opposite of The Glitch to properly stress-test the content-pack architecture (§4, §11).
 - **Prototype sequencing: physics-feel (§10a) before performance/effects spike (§10b)** — locked, matching the critical-path priority order in §1. Neither is skipped or combined.
 - **Critical-path priority order** — locked as stated in §1: ball/flipper feel → table layout fun → performance stability → visual identity → progression → online competition. Governs scope tradeoffs under schedule pressure.
